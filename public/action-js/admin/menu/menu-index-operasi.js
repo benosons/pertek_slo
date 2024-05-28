@@ -932,7 +932,7 @@ function loadpermohonan(param){
                                           </div>`
                                           
                               if(row.status == 1){
-                                el += `<div class="btn-group"><button style="display: none;" title="Verifikasi Lapangan" class="btn btn-xs btn-success" onclick="actionlapangan('view',`+row.id+`,'`+row.type+`')">
+                                el += `<div class="btn-group"><button title="Verifikasi Lapangan" class="btn btn-xs btn-success" onclick="actionlapangan('view',`+row.id+`,'`+row.type+`')">
                                       <i class="ace-icon fa fa-check-square-o bigger-120"></i>
                                     </button></div>`;
                               }else{
