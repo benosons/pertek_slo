@@ -216,6 +216,7 @@ $(document).ready(function(){
           var formData = new FormData();
           formData.append('param', 'data_permohonan');
           formData.append('type', '1');
+          formData.append('tahapan', '1');
           let berapa = [];
           for (let index = 1; index <= 9; index++) {
             if($('#input_'+index).val()){
@@ -254,7 +255,7 @@ $(document).ready(function(){
 
     formData.append("file[doc_kajian]", $('#doc_kajian')[0].files[0]);
     formData.append("bab", $('#bab_kajian').val());
-    
+    updatetahapan($('#ini-ID').val(), 2)
     upload(formData);
   });
 
@@ -543,7 +544,7 @@ function loadpermohonan(param){
                   pageLength: 10,
                   aaData: result.data,
                   aoColumns: [
-                      { 'mDataProp': 'id', 'width':'10%'},
+                      { 'mDataProp': 'id', 'width':'5%'},
                       { 'mDataProp': 'p1'},
                       { 'mDataProp': 'p2'},
                       { 'mDataProp': 'p3'},
@@ -552,6 +553,7 @@ function loadpermohonan(param){
                       // { 'mDataProp': 'p6'},
                       { 'mDataProp': 'p7'},
                       { 'mDataProp': 'p8'},
+                      { 'mDataProp': 'tahapan'},
                       { 'mDataProp': 'id'},
                   ],
                   order: [[0, 'ASC']],
@@ -599,513 +601,27 @@ function loadpermohonan(param){
                       aTargets: [5]
                     },
                     {
+                      "render": function ( data, type, row ) {
+                        if (type == 'display') {
+                          switch (data) {
+                            case '1':
+                                data = '<span class="label label-sm label-info arrowed-in">Pengajuan</span>'
+                              break;
+                            case '2':
+                                data = '<span class="label label-sm label-info arrowed-in">Pemeriksaan Dokumen</span>'
+                              break;
+                          
+                            default:
+                              break;
+                          }
+                          return data
+                        }
+                        return data
+                      },
+                      aTargets: [8]
+                    },
+                    {
                         "render": function ( data, type, row ) {
-                          // if (type == 'display') {
-                          //   var el = '';
-                          //   var file = row.file
-                          //   var isok = 0
-                          //   var step = `<div class="btn-group">
-                          //                 <button class="btn btn-xs btn-info "> <i class="ace-icon fa fa-th-list"></i> </button>
-                          //               </div>`
-                          //   el += step
-                          //   el += `<div class="btn-group">
-                          //           <button data-toggle="dropdown" class="btn btn-xs btn-indo dropdown-toggle" aria-expanded="false"> File <i class="ace-icon fa fa-angle-down icon-on-right"></i></button>
-                          //           <ul class="dropdown-menu dropdown-info dropdown-menu-right" style="width:25rem">`
-                          //     var li = ''
-
-                          //     for (const key in file) {
-                                
-                          //       var id = file[key]['id']
-                          //       var path = file[key]['path']
-                          //       var filename = file[key]['filename']
-                          //       var jenis = file[key]['jenis']
-                          //       var ok = file[key]['ok']
-                          //       var classe = ''
-
-                          //       li += `<li>
-                          //                 <div class="row">`
-                          //         if(ok == 2){
-                          //             li += `<div class="col-sm-2">
-                          //                       <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                   </div>`
-                          //                   classe = 'class="text-danger"'
-                          //         }else if(ok == 1){
-                          //             isok += 1
-                          //             li += `<div class="col-sm-2">
-                          //                       <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                   </div>`
-                          //         }else{
-                          //           li += `<div class="col-sm-2">
-                          //                       <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                   </div>
-                          //                   <div class="col-sm-2">
-                          //                       <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                   </div>`
-                          //         }
-
-                          //       li +=      `<div class="col-sm-8">
-                          //                       <a ${classe} target="_blank" type="button" href="public/${path+'/'+filename}"> <i class="ace-icon fa fa-file"></i> ${jenis} </a>
-                          //                   </div>
-                          //                 </div>
-                          //             </li>`
-                          //     }
-
-                          //   el += li
-                          //   el += `</ul>
-                          //       </div>`
-
-                                
-                          //   el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="action('delete',`+row.id+`,'`+row.type+`','','data_permohonan')">
-                          //             <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                          //           </button></div>`
-                                    
-                          //   return el;
-                          // }
-
-
-                          // ------------------------------------------------------------------------------------------------
-                          // if(row.param){
-                            
-                          //   var path_0 = `public/${row.file[0]['path']}/${row.file[0]['filename']}`;
-                          //   var path_1 = `public/${row.file[1]['path']}/${row.file[1]['filename']}`;
-                          //   var path_2 = `public/${row.file[2]['path']}/${row.file[2]['filename']}`;
-                            
-                          //   el = `  <button class="btn btn-xs btn-info" onclick="action('view',`+row.id+`,'`+row.type+`', '', '', '`+row.param+`')">
-                          //             <i class="ace-icon fa fa-file bigger-120"></i>
-                          //           </button>
-                          //           <div class="btn-group">
-                          //               <button data-toggle="dropdown" class="btn btn-xs btn-indo dropdown-toggle" aria-expanded="false">
-                          //                 <i class="ace-icon fa fa-paperclip bigger-120"></i>
-                          //               </button>
-
-                          //               <ul class="dropdown-menu dropdown-info dropdown-menu-right" style="width:25rem">
-                          //                 <li>
-                          //                   <a target="_blank" type="button" href="${path_0}"> <i class="ace-icon fa fa-file"></i> Permohonan</a>
-                          //                 </li>
-
-                          //                 <li>
-                          //                   <a target="_blank" href="${path_1}"> <i class="ace-icon fa fa-file"></i>  Izin Lingkungan</a>
-                          //                 </li>
-
-                          //                 <li>
-                          //                   <a target="_blank" href="${path_2}"> <i class="ace-icon fa fa-file"></i> NIB</a>
-                          //                 </li>
-
-                          //               </ul>
-                          //             </div>`
-                          // }else{
-                            
-                          //   if(_.keys(row.file).length == 0){
-
-                          //       var path_0 = '';
-                          //       var path_1 = '';
-                          //       var path_2 = '';
-
-                          //       var filename_0 = '';
-                          //       var filename_1 = '';
-                          //       var filename_2 = '';
-
-                          //       var id_0 = '';
-                          //       var id_1 = '';
-                          //       var id_2 = '';
-
-                          //       var teks_0 = '';
-                          //       var teks_1 = '';
-                          //       var teks_2 = '';
-
-                          //       if(ok_0 == 1){
-                          //         teks_0 = 'class="text-success"';
-                          //       }else if(ok_0 == 2){
-                          //         teks_0 = 'class="text-danger"';
-                          //       }
-
-                          //       if(ok_1 == 1){
-                          //         teks_1 = 'class="text-success"';
-                          //       }else if(ok_1 == 2){
-                          //         teks_1 = 'class="text-danger"';
-                          //       }
-
-                          //       if(ok_2 == 1){
-                          //         teks_2 = 'class="text-success"';
-                          //       }else if(ok_2 == 2){
-                          //         teks_2 = 'class="text-danger"';
-                          //       }
-
-                          //       var elemen_0 = '';
-                          //       var elemen_1 = '';
-                          //       var elemen_2 = '';
-
-                          //       var validasinya = '';
-
-                          //   }else if(_.keys(row.file).length == 1){
-
-                          //       var path_0 = row.file[0]['path'];
-                          //       var path_1 = '';
-                          //       var path_2 = '';
-
-                          //       var filename_0 = row.file[0]['filename'];
-                          //       var filename_1 = '';
-                          //       var filename_2 = '';
-
-                          //       var id_0 = row.file[0]['id'];
-                          //       var id_1 = '';
-                          //       var id_2 = '';
-
-                          //       var ok_0 = row.file[0]['ok'];
-                          //       var ok_1 = '';
-                          //       var ok_2 = '';
-
-                          //       var teks_0 = '';
-                          //       var teks_1 = '';
-                          //       var teks_2 = '';
-
-                          //       if(ok_0 == 1){
-                          //         teks_0 = 'class="text-success"';
-                          //       }else if(ok_0 == 2){
-                          //         teks_0 = 'class="text-danger"';
-                          //       }
-
-                          //       if(ok_1 == 1){
-                          //         teks_1 = 'class="text-success"';
-                          //       }else if(ok_1 == 2){
-                          //         teks_1 = 'class="text-danger"';
-                          //       }
-
-                          //       if(ok_2 == 1){
-                          //         teks_2 = 'class="text-success"';
-                          //       }else if(ok_2 == 2){
-                          //         teks_2 = 'class="text-danger"';
-                          //       }
-
-                          //       var elemen_0 = `<div class="row">`;
-                          //           if(ok_0 == null){
-                          //           elemen_0 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_0+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_0+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`;
-                          //           }else if(ok_0 == 1){
-                          //             elemen_0 += `
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_0+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`;
-
-                          //           }else if(ok_0 == 2){
-                          //             elemen_0 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_0+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                         `;
-
-                          //           }
-
-                          //           elemen_0 += `<div class="col-sm-8">
-                          //                           <a `+teks_0+` target="_blank" type="button" href="public/`+path_0+'/'+filename_0+`"> <i class="ace-icon fa fa-file"></i> Permohonan</a>
-                          //                         </div>
-                          //                       `;
-
-                          //           elemen_0 += `</div>`;
-
-                          //       var elemen_1 = '';
-                          //       var elemen_2 = '';
-
-                          //       var validasinya = '';
-
-                          //   }else if(_.keys(row.file).length == 2){
-
-                          //       var path_0 = row.file[0]['path'];
-                          //       var path_1 = row.file[1]['path'];
-                          //       var path_2 = '';
-
-                          //       var filename_0 = row.file[0]['filename'];
-                          //       var filename_1 = row.file[1]['filename'];
-                          //       var filename_2 = '';
-
-                          //       var id_0 = row.file[0]['id'];
-                          //       var id_1 = row.file[1]['id'];
-                          //       var id_2 ='';
-
-                          //       var ok_0 = row.file[0]['ok'];
-                          //       var ok_1 = row.file[1]['ok'];
-                          //       var ok_2 ='';
-
-                          //       var teks_0 = '';
-                          //       var teks_1 = '';
-                          //       var teks_2 = '';
-
-                          //       if(ok_0 == 1){
-                          //         teks_0 = 'class="text-success"';
-                          //       }else if(ok_0 == 2){
-                          //         teks_0 = 'class="text-danger"';
-                          //       }
-
-                          //       if(ok_1 == 1){
-                          //         teks_1 = 'class="text-success"';
-                          //       }else if(ok_1 == 2){
-                          //         teks_1 = 'class="text-danger"';
-                          //       }
-
-                          //       if(ok_2 == 1){
-                          //         teks_2 = 'class="text-success"';
-                          //       }else if(ok_2 == 2){
-                          //         teks_2 = 'class="text-danger"';
-                          //       }
-
-                          //       var elemen_0 = `<div class="row">`
-                          //       if(ok_0 == null){
-                          //           elemen_0 += `     <div class="col-sm-2">
-                          //                               <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_0+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                             </div>
-                          //                             <div class="col-sm-2">
-                          //                               <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_0+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                             </div>`
-                          //       }else if(ok_0 == 1){
-                          //         elemen_0 += `
-                          //                     <div class="col-sm-2">
-                          //                       <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_0+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                     </div>`;
-
-                          //       }else if(ok_0 == 2){
-                          //         elemen_0 += `<div class="col-sm-2">
-                          //                       <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_0+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                     </div>
-                          //                     `;
-
-                          //       }
-                                
-                          //           elemen_0 += `<div class="col-sm-8">
-                          //                               <a `+teks_0+` target="_blank" type="button" href="public/`+path_0+'/'+filename_0+`"> <i class="ace-icon fa fa-file"></i> Permohonan</a>
-                          //                             </div>`;
-                                
-                          //           elemen_0 += `</div>`;
-
-                          //       var elemen_1 = `<div class="row">`;
-                          //       if(ok_1 == null){
-                          //           elemen_1 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_1+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_1+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`
-                          //       }else if(ok_1 == 1){
-                          //         elemen_1 += `
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_1+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`
-
-                          //       }else if(ok_1 == 2){
-                          //         elemen_1 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_1+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                        `
-
-                          //       }
-
-                          //           elemen_1 += `<div class="col-sm-8">
-                          //                           <a `+teks_1+` target="_blank" href="public/`+path_1+'/'+filename_1+`"> <i class="ace-icon fa fa-file"></i> </i> Izin Lingkungan</a>
-                          //                         </div>`
-
-                          //           elemen_1 += `</div>`;
-
-                          //       var elemen_2 = '';
-
-                          //       var validasinya = '';
-
-                          //   }else if(_.keys(row.file).length == 3){
-
-                          //       var path_0 = row.file[0]['path'];
-                          //       var path_1 = row.file[1]['path'];
-                          //       var path_2 = row.file[2]['path'];
-
-                          //       var filename_0 = row.file[0]['filename'];
-                          //       var filename_1 = row.file[1]['filename'];
-                          //       var filename_2 = row.file[2]['filename'];
-
-                          //       var id_0 = row.file[0]['id'];
-                          //       var id_1 = row.file[1]['id'];
-                          //       var id_2 = row.file[2]['id'];
-
-                          //       var ok_0 = row.file[0]['ok'];
-                          //       var ok_1 = row.file[1]['ok'];
-                          //       var ok_2 = row.file[2]['ok'];
-
-                          //       var teks_0 = '';
-                          //       var teks_1 = '';
-                          //       var teks_2 = '';
-
-                          //       if(ok_0 == 1){
-                          //         teks_0 = 'class="text-success"';
-                          //       }else if(ok_0 == 2){
-                          //         teks_0 = 'class="text-danger"';
-                          //       }
-
-                          //       if(ok_1 == 1){
-                          //         teks_1 = 'class="text-success"';
-                          //       }else if(ok_1 == 2){
-                          //         teks_1 = 'class="text-danger"';
-                          //       }
-
-                          //       if(ok_2 == 1){
-                          //         teks_2 = 'class="text-success"';
-                          //       }else if(ok_2 == 2){
-                          //         teks_2 = 'class="text-danger"';
-                          //       }
-
-                          //        var elemen_0 = `<div class="row">`
-                          //           if(ok_0 == null){
-                          //               elemen_0 += `     <div class="col-sm-2">
-                          //                               <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_0+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                             </div>
-                          //                             <div class="col-sm-2">
-                          //                               <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_0+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                             </div>`
-                          //           }else if(ok_0 == 1){
-                          //               elemen_0 += `
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_0+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`;
-    
-                          //           }else if(ok_0 == 2){
-                          //               elemen_0 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_0+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                         `;
-    
-                          //           }
-                                
-                          //           elemen_0 += `<div class="col-sm-8">
-                          //                               <a `+teks_0+` target="_blank" type="button" href="public/`+path_0+'/'+filename_0+`"> <i class="ace-icon fa fa-file"></i> Permohonan</a>
-                          //                             </div>`;
-                                
-                          //           elemen_0 += `</div>`;
-
-                          //       var elemen_1 = `<div class="row">`;
-                          //       if(ok_1 == null){
-                          //           elemen_1 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_1+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_1+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`
-                          //       }else if(ok_1 == 1){
-                          //           elemen_1 += `
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_1+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`
-
-                          //       }else if(ok_1 == 2){
-                          //           elemen_1 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_1+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                        `
-
-                          //       }
-
-                          //           elemen_1 += `<div class="col-sm-8">
-                          //                           <a `+teks_1+` target="_blank" href="public/`+path_1+'/'+filename_1+`"> <i class="ace-icon fa fa-file"></i> </i> Izin Lingkungan</a>
-                          //                         </div>`
-
-                          //           elemen_1 += `</div>`;
-
-                          //       var elemen_2 = `<div class="row">`
-                          //       if(ok_2 == null){
-                          //           elemen_2 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_2+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_2+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`
-                          //       }else if(ok_2 == 1){
-                          //           elemen_2 += `
-                          //                         <div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(`+id_2+`, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                          //                         </div>`
-
-                          //       }else if(ok_2 == 2){
-                          //           elemen_2 += `<div class="col-sm-2">
-                          //                           <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(`+id_2+`, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                          //                         </div>
-                          //                         `
-
-                          //       }
-
-                          //           elemen_2 += `<div class="col-sm-8">
-                          //                           <a `+teks_2+` target="_blank" href="public/`+path_2+'/'+filename_2+`"> <i class="ace-icon fa fa-file"></i> NIB</a>
-                          //                         </div>`
-
-                          //           elemen_2 += `</div>`;
-
-                          //       if(ok_0 == 1 && ok_1 == 1 && ok_2 == 1){
-                          //         console.log();
-                          //           var validasinya = `<div class="row">
-                          //                             <div class="col-sm-12">
-                          //                               <a type="button" class="btn btn-white btn-block btn-sm btn-primary" onclick="validasi(`+row.id+`, 1)"> <i class="ace-icon fa fa-check"></i> Kajian teknis </a>
-                          //                             </div>
-
-                          //                             <div class="col-sm-12">
-                          //                               <a type="button" class="btn btn-white btn-block btn-sm btn-primary" onclick="validasi(`+row.id+`, 2)"> <i class="ace-icon fa fa-check"></i> Standar Teknis</a>
-                          //                             </div>
-                          //                           </div>`;
-                          //       }else{
-                          //         var validasinya = '<a class="text-danger"> Belum Upload Ulang File ! </a>';
-                          //       }
-
-                          //   }
-
-                          //   el += `<div class="btn-group">
-                          //             <button data-toggle="dropdown" class="btn btn-xs btn-indo dropdown-toggle" aria-expanded="false">
-                          //               File
-                          //               <i class="ace-icon fa fa-angle-down icon-on-right"></i>
-                          //             </button>
-
-                          //             <ul class="dropdown-menu dropdown-info dropdown-menu-right" style="width:25rem">
-                          //               <li>
-                          //                 `+elemen_0+`
-                          //               </li>
-
-                          //               <li>
-                          //                 `+elemen_1+`
-                          //               </li>
-
-                          //               <li>
-                          //                 `+elemen_2+`
-                          //               </li>
-
-
-                          //               <li>
-                          //                 `+validasinya+`
-                          //               </li>
-
-                          //             </ul>
-                          //           </div>`
-
-                          //   // el += `<a class="" target="_blank" href="public/">
-                          //   //       Permohonan
-                          //   //     </a>`
-                          //   // el += `<a class="btn btn-xs btn-primary" target="_blank" href="public/">
-                          //   //       <i class="ace-icon fa fa-download bigger-120"></i>
-                          //   //     </a>`
-                          //   // el += `<a class="btn btn-xs btn-info" target="_blank" href="public/">
-                          //   //       <i class="ace-icon fa fa-download bigger-120"></i>
-                          //   //     </a>`
-                          // }
-
-                          // if($('#role').val() == '1' || $('#role').val() == '2') {
-                            
-                          //   el += `<button class="btn btn-xs btn-danger" onclick="action('delete',`+row.id+`,'`+row.type+`','','data_permohonan')">
-                          //             <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                          //           </button>`;
-                          // }else{
-                          //   if(row.status == 1){
-                          //     el += `<button title="Verifikasi Lapangan" class="btn btn-xs btn-success" onclick="actionlapangan('view',`+row.id+`,'`+row.type+`')">
-                          //           <i class="ace-icon fa fa-check-square-o bigger-120"></i>
-                          //         </button>`;
-                          //   }else{
-                          //     el += `<button class="btn btn-xs btn-danger" onclick="inidelete('data_permohonan','${row.id}','${row.type}','${row.created_by}','${row.created_date}')">
-                          //     <i class="ace-icon fa fa-trash bigger-120"></i>
-                          //   </button>`;
-                          //   }
-                          // }
                           
                           if (type == 'display') {
 
@@ -1146,7 +662,7 @@ function loadpermohonan(param){
 
                           return data;
                         },
-                        aTargets: [8]
+                        aTargets: [9]
                     },
                   ],
                   fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
@@ -1498,37 +1014,10 @@ function save(formData){
                 });
       }
 
-      
       $('#bab_kajian').html(opt)
       $('#bab_kajian').trigger("chosen:updated");
       $('#bab_standar').html(opt)
       $('#bab_standar').trigger("chosen:updated");
-      
-      // switch (kode) {
-      //   case '1':
-      //       $('#kajian-teknis').show();
-      //       $('#standar-teknis').hide();
-      //       $( "#modal_file" ).on('shown.bs.modal', function (e) {
-      //         $("#kajian-teknis").addClass('active');
-      //         $("#standar-teknis").removeClass('active');
-
-      //         $('#kajian').addClass('tab-pane active');
-      //         $('#standar').addClass('tab-pane');
-      //       });
-      //     break;
-      //   case '2':
-      //       $('#kajian-teknis').hide();
-      //       $('#standar-teknis').show();
-      //       $( "#modal_file" ).on('shown.bs.modal', function (e) {
-      //         $("#kajian-teknis").removeClass('active');
-      //         $("#standar-teknis").addClass('active');
-
-      //         $('#kajian').removeClass('active');
-      //         $('#standar').addClass('active');
-              
-      //       });
-      //     break;
-      // }
 
       $('#modal_file').modal('show');
       $('#modal_file > .modal-dialog').width($('#modal_file > .modal-dialog').width() + 100);
@@ -2791,5 +2280,19 @@ function save(formData){
         }
       })
      }
+
+function updatetahapan(id, tahapan) {
+  $.ajax({
+    type: 'post',
+    dataType: 'json',
+    url: 'updatetahapan',
+    data : {
+        id        : id,
+        tahapan   : tahapan
+    },
+    success: function(result){
+    }
+  })
+}
 
     

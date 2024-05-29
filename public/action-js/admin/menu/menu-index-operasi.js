@@ -103,6 +103,7 @@ $(document).ready(function(){
           var formData = new FormData();
           formData.append('param', 'data_permohonan');
           formData.append('type', '2');
+          formData.append('tahapan', '1');
           let berapa = [];
           for (let index = 1; index <= 9; index++) {
             if($('#input_'+index).val()){
@@ -392,7 +393,7 @@ function loadpermohonan(param){
                 pageLength: 10,
                 aaData: result.data,
                 aoColumns: [
-                    { 'mDataProp': 'id', 'width':'10%'},
+                    { 'mDataProp': 'id', 'width':'1%'},
                     { 'mDataProp': 'p1'},
                     { 'mDataProp': 'p2'},
                     { 'mDataProp': 'p6'},

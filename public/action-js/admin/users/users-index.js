@@ -110,7 +110,7 @@ function loadusers(param){
             pageLength: 10,
             aaData: result.data,
             aoColumns: [
-                { 'mDataProp': 'user_id', 'width':'10%'},
+                { 'mDataProp': 'user_id', 'width':'1%'},
                 { 'mDataProp': 'user_name'},
                 { 'mDataProp': 'user_fullname'},
                 { 'mDataProp': 'role_name'},

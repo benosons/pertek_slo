@@ -1711,6 +1711,7 @@ class Jsondata extends \CodeIgniter\Controller
 		$data['created_date'] 	= $this->now;
 		$data['updated_date'] 	= $this->now;
 		$data['type'] 			= $request->getVar('type');
+		$data['tahapan'] 		= $request->getVar('tahapan');
 
 		$res = $model->saveParam($param, $data);
 		$id  = $model->insertID();
@@ -3661,6 +3662,27 @@ class Jsondata extends \CodeIgniter\Controller
 		{
 			die($e->getMessage());
 		}
+	}
+
+	
+	public function updatetahapan(){
+
+		$request  = $this->request;
+		$id 	  = $request->getVar('id');
+		$tahapan 	  = $request->getVar('tahapan');
+
+		$model 	  = new \App\Models\ParamModel();
+		$res = $model->updatetahapan($id, $tahapan);
+
+		$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 		 => 'terupdate'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
 	}
 
 }

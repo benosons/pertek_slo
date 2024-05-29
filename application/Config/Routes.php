@@ -131,6 +131,7 @@ $routes->post('updatepass', 'Jsondata::updatepass');
 $routes->post('reuploadfile', 'Jsondata::reuploadfile');
 $routes->post('okdong', 'Jsondata::okdong');
 $routes->post('checklog', 'Jsondata::checklog');
+$routes->post('updatetahapan', 'Jsondata::updatetahapan');
 
 
 

@@ -75,4 +75,14 @@ class ParamModel extends Model{
       return $row;
     }
 
+    public function updatetahapan($id = null, $tahapan = null)
+    {
+
+      $builder = $this->db->table('data_permohonan');
+      $query   = $builder->where('id', $id);
+      $query->update(['tahapan' => $tahapan]);
+      // echo $this->db->getLastQuery();die;
+      return true;
+    }
+
 }
