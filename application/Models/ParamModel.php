@@ -85,4 +85,32 @@ class ParamModel extends Model{
       return true;
     }
 
+    public function tolakpermohonan($id = null, $alasan = null)
+    {
+
+      $builder = $this->db->table('data_permohonan');
+      $query   = $builder->where('id', $id);
+      $query->update(['alasan' => $alasan, 'tolak' => 1]);
+      // echo $this->db->getLastQuery();die;
+      return true;
+    }
+
+    public function bahaspermohonan($id = null)
+    {
+
+      $builder = $this->db->table('data_permohonan');
+      $query   = $builder->where('id', $id);
+      $query->update(['pembahasan' => 1]);
+      return true;
+    }
+
+    public function updatepuas($id = null)
+    {
+
+      $builder = $this->db->table('data_permohonan');
+      $query   = $builder->where('id', $id);
+      $query->update(['survey' => 1]);
+      return true;
+    }
+
 }

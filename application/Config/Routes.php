@@ -132,6 +132,9 @@ $routes->post('reuploadfile', 'Jsondata::reuploadfile');
 $routes->post('okdong', 'Jsondata::okdong');
 $routes->post('checklog', 'Jsondata::checklog');
 $routes->post('updatetahapan', 'Jsondata::updatetahapan');
+$routes->post('tolakpermohonan', 'Jsondata::tolakpermohonan');
+$routes->post('updatepembahasan', 'Jsondata::updatepembahasan');
+$routes->post('updatepuas', 'Jsondata::updatepuas');
 
 
 

@@ -367,7 +367,7 @@ class Jsondata extends \CodeIgniter\Controller
 						$st = null;
 						
 						$dataprogram = $model->getpermohonan($role, $userid, $param);
-						
+						$gettolak = $model->getpermohonantolak($role, $userid, $param);
 						foreach ($dataprogram as $key => $value) {
 							$datafilenya = $modelfiles->getfilenya('param_file', $value->id, $value->type, null, $value->kategori);
 							$value->file = (object) $datafilenya;
@@ -413,13 +413,27 @@ class Jsondata extends \CodeIgniter\Controller
 											
 											if(count($data) == $total_file){
 												$stt = [];
+												$stt_rev = [];
 												foreach ($data as $key1 => $value1) {
 													
 													if($value1->status == '0'){
 														array_push($stt, $value1->status);
 													}
+													if($value1->status == '1'){
+														array_push($stt_rev, $value1->status);
+													}
 												}
-												
+												// if($value->id == '322'){
+												// 	print_r(count($stt_rev));die;
+												// }
+												if(count($stt_rev) != 0 && count($stt_rev) < $total_file){
+													$modelparam->updatetahapan($value->id, 4);
+													$value->tahapan = 4;
+												}else{
+													$modelparam->updatetahapan($value->id, 2);
+													$value->tahapan = 2;
+												}
+
 												if(count($stt) >= $total_file){
 													$data = [
 														'updated_date'	=> $this->now,
@@ -428,6 +442,8 @@ class Jsondata extends \CodeIgniter\Controller
 													];
 													$st = 1;
 													$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
+													$modelparam->updatetahapan($value->id, 5);
+													$value->tahapan = 5;
 
 												}else{
 													$data = [
@@ -437,6 +453,8 @@ class Jsondata extends \CodeIgniter\Controller
 													];
 													$st = 0;
 													$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
+													$modelparam->updatetahapan($value->id, 4);
+													$value->tahapan = 4;
 													
 												}
 											}else{
@@ -469,16 +487,32 @@ class Jsondata extends \CodeIgniter\Controller
 												});
 												
 											}
+											
 											if(count($data) == $total_file){
+												
 												$stt = [];
+												$stt_rev = [];
 												foreach ($data as $key1 => $value1) {
 													
 													if($value1->status == '0'){
 														array_push($stt, $value1->status);
 													}
+
+													if($value1->status == '1'){
+														array_push($stt_rev, $value1->status);
+													}
+												}
+
+												if(count($stt_rev) != 0 && count($stt_rev) < $total_file){
+													$modelparam->updatetahapan($value->id, 4);
+													$value->tahapan = 4;
+												}else{
+													$modelparam->updatetahapan($value->id, 2);
+													$value->tahapan = 2;
 												}
 												
 												if(count($stt) >= $total_file){
+													
 													$data = [
 														'updated_date'	=> $this->now,
 														'updated_by' 	=> $userid,
@@ -486,6 +520,8 @@ class Jsondata extends \CodeIgniter\Controller
 													];
 													$st = 1;
 													$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
+													$modelparam->updatetahapan($value->id, 5);
+													$value->tahapan = 5;
 
 												}else{
 													$data = [
@@ -495,6 +531,8 @@ class Jsondata extends \CodeIgniter\Controller
 													];
 													$st = 0;
 													$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
+													$modelparam->updatetahapan($value->id, 4);
+													$value->tahapan = 4;
 													
 												}
 											}else{
@@ -544,11 +582,18 @@ class Jsondata extends \CodeIgniter\Controller
 
 							if($role == 100 || $role == 10){
 								$value->status = $st;
+								
 							}
 							array_push($fulldata, $value);
 						}
-						
-					
+						if($role == 0){
+							$fulldata['penolakan'] = $gettolak;
+						}
+
+							// print_r($fulldata);die;
+						// if($value->id == '322'){
+						// 	print_r($value->tahapan);die;
+						// }
 					if($fulldata){
 						$response = [
 							'status'   => 'sukses',
@@ -3673,6 +3718,64 @@ class Jsondata extends \CodeIgniter\Controller
 
 		$model 	  = new \App\Models\ParamModel();
 		$res = $model->updatetahapan($id, $tahapan);
+
+		$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 		 => 'terupdate'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+	}
+
+	public function tolakpermohonan(){
+
+		$request  = $this->request;
+		$id 	  = $request->getVar('id');
+		$alasan 	  = $request->getVar('alasan');
+
+		$model 	  = new \App\Models\ParamModel();
+		$res = $model->tolakpermohonan($id, $alasan);
+
+		$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 		 => 'terupdate'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+	}
+
+	public function updatepembahasan(){
+
+		$request  = $this->request;
+		$id 	  = $request->getVar('id');
+
+		$model 	  = new \App\Models\ParamModel();
+		$res = $model->bahaspermohonan($id);
+
+		$response = [
+				'status'   => 'sukses',
+				'code'     => '0',
+				'data' 		 => 'terupdate'
+		];
+		header('Content-Type: application/json');
+		echo json_encode($response);
+		exit;
+
+	}
+
+	public function updatepuas(){
+
+		$request  = $this->request;
+		$id 	  = $request->getVar('id');
+
+		$model 	  = new \App\Models\ParamModel();
+		$res = $model->updatepuas($id);
 
 		$response = [
 				'status'   => 'sukses',

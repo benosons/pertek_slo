@@ -27,7 +27,21 @@ class ProgramModel extends Model{
 
           if($role == '0'){ 
             $builder = $this->db->table('data_permohonan');
-            $query   = $builder->getWhere(['created_by' => $userid, 'type' => $type]);
+            $query   = $builder->getWhere(['created_by' => $userid, 'type' => $type, 'tolak' => null]);
+            return  $query->getResult();
+          }
+          $builder = $this->db->table('data_permohonan');
+          $query   = $builder->getWhere(['type' => $type]);
+          // echo $this->db->getLastQuery();die;
+          return  $query->getResult();
+    }
+
+    public function getpermohonantolak($role=null,$userid=null,$type=null)
+    { 
+
+          if($role == '0'){ 
+            $builder = $this->db->table('data_permohonan');
+            $query   = $builder->getWhere(['created_by' => $userid, 'type' => $type, 'tolak' => 1]);
             return  $query->getResult();
           }
           $builder = $this->db->table('data_permohonan');
