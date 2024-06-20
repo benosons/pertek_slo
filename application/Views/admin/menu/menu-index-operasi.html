@@ -14,6 +14,91 @@
     color: #d7d7d7 !important;
     border-color: #d7d7d7 !important;
   }
+
+  
+  .timeline {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .li {
+    transition: all 200ms ease-in;
+  }
+
+  .timestamp {
+    margin-bottom: 20px;
+    padding: 0px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 100;
+  }
+
+  .status {
+    padding: 0px 40px;
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid #D6DCE0;
+    position: relative;
+    transition: all 200ms ease-in;
+  }
+
+  .status h4 {
+    padding-top: 10px;
+    font-weight: 400;
+  }
+
+  .status:before {
+    content: '';
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    position: absolute;
+    top: -15px;
+    left: 42%;
+    transition: all 200ms ease-in;
+  }
+
+  .li.complete .status {
+    border-top: 2px solid #66DC71;
+  }
+
+  .li.complete .status:before {
+    background-color: #66DC71;
+    border: none;
+    transition: all 200ms ease-in;
+  }
+
+  .li.complete .status h4 {
+    color: #66DC71;
+  }
+
+  @media (min-device-width: 320px) and (max-device-width: 700px) {
+    .timeline {
+      list-style-type: none;
+      display: block;
+    }
+
+    .li {
+      transition: all 200ms ease-in;
+      display: flex;
+      width: inherit;
+    }
+
+    .timestamp {
+      width: 100px;
+    }
+
+    .status:before {
+      left: -8%;
+      top: 30%;
+      transition: all 200ms ease-in;
+    }
+  }
 </style>
 <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
   <script type="text/javascript">
@@ -49,7 +134,13 @@
       Permohonan Surat Kelayakan Operasi (SLO)
       <small>
         <i class="ace-icon fa fa-angle-double-right"></i>
-        overview &amp; stats
+        Tahapan
+      </small>
+      <small id="tahapan-label">
+        
+      </small>
+      <small id="tolakan-label">
+        
       </small>
     </h1>
   </div><!-- /.page-header -->
@@ -72,214 +163,249 @@
             {% if role == 0 %}
             <input type="hidden" id="idpermohonan">
             <input type="hidden" id="initype">
-            <form class="form-horizontal" role="form" id="ini-form-view" hidden>
-              <!-- #section:elements.form -->
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="kode_program"> Nama Badan Usaha/ Kegiatan </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_1" placeholder="" class="form-control">
+            <div class="row" style="padding: 3% 0 3% 0;">
+              <ul class="timeline" id="timeline">
+                <li class="li complete" id="tahap-1">
+                  <!-- <div class="timestamp">
+                    <span class="author">Abhi Sharma</span>
+                    <span class="date">11/15/2014<span>
+                  </div> -->
+                  <div class="status">
+                    <h4> Pengajuan </h4>
+                  </div>
+                </li>
+                <li class="li" id="tahap-2">
+                  <div class="status">
+                    <h4> Pemeriksaan Dokumen </h4>
+                  </div>
+                </li>
+                <li class="li" id="tahap-3">
+                  <div class="status">
+                    <h4> Pembahasan & Verifikasi </h4>
+                  </div>
+                </li>
+                <li class="li" id="tahap-4">
+                  <div class="status">
+                    <h4> Perbaikan Dokumen </h4>
+                  </div>
+                </li>
+                <li class="li" id="tahap-5">
+                  <div class="status">
+                    <h4> Rekomendasi Pertek </h4>
+                  </div>
+                </li>
+               </ul>  
+            </div>
+            <div class="row">
+              <form class="form-horizontal" role="form" id="ini-form-view" hidden>
+                <!-- #section:elements.form -->
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="kode_program"> Nama Badan Usaha/ Kegiatan </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_1" placeholder="" class="form-control">
+                  </div>
                 </div>
-              </div>
-    
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Bidang Usaha/ Kegiatan </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_2" placeholder="" class="form-control">
+      
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Bidang Usaha/ Kegiatan </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_2" placeholder="" class="form-control">
+                  </div>
                 </div>
-              </div>
-    
-              <div class="form-group hide">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor Induk Berusaha </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_3" placeholder="" class="form-control">
+      
+                <div class="form-group hide">
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor Induk Berusaha </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_3" placeholder="" class="form-control">
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group hide">
-                <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-    
-                <div class="col-sm-6">
-                  <grp id="view-file-nib" style="display:none;">
+                <div class="form-group hide">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+      
+                  <div class="col-sm-6">
+                    <grp id="view-file-nib" style="display:none;">
+                      <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
+                        <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
+                        <span class="bigger-110" id="nama-file-nib">View more activities</span>
+                      </button>
+                      <a class="btn btn-danger btn-xs btn-round" id="hapus-nib"><i class="fa fa-trash"></i></a>
+                    </grp>
+
+                    <div class="form-group" id="form-nib-reupload" style="display:block;">        
+                      <div class="col-sm-11">
+                        <input type="file" name="id-input-file-5" id="doc_nib_reupload" accept=".pdf" />
+                      </div>
+                      <div class="col-sm-1">
+                        <button class="btn btn-success btn-xs btn-round" id="upload-nib" onclick="reupload('nib')" type="button"><i class="fa fa-check-square-o"></i></button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor KBLI </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_9" placeholder="" class="form-control">
+                  </div>
+                </div>
+
+                <div class="form-group hide">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> Izin Lingkungan </label>
+      
+                  <div class="col-sm-6">
+                    <grp id="view-file-izin-lingkungan" style="display:none;">
                     <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
                       <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
-                      <span class="bigger-110" id="nama-file-nib">View more activities</span>
+                      <span class="bigger-110" id="nama-file-izin-lingkungan">View more activities</span>
                     </button>
-                    <a class="btn btn-danger btn-xs btn-round" id="hapus-nib"><i class="fa fa-trash"></i></a>
-                  </grp>
+                    <button class="btn btn-danger btn-xs btn-round" id="hapus-izin-lingkungan" type="button"><i class="fa fa-trash"></i></button>
+                    </grp>
 
-                  <div class="form-group" id="form-nib-reupload" style="display:block;">        
-                    <div class="col-sm-11">
-                      <input type="file" name="id-input-file-5" id="doc_nib_reupload" accept=".pdf" />
+                    <div class="form-group" id="form-izin-lingkungan-reupload" style="display:block;">        
+                      <div class="col-sm-11">
+                        <input type="file" name="id-input-file-5" id="doc_izin_lingkungan_reupload" accept=".pdf" />
+                      </div>
+                      <div class="col-sm-1">
+                        <button class="btn btn-success btn-xs btn-round" id="upload-izin-lingkungan" onclick="reupload('izin-lingkungan')" type="button"><i class="fa fa-check-square-o"></i></button>
+                      </div>
                     </div>
-                    <div class="col-sm-1">
-                      <button class="btn btn-success btn-xs btn-round" id="upload-nib" onclick="reupload('nib')" type="button"><i class="fa fa-check-square-o"></i></button>
-                    </div>
+
                   </div>
-
                 </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor KBLI </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_9" placeholder="" class="form-control">
-                </div>
-              </div>
-
-              <div class="form-group hide">
-                <label class="col-sm-3 control-label no-padding-right" for=""> Izin Lingkungan </label>
-    
-                <div class="col-sm-6">
-                  <grp id="view-file-izin-lingkungan" style="display:none;">
-                  <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
-                    <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
-                    <span class="bigger-110" id="nama-file-izin-lingkungan">View more activities</span>
-                  </button>
-                  <button class="btn btn-danger btn-xs btn-round" id="hapus-izin-lingkungan" type="button"><i class="fa fa-trash"></i></button>
-                  </grp>
-
-                  <div class="form-group" id="form-izin-lingkungan-reupload" style="display:block;">        
-                    <div class="col-sm-11">
-                      <input type="file" name="id-input-file-5" id="doc_izin_lingkungan_reupload" accept=".pdf" />
-                    </div>
-                    <div class="col-sm-1">
-                      <button class="btn btn-success btn-xs btn-round" id="upload-izin-lingkungan" onclick="reupload('izin-lingkungan')" type="button"><i class="fa fa-check-square-o"></i></button>
-                    </div>
+      
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nama Penanggung Jawab Usaha/ Kegiatan </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_4" placeholder="" class="form-control">
                   </div>
-
                 </div>
-              </div>
-    
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nama Penanggung Jawab Usaha/ Kegiatan </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_4" placeholder="" class="form-control">
-                </div>
-              </div>
-    
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Jabatan </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_5" placeholder="" class="form-control">
-                </div>
-              </div>
-    
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Alamat Kantor dan Lokasi Usaha/ Kegiatan </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_6" placeholder="" class="form-control">
-                </div>
-              </div>
-    
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> No. Telepon </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_7" placeholder="" class="form-control">
-                </div>
-              </div>
-    
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Email </label>
-    
-                <div class="col-sm-6">
-                  <input type="text" id="view_8" placeholder="" class="form-control">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for=""> Permohonan </label>
-    
-                <div class="col-sm-6">
-                  <grp id="view-file-permohonan" style="display:none;">
-                  <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
-                    <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
-                    <span class="bigger-110" id="nama-file-permohonan">View more activities</span>
-                  </button>
-                  <button class="btn btn-danger btn-xs btn-round" id="hapus-permohonan" type="button"><i class="fa fa-trash"></i></button>
-                  </grp>
-
-                  <div class="form-group" id="form-permohonan-reupload" style="display:block;">        
-                    <div class="col-sm-11">
-                      <input type="file" name="id-input-file-5" id="doc_permohonan_reupload" accept=".pdf" />
-                    </div>
-                    <div class="col-sm-1">
-                      <button class="btn btn-success btn-xs btn-round" id="upload-permohonan" onclick="reupload('permohonan')" type="button"><i class="fa fa-check-square-o"></i></button>
-                    </div>
+      
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Jabatan </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_5" placeholder="" class="form-control">
                   </div>
-
                 </div>
-              </div>
+      
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Alamat Kantor dan Lokasi Usaha/ Kegiatan </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_6" placeholder="" class="form-control">
+                  </div>
+                </div>
+      
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> No. Telepon </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_7" placeholder="" class="form-control">
+                  </div>
+                </div>
+      
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Email </label>
+      
+                  <div class="col-sm-6">
+                    <input type="text" id="view_8" placeholder="" class="form-control">
+                  </div>
+                </div>
 
-              <div class="form-group" id="ini-verifikasi">
-                <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-    
-                <div class="col-sm-6">
-                  <div class="alert alert-block alert-success">
-                    <button type="button" class="close" data-dismiss="alert">
-                      <i class="ace-icon fa fa-times"></i>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> Permohonan </label>
+      
+                  <div class="col-sm-6">
+                    <grp id="view-file-permohonan" style="display:none;">
+                    <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
+                      <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
+                      <span class="bigger-110" id="nama-file-permohonan">View more activities</span>
                     </button>
-  
-                    
-  
-                    <p><i class="ace-icon fa fa-warning green"></i> Permohonan Belum di Verifikasi oleh Admin.</p>
-                    <p id="harap">Harap Melakukan Upload Ulang file :</p>
-                    <ol id="harus-upload">
-                
+                    <button class="btn btn-danger btn-xs btn-round" id="hapus-permohonan" type="button"><i class="fa fa-trash"></i></button>
+                    </grp>
+
+                    <div class="form-group" id="form-permohonan-reupload" style="display:block;">        
+                      <div class="col-sm-11">
+                        <input type="file" name="id-input-file-5" id="doc_permohonan_reupload" accept=".pdf" />
+                      </div>
+                      <div class="col-sm-1">
+                        <button class="btn btn-success btn-xs btn-round" id="upload-permohonan" onclick="reupload('permohonan')" type="button"><i class="fa fa-check-square-o"></i></button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group" id="ini-verifikasi">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+      
+                  <div class="col-sm-6">
+                    <div class="alert alert-block alert-success">
+                      <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                      </button>
+    
                       
-                    </ol>
-                    
+    
+                      <p><i class="ace-icon fa fa-warning green"></i> Permohonan Belum di Verifikasi oleh Admin.</p>
+                      <p id="harap">Harap Melakukan Upload Ulang file :</p>
+                      <ol id="harus-upload">
+                  
+                        
+                      </ol>
+                      
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-    
-                <div class="col-sm-6">
-                  <button type="button" id="cekunggahan" class="btn btn-xs btn-block btn-primary" ><i class="ace-icon fa fa-check"></i>Persyaratan Permohonan Surat Kelayakan Operasional</button>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+      
+                  <div class="col-sm-6">
+                    <button type="button" id="cekunggahan" class="btn btn-xs btn-block btn-primary" ><i class="ace-icon fa fa-check"></i>Persyaratan Permohonan Surat Kelayakan Operasional</button>
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-    
-                <div class="col-sm-6">
-                  
-                  <button type="button" id="verlapanganini" class="btn btn-xs btn-block btn-warning" ><i class="ace-icon fa fa-check-square-o"></i>Dokumen BA & Pertek</button>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+      
+                  <div class="col-sm-6">
+                    
+                    <button type="button" id="verlapanganini" class="btn btn-xs btn-block btn-warning" ><i class="ace-icon fa fa-check-square-o"></i>Dokumen BA & Pertek</button>
 
+                  </div>
                 </div>
-              </div>
 
-              
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-    
-                <div class="col-sm-6">
-                  
-                  <a type="button" id="surveykepuasan" class="btn btn-xs btn-block btn-success" href="https://docs.google.com/forms/d/e/1FAIpQLScCZ8zP_FR49UaFI7tEAPXQOyPQDTTk8d7SW-R8dAGua5gB5w/viewform" target="_blank" ><i class="ace-icon fa fa-heart"></i> Survey Kepuasan</a>
+                
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+      
+                  <div class="col-sm-6">
+                    
+                    <a type="button" id="surveykepuasan" class="btn btn-xs btn-block btn-success" href="https://docs.google.com/forms/d/e/1FAIpQLScCZ8zP_FR49UaFI7tEAPXQOyPQDTTk8d7SW-R8dAGua5gB5w/viewform" target="_blank" ><i class="ace-icon fa fa-heart"></i> Survey Kepuasan</a>
 
+                  </div>
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-    
-                <div class="col-sm-6">
-                  <button type="button" id="deletedataini" class="btn btn-xs btn-block btn-danger" ><i class="ace-icon fa fa-trash"></i>Hapus Permohonan</button>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+      
+                  <div class="col-sm-6">
+                    <button type="button" id="deletedataini" class="btn btn-xs btn-block btn-danger" ><i class="ace-icon fa fa-trash"></i>Hapus Permohonan</button>
+                  </div>
                 </div>
-              </div>
 
 
 
-            </form>
+              </form>
+            </div>
             
             <form class="form-horizontal" role="form" id="ini-form-add">
               <!-- #section:elements.form -->

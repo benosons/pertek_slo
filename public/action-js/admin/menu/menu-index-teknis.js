@@ -726,7 +726,7 @@ function loadpermohonan(param){
                             el += `<div class="btn-group">
                                             <button class="btn btn-xs btn-info" onclick="popupvalidasi(${row.id}, '${row.type}', ${row.param}, ${row.kategori})"> <i class="ace-icon fa fa-th-list"></i> </button>
                                           </div>`
-                              if(row.status == 1){
+                                  if(row.status == 1){
                                     el += `<div class="btn-group"><button title="Verifikasi Lapangan" class="btn btn-xs btn-success" onclick="actionlapangan('view',`+row.id+`,'`+row.type+`')">
                                             <i class="ace-icon fa fa-check-square-o bigger-120"></i>
                                           </button></div>`;
