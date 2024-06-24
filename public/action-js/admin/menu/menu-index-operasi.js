@@ -223,6 +223,20 @@ $(document).ready(function(){
     }
   })
 
+  $('#surveykepuasan').on('click', function (params) {
+    $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'updatepuas',
+      data : {
+          id        : $('#idpermohonan').val(),
+      },
+      success: function(result){
+        $('#verlapanganini').parent().parent().show()
+      }
+    })
+  })
+
 });
 
 function loadpermohonan(param){
@@ -1491,4 +1505,79 @@ function save(formData){
         location.reload()
       }
     })
-   }
+  }
+
+  function lihatlah() {
+    console.log(window.datas.penolakan);
+    $('#modal_penolakan').modal('show')
+    var dt = $('#data-penolakan').DataTable({
+      destroy: true,
+      paging: true,
+      lengthChange: false,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: false,
+      responsive: false,
+      pageLength: 10,
+      aaData: window.datas.penolakan,
+      aoColumns: [
+          { 'mDataProp': 'id', 'width':'5%'},
+          { 'mDataProp': 'p3'},
+          { 'mDataProp': 'kategori'},
+          { 'mDataProp': 'type'},
+          { 'mDataProp': 'alasan'},
+          { 'mDataProp': 'updated_date', 'width':'20%'},
+      ],
+      order: [[0, 'ASC']],
+      fixedColumns: true,
+      aoColumnDefs:[
+        {
+          "render": function ( data, type, row ) {
+            if (type == 'display') {
+              if(!row.kategori){
+                return '-'
+              }
+  
+              let iskat = ''
+              let kategori = [
+                '',
+                'Pembuangan air limbah ke badan air permukaan',
+                'Pembuangan air limbah ke formasi tertentu',
+                'Pemanfaatan air limbah untuk aplikasi ke tanah',
+                'Pemanfaatan air limbah ke formasi tertentu',
+                'Pembuangan emisi'
+              ]
+  
+              return kategori[row.kategori]
+            }
+            return data
+          },
+          aTargets: [2]
+        },
+        {
+          "render": function ( data, type, row ) {
+            if (type == 'display') {
+              if(!row.param){
+                return '-'
+              }
+              let par = [
+                '',
+                'Kajian Teknis',
+                'Standar Teknis'
+              ]
+              return par[row.param]
+            }
+            return data
+          },
+          aTargets: [3]
+        }
+      ],
+      fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
+          var index = iDisplayIndexFull + 1;
+          $('td:eq(0)', nRow).html('#'+index);
+          return  index;
+      },
+  
+  });
+  }
