@@ -431,12 +431,42 @@ function loadpermohonan(param){
                     { 'mDataProp': 'kategori'},
                     { 'mDataProp': 'p7'},
                     { 'mDataProp': 'p8'},
+                    { 'mDataProp': 'tahapan'},
                     { 'mDataProp': 'id'},
                 ],
                 order: [[0, 'ASC']],
                 fixedColumns: true,
                 aoColumnDefs:[
                   { width: 50, targets: 0 },
+                  {
+                    "render": function ( data, type, row ) {
+                      if (type == 'display') {
+                        if(row.tolak){
+                          return '<span class="label label-sm label-danger arrowed-in">Ditolak</span>'
+                        }
+
+                        if(data == 2 && row.pembahasan == 1){
+                          data = 3
+                        }
+
+                        let label = [
+                          '-',
+                          '<span class="label label-sm label-primary arrowed-in">Pengajuan</span>',
+                          '<span class="label label-sm label-warning arrowed-in">Pemeriksaan Dokumen</span>',
+                          '<span class="label label-sm label-info arrowed-in">Pembahasan Penilaian Substansi & Verifikasi Lapangan</span>',
+                          '<span class="label label-sm label-secondary arrowed-in">Perbaikan Dokumen</span>',
+                          '<span class="label label-sm label-success arrowed-in">Rekomendasi Pertek</span>'
+
+                        ]
+                        if(!data){
+                          return '<span class="label label-sm label-primary arrowed-in">Pengajuan</span>'
+                        }
+                        return label[data]
+                      }
+                      return data
+                    },
+                    aTargets: [7]
+                  },
                   {
                       mRender: function ( data, type, row ) {
 
@@ -484,7 +514,7 @@ function loadpermohonan(param){
 
                           return data;
                       },
-                      aTargets: [7]
+                      aTargets: [8]
                   },
                   {
                     "render": function ( data, type, row ) {

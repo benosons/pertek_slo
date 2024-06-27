@@ -547,11 +547,25 @@ class Jsondata extends \CodeIgniter\Controller
 										
 										if(count($data) == 7){
 											$stt = [];
+											$stt_rev = [];
+
 											foreach ($data as $key1 => $value1) {
 												
 												if($value1->status == '0'){
 													array_push($stt, $value1->status);
 												}
+
+												if($value1->status == '1'){
+													array_push($stt_rev, $value1->status);
+												}
+											}
+
+											if(count($stt_rev) != 0 && count($stt_rev) < 7){
+												$modelparam->updatetahapan($value->id, 4);
+												$value->tahapan = 4;
+											}else{
+												$modelparam->updatetahapan($value->id, 2);
+												$value->tahapan = 2;
 											}
 											
 											if(count($stt) >= 7){
@@ -562,6 +576,8 @@ class Jsondata extends \CodeIgniter\Controller
 												];
 												$st = 1;
 												$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
+												$modelparam->updatetahapan($value->id, 5);
+												$value->tahapan = 5;
 
 											}else{
 												$data = [
@@ -571,6 +587,8 @@ class Jsondata extends \CodeIgniter\Controller
 												];
 												$st = 0;
 												$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
+												$modelparam->updatetahapan($value->id, 4);
+												$value->tahapan = 4;
 												
 											}
 										}else{
