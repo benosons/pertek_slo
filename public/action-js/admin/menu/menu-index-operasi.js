@@ -2,6 +2,7 @@
 console.log('You are running jQuery version: ' + $.fn.jquery);
 $(document).ready(function(){
   window.stt = [];
+  $('#verlapanganini').parent().parent().hide()
   $('#nav-menu li').removeClass();
   // $('#nav-menu li#menu-data').addClass('open');
   $('#nav-menu li#menu-operasi').addClass('active');
@@ -290,7 +291,9 @@ function loadpermohonan(param){
               $('#ini-form-view').show()
 
               if(data[0].status == 1){
-                $('#verlapanganini').parent().parent().show();
+                if(data[0].survey){
+                  $('#verlapanganini').parent().parent().show();
+                }
                 $('#surveykepuasan').parent().parent().show();
                 $('#menu-puas').show();
                 sessionStorage.setItem('survey', 1)
