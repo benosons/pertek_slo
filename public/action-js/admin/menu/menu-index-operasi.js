@@ -240,7 +240,6 @@ $(document).ready(function(){
 
 
   $('#surveykepuasan-new').on('click', function(){
-    alert()
       $('#modal_notif').modal('show');
   })
 
