@@ -238,6 +238,11 @@ $(document).ready(function(){
     })
   })
 
+
+  $('#surveykepuasan-new').on('click', function(){
+      $('#modal_notif').modal('show');
+  })
+
 });
 
 function loadpermohonan(param){
