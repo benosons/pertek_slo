@@ -2007,39 +2007,41 @@ class Jsondata extends \CodeIgniter\Controller
 		$model 	  = new \App\Models\ProgramModel();
 		$modelfile 	  = new \App\Models\TargetModel();
 
-		if(unlink('public/'.$path)){
-				
-				if(!empty($_FILES)){
-
-					$files	 	= $request->getFiles()['file'];
-					$path		= FCPATH.'public';
-					$tipe		= 'uploads/permohonan';
-					$date 		= date('Y/m/d');
-					$folder		= $path.'/'.$tipe.'/'.$date.'/'.$request->getVar('type').'/'.$userid;
-
-					if (!is_dir($folder)) {
-						mkdir($folder, 0777, TRUE);
-					}
-					
-					foreach ($files as $key => $value) {
-						
-						$stat = $files[$key]->move($folder, $files[$key]->getName());
-						
-						$data_file = [
-							'filename'			=> $files[$key]->getName(),
-							'ext'				=> null,
-							'size'				=> $files[$key]->getSize(),
-							'path'				=> $tipe.'/'.$date.'/'.$request->getVar('type').'/'.$userid,
-							'updated_date'		=> $this->now,
-							'status'			=> null,
-						];
-						// print_r($data_file);die;
-						$modelfile->updateFile($id, $data_file, $kategori);
-
-					}
-
-				}
+		
+		if(!empty($_FILES)){
+			
+			if (file_exists('public/'.$path)) {
+				unlink('public/'.$path)
 			}
+
+			$files	 	= $request->getFiles()['file'];
+			$path		= FCPATH.'public';
+			$tipe		= 'uploads/permohonan';
+			$date 		= date('Y/m/d');
+			$folder		= $path.'/'.$tipe.'/'.$date.'/'.$request->getVar('type').'/'.$userid;
+
+			if (!is_dir($folder)) {
+				mkdir($folder, 0777, TRUE);
+			}
+			
+			foreach ($files as $key => $value) {
+				
+				$stat = $files[$key]->move($folder, $files[$key]->getName());
+				
+				$data_file = [
+					'filename'			=> $files[$key]->getName(),
+					'ext'				=> null,
+					'size'				=> $files[$key]->getSize(),
+					'path'				=> $tipe.'/'.$date.'/'.$request->getVar('type').'/'.$userid,
+					'updated_date'		=> $this->now,
+					'status'			=> null,
+				];
+				// print_r($data_file);die;
+				$modelfile->updateFile($id, $data_file, $kategori);
+
+			}
+
+		}
 
 		$response = [
 				'status'   => 'sukses',
