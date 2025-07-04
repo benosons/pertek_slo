@@ -2009,9 +2009,9 @@ class Jsondata extends \CodeIgniter\Controller
 
 		
 		if(!empty($_FILES)){
-			
+
 			if (file_exists('public/'.$path)) {
-				unlink('public/'.$path)
+				unlink('public/'.$path);
 			}
 
 			$files	 	= $request->getFiles()['file'];
