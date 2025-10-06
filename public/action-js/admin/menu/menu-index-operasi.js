@@ -119,6 +119,7 @@ $(document).ready(function(){
           formData.append("file[doc_permohonan]", $('#doc_permohonan')[0].files[0]);
           // formData.append("file[doc_izin_lingkungan]", $('#doc_izin_lingkungan')[0].files[0]);
           // formData.append("file[doc_nib]", $('#doc_nib')[0].files[0]);
+          formData.append("code", 'SLO');
 
           if(berapa.length == 8){
             save(formData);
@@ -418,6 +419,8 @@ function loadpermohonan(param){
                   `)
                 }
               }
+
+              $('#nomor_registrasi').html(data[0].noreg ? data[0].noreg : '-')
 
             }else{
               var dt = $('#all-permohonan').DataTable({
@@ -926,7 +929,7 @@ function save(formData){
           },
           success: function(result){
             let data = result.data;
-            location.reload()
+            // location.reload()
             // action('view',$('#ini-ID').val(id),2)
           }
         })
@@ -1386,7 +1389,7 @@ function save(formData){
 
   }
 
-  function okdong(id, ok){
+  function okdong(id, ok, id_parent, type){
     var formData = new FormData();
     formData.append('param', 'data_file');
     formData.append('id', id);
@@ -1406,9 +1409,7 @@ function save(formData){
           // showCancelButton: true,
           confirmButtonText: `Ok`,
         }).then((result) => {
-          $(document).ready(function(){
-            location.reload()
-          });
+          loadfilepermohonan(id_parent, type)
         })
       }
     });
@@ -1462,69 +1463,7 @@ function save(formData){
       $('#kategori').attr('disabled', true)
       $('#simpanaja').hide()
     }
-    $.ajax({
-      type: 'post',
-      dataType: 'json',
-      url: 'loadfilepermohonan',
-      data: {
-        id: id,
-        type: type
-      },
-      success: function(result){
-        var code = result.code
-        var data = result.data
-        var isok = 0
-        var el = '';
-        for (const key in data) {
-          var id = data[key]['id']
-          var path = data[key]['path']
-          var filename = data[key]['filename']
-          var jenis = data[key]['jenis']
-          var ok = data[key]['ok']
-          var checked = ok == 1 ? 'checked' : ''
-          var classe =  !ok ? 'class="text-info"' : ok == 1 ? 'class="text-success"' : 'class="text-danger"'
-          isok += ok == 1 ? 1 : 0
-          el += `
-                      <div class="row">`
-                        if(ok == 2){
-                            el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>`
-                            el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
-                                  classe = 'class="text-danger"'
-                        }else if(ok == 1){
-                            el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>`
-                            el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
-                        }else{
-                          el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1)"> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>
-                                  <div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2)"> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
-                        }
-
-                          el +=      `<div class="col-sm-10">
-                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="public/${path+'/'+filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
-                                      </div>
-                                    </div>`
-                                            
-        }
-        
-        if(isok < 1){
-          $('#kategori').hide()
-          $('#simpanaja').hide()
-        }
-        
-        $('#file-unggahan').html(el);
-      }
-    })
+    loadfilepermohonan(id, type)
   }
 
   function validasiV2(id, param){
@@ -1618,4 +1557,71 @@ function save(formData){
       },
   
   });
+  }
+
+  function loadfilepermohonan(id, type){
+        $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'loadfilepermohonan',
+      data: {
+        id: id,
+        type: type
+      },
+      success: function(result){
+        var code = result.code
+        var data = result.data
+        var isok = 0
+        var el = '';
+        for (const key in data) {
+          var id = data[key]['id']
+          var id_parent = data[key]['id_parent']
+          var path = data[key]['path']
+          var filename = data[key]['filename']
+          var jenis = data[key]['jenis']
+          var ok = data[key]['ok']
+          var checked = ok == 1 ? 'checked' : ''
+          var classe =  !ok ? 'class="text-info"' : ok == 1 ? 'class="text-success"' : 'class="text-danger"'
+          isok += ok == 1 ? 1 : 0
+          el += `
+                      <div class="row">`
+                        if(ok == 2){
+                            el += `<div class="col-sm-1">
+                                      <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${id_parent}, ${type})"> <i class="ace-icon fa fa-check"></i></a>
+                                  </div>`
+                            el += `<div class="col-sm-1">
+                                      <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-times"></i></a>
+                                  </div>`
+                                  classe = 'class="text-danger"'
+                        }else if(ok == 1){
+                            el += `<div class="col-sm-1">
+                                      <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-check"></i></a>
+                                  </div>`
+                            el += `<div class="col-sm-1">
+                                      <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${id_parent}, ${type})"> <i class="ace-icon fa fa-times"></i></a>
+                                  </div>`
+                        }else{
+                          el += `<div class="col-sm-1">
+                                      <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${id_parent}, ${type})"> <i class="ace-icon fa fa-check"></i></a>
+                                  </div>
+                                  <div class="col-sm-1">
+                                      <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${id_parent}, ${type})"> <i class="ace-icon fa fa-times"></i></a>
+                                  </div>`
+                        }
+
+                          el +=      `<div class="col-sm-10">
+                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="public/${path+'/'+filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
+                                      </div>
+                                    </div>`
+                                            
+        }
+        
+        if(isok < 1){
+          $('#kategori').hide()
+          $('#simpanaja').hide()
+        }
+        
+        $('#file-unggahan').html(el);
+      }
+    })
   }

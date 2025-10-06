@@ -1761,22 +1761,32 @@ class Jsondata extends \CodeIgniter\Controller
 		$param 	  = $request->getVar('param');
 		$role 		= $this->data['role'];
 		$userid		= $this->data['userid'];
+		$code		= $request->getVar('code');
+
+		$tanggal_saat_ini = date("Y-m-d");
+		$tanggal_kode = date("dmY", strtotime($tanggal_saat_ini));
+		$tahun_saat_ini = date("Y");
 
 		$model 	  = new \App\Models\ProgramModel();
 		$modelfile 	  = new \App\Models\TargetModel();
+
+		$sequence_baru = $model->get_next_sequence($param, $tahun_saat_ini, $request->getVar('type'));
+		$sequence_formatted = str_pad($sequence_baru, 2, '0', STR_PAD_LEFT);
+		$kode_registrasi_penuh = $tanggal_kode . "-". $code ."-" . $sequence_formatted . "-" . $tahun_saat_ini;
 
 		$data = [];
 
 		for ($i=1; $i <= 9 ; $i++) { 
 			$data['p'.$i] = $request->getVar('input_'.$i);
 		}
-
+		
 		$data['created_by']	 	= $userid;
 		$data['created_date'] 	= $this->now;
 		$data['updated_date'] 	= $this->now;
 		$data['type'] 			= $request->getVar('type');
 		$data['tahapan'] 		= $request->getVar('tahapan');
-
+		$data['noreg'] 			= $kode_registrasi_penuh;
+		
 		$res = $model->saveParam($param, $data);
 		$id  = $model->insertID();
 

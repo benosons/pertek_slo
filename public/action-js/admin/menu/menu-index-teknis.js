@@ -238,6 +238,7 @@ $(document).ready(function(){
           // formData.append("bab_kajian", $('#bab_kajian').val());
           // formData.append("file[doc_standar]", $('#doc_standar')[0].files[0]);
           // formData.append("bab_standar", $('#bab_standar').val());
+          formData.append("code", 'PRT');
           
           if(berapa.length == 9){
             save(formData);
@@ -581,6 +582,8 @@ function loadpermohonan(param){
                 if(harap.length == 0){
                   $('#harap').hide();
                 }
+
+                $('#nomor_registrasi').html(data[0].noreg ? data[0].noreg : '-')
 
               }
               if(data.penolakan.length){
