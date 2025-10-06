@@ -398,6 +398,7 @@ function loadpermohonan(param){
       url: 'loadpermohonan',
       data : {
               param      : param,
+              filter    : $('#categoryFilter').val()
       },
       success: function(result){
           let data = result.data;
@@ -777,28 +778,28 @@ function loadpermohonan(param){
 
               // $("#all-permohonan_filter.dataTables_filter").append($("#categoryFilter"));
 
-              var categoryIndex = 0;
-              $("#all-permohonan th").each(function (i) {
-                if ($($(this)).html() == "Kategori") {
-                  categoryIndex = i; return false;
-                }
-              });
+              // var categoryIndex = 0;
+              // $("#all-permohonan th").each(function (i) {
+              //   if ($($(this)).html() == "Kategori") {
+              //     categoryIndex = i; return false;
+              //   }
+              // });
 
-              $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                  var selectedItem = $('#categoryFilter').val()
-                  var category = data[categoryIndex];
-                  if (selectedItem === "" || category.includes(selectedItem)) {
-                    return true;
-                  }
-                  return false;
-                }
-              );
+              // $.fn.dataTable.ext.search.push(
+              //   function (settings, data, dataIndex) {
+              //     var selectedItem = $('#categoryFilter').val()
+              //     var category = data[categoryIndex];
+              //     if (selectedItem === "" || category.includes(selectedItem)) {
+              //       return true;
+              //     }
+              //     return false;
+              //   }
+              // );
 
-              $("#categoryFilter").change(function (e) {
-                dt.draw();
-              });
-              dt.draw();
+              // $("#categoryFilter").change(function (e) {
+              //   dt.draw();
+              // });
+              // dt.draw();
 
             }
 
@@ -2526,6 +2527,10 @@ function lihatlah() {
 
 });
 }
+
+$('#categoryFilter').on('change', function() {
+    loadpermohonan('1');
+})
 
 
     

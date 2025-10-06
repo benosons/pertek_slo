@@ -22,30 +22,42 @@ class ProgramModel extends Model{
           return  $query->getResult();
     }
 
-    public function getpermohonan($role=null,$userid=null,$type=null)
+    public function getpermohonan($role=null,$userid=null,$type=null, $filter=null)
     { 
 
           if($role == '0'){ 
             $builder = $this->db->table('data_permohonan');
-            $query   = $builder->getWhere(['created_by' => $userid, 'type' => $type, 'tolak' => null]);
+            $where = ['created_by' => $userid, 'type' => $type, 'tolak' => null];
+            if($filter)
+              $where['kategori'] = $filter;
+            $query   = $builder->getWhere($where);
             return  $query->getResult();
           }
           $builder = $this->db->table('data_permohonan');
-          $query   = $builder->getWhere(['type' => $type]);
+          $where = ['type' => $type];
+          if($filter)
+              $where['kategori'] = $filter;
+          $query   = $builder->getWhere($where);
           // echo $this->db->getLastQuery();die;
           return  $query->getResult();
     }
 
-    public function getpermohonantolak($role=null,$userid=null,$type=null)
+    public function getpermohonantolak($role=null,$userid=null,$type=null,$filter=null)
     { 
 
           if($role == '0'){ 
             $builder = $this->db->table('data_permohonan');
-            $query   = $builder->getWhere(['created_by' => $userid, 'type' => $type, 'tolak' => 1]);
+            $where = ['created_by' => $userid, 'type' => $type, 'tolak' => 1];
+            if($filter)
+              $where['kategori'] = $filter;
+            $query   = $builder->getWhere($where);
             return  $query->getResult();
           }
           $builder = $this->db->table('data_permohonan');
-          $query   = $builder->getWhere(['type' => $type]);
+          $where = ['type' => $type];
+          if($filter)
+              $where['kategori'] = $filter;
+          $query   = $builder->getWhere($where);
           // echo $this->db->getLastQuery();die;
           return  $query->getResult();
     }

@@ -358,6 +358,7 @@ class Jsondata extends \CodeIgniter\Controller
 				$type		 	  = $request->getVar('type');
 				$role 		= $this->data['role'];
 				$userid		= $this->data['userid'];
+				$filter		= $request->getVar('filter');
 
 					$model = new \App\Models\ProgramModel();
 					$modelparam = new \App\Models\ParamModel();
@@ -366,8 +367,8 @@ class Jsondata extends \CodeIgniter\Controller
 						$fulldata = [];
 						$st = null;
 						
-						$dataprogram = $model->getpermohonan($role, $userid, $param);
-						$gettolak = $model->getpermohonantolak($role, $userid, $param);
+						$dataprogram = $model->getpermohonan($role, $userid, $param, $filter);
+						$gettolak = $model->getpermohonantolak($role, $userid, $param, $filter);
 						foreach ($dataprogram as $key => $value) {
 							$datafilenya = $modelfiles->getfilenya('param_file', $value->id, $value->type, null, $value->kategori);
 							$value->file = (object) $datafilenya;
