@@ -82,4 +82,17 @@ class ProgramModel extends Model{
         return  $this->db->table($table)->insert($data);
     }
 
+    public function get_next_sequence($table=null, $tahun=null, $type)
+    {
+
+        $builder = $this->db->table($table);
+        $builder->selectMax('sequence', 'max_seq');
+        $builder->where('YEAR(created_date)', $tahun);
+        $builder->where('type', $type);
+        $query = $builder->get();
+        $row = $query->getRow();
+        $max_sequence = (int)($row->max_seq ?? 0); 
+        return $max_sequence + 1;
+    }
+
 }
