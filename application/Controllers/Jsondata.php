@@ -346,296 +346,140 @@ class Jsondata extends \CodeIgniter\Controller
 		}
 	}
 
-	public function loadpermohonan()
-	{
-		try
-		{
-				$session = session();
-				
-				$request  = $this->request;
-				$param 	  = $request->getVar('param');
-				$id		 	  = $request->getVar('id');
-				$type		 	  = $request->getVar('type');
-				$role 		= $this->data['role'];
-				$userid		= $this->data['userid'];
-				$filter		= $request->getVar('filter');
+public function loadpermohonan()
+{
+    try {
+        $session = session();
+        $request = $this->request;
 
-					$model = new \App\Models\ProgramModel();
-					$modelparam = new \App\Models\ParamModel();
-					$modelfiles = new \App\Models\TargetModel();
-			
-						$fulldata = [];
-						$st = null;
-						
-						$dataprogram = $model->getpermohonan($role, $userid, $param, $filter);
-						$gettolak = $model->getpermohonantolak($role, $userid, $param, $filter);
-						foreach ($dataprogram as $key => $value) {
-							$datafilenya = $modelfiles->getfilenya('param_file', $value->id, $value->type, null, $value->kategori);
-							$value->file = (object) $datafilenya;
-							
-							if($value->type == 1 || $value->type == 2){
-								if($role == 100 || $role == 10){
-									
-									$data = $modelfiles->getparam('param_file', $value->id, $value->type, null, $value->kategori);
-									
-									if($value->type == 1){
-										
-										if($value->param == 1){
-											$total_file = 0;
-											
-											switch ($value->kategori) {
-												case '1':
-													$total_file = 11;
-													break;
-												case '2':
-													$total_file = 10;
-													break;
-												case '3':
-													$total_file = 10;
-													break;
-												case '4':
-													$total_file = 11;
-													break;
-												case '5':
-													$total_file = 9;
-													break;
+        $param   = $request->getVar('param');
+        $id      = $request->getVar('id');
+        $type    = $request->getVar('type');
+        $role    = $this->data['role'];
+        $userid  = $this->data['userid'];
+        $filter  = $request->getVar('filter');
 
-											}
-											
-											if(count($data)){
-												$filterBy = 'doc_lampiran'; // or Finance etc.
+        $model        = new \App\Models\ProgramModel();
+        $modelparam   = new \App\Models\ParamModel();
+        $modelfiles   = new \App\Models\TargetModel();
 
-												$data = array_filter($data, function ($var) use ($filterBy) {
-													
-													return ($var->jenis != $filterBy);
-												});
-												
-											}
-											
-											if(count($data) == $total_file){
-												$stt = [];
-												$stt_rev = [];
-												foreach ($data as $key1 => $value1) {
-													
-													if($value1->status == '0'){
-														array_push($stt, $value1->status);
-													}
-													if($value1->status == '1'){
-														array_push($stt_rev, $value1->status);
-													}
-												}
-												// if($value->id == '322'){
-												// 	print_r(count($stt_rev));die;
-												// }
-												if(count($stt_rev) != 0 && count($stt_rev) < $total_file){
-													$modelparam->updatetahapan($value->id, 4);
-													$value->tahapan = 4;
-												}else{
-													$modelparam->updatetahapan($value->id, 2);
-													$value->tahapan = 2;
-												}
+        $fulldata = [];
+        $st = null;
 
-												if(count($stt) >= $total_file){
-													$data = [
-														'updated_date'	=> $this->now,
-														'updated_by' 	=> $userid,
-														'status' 		=> 1,
-													];
-													$st = 1;
-													$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
-													$modelparam->updatetahapan($value->id, 5);
-													$value->tahapan = 5;
+        // Ambil data utama dan data penolakan
+        $dataprogram = $model->getpermohonan($role, $userid, $param, $filter);
+        $gettolak    = $model->getpermohonantolak($role, $userid, $param, $filter);
 
-												}else{
-													$data = [
-														'updated_date'	=> $this->now,
-														'updated_by' 	=> $userid,
-														'status' 		=> 0,
-													];
-													$st = 0;
-													$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
-													$modelparam->updatetahapan($value->id, 4);
-													$value->tahapan = 4;
-													
-												}
-											}else{
-												$st = 0;
-											}
-										}else if($value->param == 2){
-											$total_file = 0;
-											switch ($value->kategori) {
-												case '1':
-													$total_file = 9;
-													break;
-												case '3':
-													$total_file = 9;
-													break;
-												case '4':
-													$total_file = 9;
-													break;
-												case '5':
-													$total_file = 8;
-													break;
+        foreach ($dataprogram as $value) {
 
-											}
+            // Tambahkan file terkait
+            $value->file = (object) $modelfiles->getfilenya('param_file', $value->id, $value->type, null, $value->kategori);
+            $st = 0;
 
-											if(count($data)){
-												$filterBy = 'doc_lampiran'; // or Finance etc.
+            // Hanya jalankan untuk role admin (100/10)
+            if (in_array($role, [10, 100]) && in_array($value->type, [1, 2])) {
 
-												$data = array_filter($data, function ($var) use ($filterBy) {
-													
-													return ($var->jenis != $filterBy);
-												});
-												
-											}
-											
-											if(count($data) == $total_file){
-												
-												$stt = [];
-												$stt_rev = [];
-												foreach ($data as $key1 => $value1) {
-													
-													if($value1->status == '0'){
-														array_push($stt, $value1->status);
-													}
+                $data = $modelfiles->getparam('param_file', $value->id, $value->type, null, $value->kategori);
+                if (!$data) {
+                    $value->status = 0;
+                    $fulldata[] = $value;
+                    continue;
+                }
 
-													if($value1->status == '1'){
-														array_push($stt_rev, $value1->status);
-													}
-												}
+                // Hilangkan lampiran yang tidak perlu
+                $data = array_filter($data, fn($x) => $x->jenis != 'doc_lampiran');
+				$data_baru = array_filter($data, fn($x) => $x->updated_date == null);
 
-												if(count($stt_rev) != 0 && count($stt_rev) < $total_file){
-													$modelparam->updatetahapan($value->id, 4);
-													$value->tahapan = 4;
-												}else{
-													$modelparam->updatetahapan($value->id, 2);
-													$value->tahapan = 2;
-												}
-												
-												if(count($stt) >= $total_file){
-													
-													$data = [
-														'updated_date'	=> $this->now,
-														'updated_by' 	=> $userid,
-														'status' 		=> 1,
-													];
-													$st = 1;
-													$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
-													$modelparam->updatetahapan($value->id, 5);
-													$value->tahapan = 5;
+                // Tentukan total file berdasarkan type/param/kategori
+                $total_file = 0;
+                if ($value->type == 1) {
+                    if ($value->param == 1) {
+                        $map = ['1' => 11, '2' => 10, '3' => 10, '4' => 11, '5' => 9];
+                    } elseif ($value->param == 2) {
+                        $map = ['1' => 9, '3' => 9, '4' => 9, '5' => 8];
+                    } else {
+                        $map = [];
+                    }
+                    $total_file = $map[$value->kategori] ?? 0;
+                } elseif ($value->type == 2) {
+                    $total_file = 7;
+                }
 
-												}else{
-													$data = [
-														'updated_date'	=> $this->now,
-														'updated_by' 	=> $userid,
-														'status' 		=> 0,
-													];
-													$st = 0;
-													$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
-													$modelparam->updatetahapan($value->id, 4);
-													$value->tahapan = 4;
-													
-												}
-											}else{
-												$st = 0;
-											}
-										}else{
-											$st = 0;
-										}
-									}
+				if(count($data_baru) == $total_file){
+					$modelparam->updatetahapan($value->id, 2);
+					$value->tahapan = 2;
+					$st = 0;
+				}else{
 
-									if($value->type == 2){
-										
-										if(count($data) == 7){
-											$stt = [];
-											$stt_rev = [];
+					// Jika jumlah file sesuai, lanjutkan pemeriksaan status
+					if (count($data) == $total_file && $total_file > 0) {
+						$status_draft  = count(array_filter($data, fn($x) => $x->status == '0'));
+						$status_review = count(array_filter($data, fn($x) => $x->status == '1'));
 
-											foreach ($data as $key1 => $value1) {
-												
-												if($value1->status == '0'){
-													array_push($stt, $value1->status);
-												}
+						// Tentukan tahapan awal (revisi atau lanjut)
+						$tahapan = ($status_review > 0 && $status_review < $total_file) ? 4 : 2;
+						$modelparam->updatetahapan($value->id, $tahapan);
+						$value->tahapan = $tahapan;
 
-												if($value1->status == '1'){
-													array_push($stt_rev, $value1->status);
-												}
-											}
-
-											if(count($stt_rev) != 0 && count($stt_rev) < 7){
-												$modelparam->updatetahapan($value->id, 4);
-												$value->tahapan = 4;
-											}else{
-												$modelparam->updatetahapan($value->id, 2);
-												$value->tahapan = 2;
-											}
-											
-											if(count($stt) >= 7){
-												$data = [
-													'updated_date'	=> $this->now,
-													'updated_by' 	=> $userid,
-													'status' 		=> 1,
-												];
-												$st = 1;
-												$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
-												$modelparam->updatetahapan($value->id, 5);
-												$value->tahapan = 5;
-
-											}else{
-												$data = [
-													'updated_date'	=> $this->now,
-													'updated_by' 	=> $userid,
-													'status' 		=> 0,
-												];
-												$st = 0;
-												$res = $modelfiles->updatestatusmaster('data_permohonan', $value->id, $data);
-												$modelparam->updatetahapan($value->id, 4);
-												$value->tahapan = 4;
-												
-											}
-										}else{
-											$st = 0;
-										}
-									}
-								}
+						// Semua file sudah selesai
+						if ($status_draft >= $total_file) {
+							if($value->pembahasan == 1){
+								$modelparam->updatetahapan($value->id, 3);
+								$value->tahapan = 3;
+								$st = 0;
+							}else{
+								// $modelfiles->updatestatusmaster('data_permohonan', $value->id, [
+								// 	'updated_date' => $this->now,
+								// 	'updated_by'   => $userid,
+								// 	'status'       => 1,
+								// ]);
+								$modelparam->updatetahapan($value->id, 2);
+								$value->tahapan = 2;
+								$st = 0;
 							}
-
-							if($role == 100 || $role == 10){
-								$value->status = $st;
-								
-							}
-							array_push($fulldata, $value);
 						}
-						if($role == 0){
-							$fulldata['penolakan'] = $gettolak;
+						// Masih ada file revisi / belum lengkap
+						else {
+							$modelfiles->updatestatusmaster('data_permohonan', $value->id, [
+								'updated_date' => $this->now,
+								'updated_by'   => $userid,
+								'status'       => 0,
+							]);
+							$modelparam->updatetahapan($value->id, 4);
+							$value->tahapan = 4;
+							$st = 0;
 						}
-
-							// print_r($fulldata);die;
-						// if($value->id == '322'){
-						// 	print_r($value->tahapan);die;
-						// }
-					if($fulldata){
-						$response = [
-							'status'   => 'sukses',
-							'code'     => '1',
-							'data' 		 => $fulldata
-						];
-					}else{
-						$response = [
-						    'status'   => 'gagal',
-						    'code'     => '0',
-						    'data'     => 'tidak ada data',
-						];
+					} else {
+						$st = 0; // Belum lengkap jumlah file
 					}
+				}
 
-				header('Content-Type: application/json');
-				echo json_encode($response);
-				exit;
-			}
-		catch (\Exception $e)
-		{
-			die($e->getMessage());
-		}
-	}
+                $value->status = $st;
+            }
+
+            $fulldata[] = $value;
+        }
+
+        // Tambahkan data penolakan untuk role 0
+        if ($role == 0) {
+            $fulldata['penolakan'] = $gettolak;
+        }
+
+        // Format respon JSON
+        $response = [
+            'status' => $fulldata ? 'sukses' : 'gagal',
+            'code'   => $fulldata ? '1' : '0',
+            'data'   => $fulldata ?: 'tidak ada data',
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        exit;
+    } catch (\Exception $e) {
+        die($e->getMessage());
+    }
+}
+
 
 	public function loadcount()
 	{
@@ -1776,9 +1620,37 @@ class Jsondata extends \CodeIgniter\Controller
 		$data['updated_date'] 	= $this->now;
 		$data['type'] 			= $request->getVar('type');
 		$data['tahapan'] 		= $request->getVar('tahapan');
-
+		
 		$res = $model->saveParam($param, $data);
 		$id  = $model->insertID();
+
+		$el = [
+			'link-doc_permohonan',
+			'link-doc_izin_lingkungan',
+			'link-doc_nib',
+			'link-doc_penapisan_mandiri',
+		];
+
+		foreach ($el as $key => $value) {
+			$lk = $request->getVar($value);
+			if ($lk !== null) {
+				$data_file = [
+					'id_parent'			=> $id,
+					'type'				=> $request->getVar('type'),
+					'jenis'				=> str_replace('link-', '', $value),
+					'filename'			=> null,
+					'ext'				=> 'link',
+					'size'				=> null,
+					'path'				=> $lk,
+					'created_date'		=> $this->now,
+					'updated_date'		=> $this->now,
+					'create_by'			=> $userid,
+					'bab'				=> null,
+				];
+
+				$resfile = $modelfile->saveParam('param_file', $data_file);
+			}
+		}
 
 		if(!empty($_FILES)){
 
@@ -1802,9 +1674,7 @@ class Jsondata extends \CodeIgniter\Controller
 				// }else if($key == 'doc_standar'){
 				// 	$bab = $request->getVar('bab_standar');
 				// }
-				
-				
-				
+								
 				$data_file = [
 					'id_parent'			=> $id,
 					'type'				=> $request->getVar('type'),
@@ -1886,6 +1756,47 @@ class Jsondata extends \CodeIgniter\Controller
 
 		$model 	  = new \App\Models\ProgramModel();
 		$modelfile 	  = new \App\Models\TargetModel();
+
+		$LINK = $request->getVar('link');
+		if(!empty($LINK)){
+			foreach ($LINK as $key => $value) {
+				$data_file = [
+						'id_parent'			=> $id,
+						'type'				=> $request->getVar('type'),
+						'jenis'				=> $key,
+						'filename'			=> null,
+						'ext'				=> 'link',
+						'size'				=> null,
+						'path'				=> $value,
+						'created_date'		=> $this->now,
+						'create_by'			=> $userid,
+						'bab'				=> $bab,
+						'kategori'			=> $kategori,
+						'param'				=> $kategoriparam,
+					];
+					
+				$resfile = $modelfile->saveParam('param_file', $data_file);
+			}
+			
+		}
+
+			// if ($lk !== null) {
+			// 	$data_file = [
+			// 		'id_parent'			=> $id,
+			// 		'type'				=> $request->getVar('type'),
+			// 		'jenis'				=> str_replace('link-', '', $value),
+			// 		'filename'			=> null,
+			// 		'ext'				=> 'link',
+			// 		'size'				=> null,
+			// 		'path'				=> $lk,
+			// 		'created_date'		=> $this->now,
+			// 		'updated_date'		=> $this->now,
+			// 		'create_by'			=> $userid,
+			// 		'bab'				=> null,
+			// 	];
+
+			// 	$resfile = $modelfile->saveParam('param_file', $data_file);
+			// }
 		
 		if(!empty($_FILES)){
 
@@ -1949,6 +1860,27 @@ class Jsondata extends \CodeIgniter\Controller
 		$model 	  = new \App\Models\ProgramModel();
 		$modelfile 	  = new \App\Models\TargetModel();
 
+		$LINK = $request->getVar('link');
+		if(!empty($LINK)){
+			foreach ($LINK as $key => $value) {				
+				$data_file = [
+					'id_parent'			=> $id,
+					'type'				=> $request->getVar('type'),
+					'jenis'				=> $request->getVar('keterangan'),
+					'filename'			=> null,
+					'ext'				=> 'link',
+					'size'				=> null,
+					'path'				=> $value,
+					'created_date'		=> $this->now,
+					'updated_date'		=> $this->now,
+					'create_by'			=> $userid,
+					'bab'				=> $bab,
+				];
+				$resfile = $modelfile->saveParam('param_file_lapangan', $data_file);
+			}
+			
+		}
+
 		if(!empty($_FILES)){
 
 			$files	 	= $request->getFiles()['file'];
@@ -2008,6 +1940,24 @@ class Jsondata extends \CodeIgniter\Controller
 		$model 	  = new \App\Models\ProgramModel();
 		$modelfile 	  = new \App\Models\TargetModel();
 
+		$LINK = $request->getVar('link');
+		
+		if(!empty($LINK)){
+			foreach ($LINK as $key => $value) {
+				
+				$data_file = [
+					'filename'			=> null,
+					'ext'				=> 'link',
+					'size'				=> null,
+					'path'				=> $value,
+					'updated_date'		=> $this->now,
+					'status'			=> null,
+				];
+				
+				$modelfile->updateFile($id, $data_file, $kategori);
+			}
+			
+		}
 		
 		if(!empty($_FILES)){
 
@@ -3259,8 +3209,8 @@ class Jsondata extends \CodeIgniter\Controller
 						'status' 		=> $stat,
 						'keterangan' 	=> $keterangan,
         ];
-		// print_r($data);die;
 		$res = $model->updatestatus($table, $id, $data);
+		// print_r($data);die;
 		$model->loghistory($id, $userid, $this->now, $stat);
 
 		$response = [
@@ -3429,7 +3379,11 @@ class Jsondata extends \CodeIgniter\Controller
 			$userid		= $this->data['userid'];
 			
 			$model 	  = new \App\Models\KegiatanModel();
-			if(unlink('public/'.$path)){
+			if (file_exists('public/'.$path)) {
+				if(unlink('public/'.$path)){
+					$res = $model->deletedata($param, $id);
+				}
+			}else{
 				$res = $model->deletedata($param, $id);
 			}
 			
@@ -3525,6 +3479,27 @@ class Jsondata extends \CodeIgniter\Controller
 		$userid		= $this->data['userid'];
 
 		$modelfile 	  = new \App\Models\TargetModel();
+
+		$LINK = $request->getVar('link');
+		if(!empty($LINK)){
+			foreach ($LINK as $key => $value) {
+				$data_file = [
+					'id_parent'			=> $request->getVar('id_parent'),
+					'type'				=> $request->getVar('type'),
+					'jenis'				=> $key,
+					'filename'			=> null,
+					'ext'				=> 'link',
+					'size'				=> null,
+					'path'				=> $value,
+					'created_date'		=> $this->now,
+					'updated_date'		=> $this->now,
+					'create_by'			=> $userid,
+					'bab'				=> null,
+				];
+
+				$resfile = $modelfile->saveParam('param_file', $data_file);
+			}
+		}
 
 		if(!empty($_FILES)){
 

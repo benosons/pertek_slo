@@ -95,6 +95,9 @@
     }
   }
 </style>
+<input type="hidden" id="view_id">
+<input type="hidden" id="view_validasi_id">
+<input type="hidden" id="view_lapangan_id">
 <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
   <script type="text/javascript">
     try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
@@ -233,7 +236,8 @@
 
                     <div class="form-group" id="form-nib-reupload" style="display:block;">        
                       <div class="col-sm-11">
-                        <input type="file" name="id-input-file-5" id="doc_nib_reupload" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-5" id="doc_nib_reupload" accept=".pdf" /> -->
+                        <input type="text" class="form-control" id="link-doc_nib_reupload" placeholder="..." />
                       </div>
                       <div class="col-sm-1">
                         <button class="btn btn-success btn-xs btn-round" id="upload-nib" onclick="reupload('nib')" type="button"><i class="fa fa-check-square-o"></i></button>
@@ -266,7 +270,8 @@
 
                     <div class="form-group" id="form-izin-lingkungan-reupload" style="display:block;">        
                       <div class="col-sm-11">
-                        <input type="file" name="id-input-file-5" id="doc_izin_lingkungan_reupload" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-5" id="doc_izin_lingkungan_reupload" accept=".pdf" /> -->
+                        <input type="text" class="form-control" id="link-doc_izin_lingkungan_reupload" placeholder="..." />
                       </div>
                       <div class="col-sm-1">
                         <button class="btn btn-success btn-xs btn-round" id="upload-izin-lingkungan" onclick="reupload('izin-lingkungan')" type="button"><i class="fa fa-check-square-o"></i></button>
@@ -292,7 +297,8 @@
 
                     <div class="form-group" id="form-penapisan-mandiri-reupload" style="display:block;">        
                       <div class="col-sm-11">
-                        <input type="file" name="id-input-file-5" id="doc_penapisan_mandiri_reupload" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-5" id="doc_penapisan_mandiri_reupload" accept=".pdf" /> -->
+                        <input type="text" class="form-control" id="link-doc_penapisan_mandiri_reupload" placeholder="..." />
                       </div>
                       <div class="col-sm-1">
                         <button class="btn btn-success btn-xs btn-round" id="upload-penapisan-mandiri" onclick="reupload('penapisan-mandiri')" type="button"><i class="fa fa-check-square-o"></i></button>
@@ -349,7 +355,7 @@
                   <div class="col-sm-6">
                     <grp id="view-file-permohonan" style="display:none;">
                       <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
-                        <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
+                        <i class="ace-icon fa fa-google-drive middle orange2"></i>
                         <span class="bigger-110" id="nama-file-permohonan"></span>
                       </button>
                       <button class="btn btn-danger btn-xs btn-round" id="hapus-permohonan" type="button"><i class="fa fa-trash"></i></button>
@@ -357,7 +363,8 @@
 
                     <div class="form-group" id="form-permohonan-reupload" style="display:block;">        
                       <div class="col-sm-11">
-                        <input type="file" name="id-input-file-5" id="doc_permohonan_reupload" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-5" id="doc_permohonan_reupload" accept=".pdf" /> -->
+                        <input type="text" class="form-control" id="link-doc_permohonan_reupload" placeholder="..." />
                       </div>
                       <div class="col-sm-1">
                         <button class="btn btn-success btn-xs btn-round" id="upload-permohonan" onclick="reupload('permohonan')" type="button"><i class="fa fa-check-square-o"></i></button>
@@ -458,8 +465,29 @@
                   <label class="col-sm-3 control-label no-padding-right" for="doc_nib"></label>
       
                   <div class="col-sm-6">
-                    <input type="file" name="id-input-file-5" id="doc_nib" accept=".pdf" />
-                    <code>File .PDF - Max 5 mb</code>
+                    <div id="form-file-doc_nib" class="input-doc_nib" hidden>
+                      <input type="file" name="id-input-file-5" id="doc_nib" accept=".pdf" />
+                      <code><i class="ace-icon fa fa-info-circle"></i> File .pdf - Max 5 mb</code>
+                    </div>
+                    <div id="form-link-doc_nib" class="input-doc_nib">
+                      <input type="text" class="form-control" id="link-doc_nib">
+                      <code><i class="ace-icon fa fa-info-circle"></i> Link file GoogleDrive</code>
+                    </div>
+                    
+                    <div class="control-group" hidden>
+                        <div class="radio col-sm-4">
+													<label>
+														<input name="radio-doc_nib" type="radio" class="ace" value="link" checked>
+														<span class="lbl"> Link GoogleDrive</span>
+													</label>
+												</div>
+												<div class="radio col-sm-5">
+													<label>
+														<input name="radio-doc_nib" type="radio" value="file" class="ace">
+														<span class="lbl"> Upload file</span>
+													</label>
+												</div>
+											</div>
                   </div>
                 </div>
 
@@ -473,10 +501,30 @@
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for="doc_izin_lingkungan">Izin / Persetujuan lingkungan atau yang setara <code>*</code></label>
-      
                   <div class="col-sm-6">
-                    <input type="file" name="id-input-file-5" id="doc_izin_lingkungan" accept=".pdf" />
-                    <code>File .PDF - Max 5 mb</code>
+                    <div id="form-file-doc_izin_lingkungan" class="input-doc_izin_lingkungan" hidden>
+                      <input type="file" name="id-input-file-5" id="doc_izin_lingkungan" accept=".pdf" />
+                      <code><i class="ace-icon fa fa-info-circle"></i> File .pdf - Max 5 mb</code>
+                    </div>
+                    <div id="form-link-doc_izin_lingkungan" class="input-doc_izin_lingkungan">
+                      <input type="text" class="form-control" id="link-doc_izin_lingkungan">
+                      <code><i class="ace-icon fa fa-info-circle"></i> Link file GoogleDrive</code>
+                    </div>
+                    
+                    <div class="control-group" hidden>
+                        <div class="radio col-sm-4">
+													<label>
+														<input name="radio-doc_izin_lingkungan" type="radio" class="ace" value="link" checked>
+														<span class="lbl"> Link GoogleDrive</span>
+													</label>
+												</div>
+												<div class="radio col-sm-5">
+													<label>
+														<input name="radio-doc_izin_lingkungan" type="radio" value="file" class="ace">
+														<span class="lbl"> Upload file</span>
+													</label>
+												</div>
+											</div>
                   </div>
                 </div>
                 
@@ -484,8 +532,29 @@
                   <label class="col-sm-3 control-label no-padding-right" for="doc_penapisan_mandiri">Hasil Penapisan Mandiri <code>*</code></label>
       
                   <div class="col-sm-6">
-                    <input type="file" name="id-input-file-5" id="doc_penapisan_mandiri" accept=".pdf" />
-                    <code>File .PDF - Max 5 mb</code>
+                    <div id="form-file-doc_penapisan_mandiri" class="input-doc_penapisan_mandiri" hidden>
+                      <input type="file" name="id-input-file-5" id="doc_penapisan_mandiri" accept=".pdf" />
+                      <code><i class="ace-icon fa fa-info-circle"></i> File .pdf - Max 5 mb</code>
+                    </div>
+                    <div id="form-link-doc_penapisan_mandiri" class="input-doc_penapisan_mandiri">
+                      <input type="text" class="form-control" id="link-doc_penapisan_mandiri">
+                      <code><i class="ace-icon fa fa-info-circle"></i> Link file GoogleDrive</code>
+                    </div>
+                    
+                    <div class="control-group" hidden>
+                        <div class="radio col-sm-4">
+													<label>
+														<input name="radio-doc_penapisan_mandiri" type="radio" class="ace" value="link" checked>
+														<span class="lbl"> Link GoogleDrive</span>
+													</label>
+												</div>
+												<div class="radio col-sm-5">
+													<label>
+														<input name="radio-doc_penapisan_mandiri" type="radio" value="file" class="ace">
+														<span class="lbl"> Upload file</span>
+													</label>
+												</div>
+											</div>
                   </div>
                 </div>
       
@@ -533,8 +602,29 @@
                   <label class="col-sm-3 control-label no-padding-right" for="doc_permohonan">Permohonan <code>*</code></label>
       
                   <div class="col-sm-6">
-                    <input type="file" name="id-input-file-5" id="doc_permohonan" accept=".pdf" />
-                    <code>File .PDF - Max 5 mb</code>
+                    <div id="form-file-doc_permohonan" class="input-doc_permohonan" hidden>
+                      <input type="file" name="id-input-file-5" id="doc_permohonan" accept=".pdf" />
+                      <code><i class="ace-icon fa fa-info-circle"></i> File .pdf - Max 5 mb</code>
+                    </div>
+                    <div id="form-link-doc_permohonan" class="input-doc_permohonan">
+                      <input type="text" class="form-control" id="link-doc_permohonan">
+                      <code><i class="ace-icon fa fa-info-circle"></i> Link file GoogleDrive</code>
+                    </div>
+                    
+                    <div class="control-group" hidden>
+                        <div class="radio col-sm-4">
+													<label>
+														<input name="radio-doc_permohonan" type="radio" class="ace" value="link" checked>
+														<span class="lbl"> Link GoogleDrive</span>
+													</label>
+												</div>
+												<div class="radio col-sm-5">
+													<label>
+														<input name="radio-doc_permohonan" type="radio" value="file" class="ace">
+														<span class="lbl"> Upload file</span>
+													</label>
+												</div>
+											</div>
                   </div>
                 </div>
 
@@ -726,7 +816,8 @@
                         </select>
                       </div>
                       <div class="col-xs-3">
-                        <input type="file" name="id-input-file-3" id="doc_kajian" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-3" id="doc_kajian" accept=".pdf" /> -->
+                        <input type="text" id="link-doc_kajian" placeholder="Link GoogleDrive.." class="form-control" />
                       </div>
                       <div class="col-xs-2">
                         <button disabled type="button" class="btn btn-xs btn-success" id="submit_kajian"><i class="ace-icon fa fa-check-square-o"></i>Submit</button>
@@ -746,7 +837,8 @@
                         </select>
                       </div>
                       <div class="col-xs-3">
-                        <input type="file" name="id-input-file-lampiran" id="doc_lampiran" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-lampiran" id="doc_lampiran" accept=".pdf" /> -->
+                        <input type="text" id="link-doc_lampiran" placeholder="Link GoogleDrive.." class="form-control" />
                       </div>
                       <div class="col-xs-2">
                         <button disabled type="button" class="btn btn-xs btn-success" id="submit_lampiran"><i class="ace-icon fa fa-check-square-o"></i>Submit</button>
@@ -785,7 +877,8 @@
 
                       </div>
                       <div class="col-xs-7">
-                        <input type="file" name="id-input-file-3" id="edit_file_kajian" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-3" id="edit_file_kajian" accept=".pdf" /> -->
+                        <input class="form-control" type="text" id="edit_link_kajian" placeholder="..."/>
                       </div>
                       <div class="col-xs-2">
                         <button type="button" class="btn btn-xs btn-success" id="submit_edit_kajian"><i class="ace-icon fa fa-check-square-o"></i>Submit</button>
@@ -940,7 +1033,8 @@
                           <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Dokumen BA & Pertek </label>
                           
                           <div class="col-xs-4">
-                            <input type="file" name="id-input-file-6" id="doc_lapangan" accept=".pdf" />
+                            <!-- <input type="file" name="id-input-file-6" id="doc_lapangan" accept=".pdf" /> -->
+                            <input type="text" class="form-control" id="link-doc_lapangan" placeholder="link GoogleDrive" />
                           </div>
 
                           <div class="col-xs-3">
