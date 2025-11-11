@@ -697,7 +697,7 @@ function save(formData){
   function action(mode, id, type, keterangan, param, kategori){
     if(mode == 'view'){
       $('#modal_file').modal('show');
-      $('#modal_file > .modal-dialog').width('70%');
+      // $('#modal_file > .modal-dialog').width('70%');
 
       loadstatus(id, 2);
       $.ajax({
@@ -751,18 +751,23 @@ function save(formData){
                 pageLength: 10,
                 aaData: result.data,
                 aoColumns: [
-                    { 'mDataProp': 'id', 'width':'10%'},
-                    { 'mDataProp': 'jenis'},
+                    { 'mDataProp': 'id', 'width':'5%'},
+                    { 'mDataProp': 'jenis', 'width':'10%'},
                     { 'mDataProp': 'filename'},
                     { 'mDataProp': 'status', 'width':'15%'},
                     { 'mDataProp': 'created_date'},
                     { 'mDataProp': 'updated_date'},
                     { 'mDataProp': 'keterangan'},
-                    { 'mDataProp': 'id'},
+                    { 'mDataProp': 'id', 'width':'15%'},
                 ],
                 order: [[0, 'ASC']],
                 fixedColumns: true,
                 aoColumnDefs:[
+                  {
+                      "targets": [2], // Targetkan kolom dengan index 0 (kolom pertama)
+                      "visible": false, // Setel visibilitas menjadi false
+                      "searchable": false // Opsi tambahan: membuatnya tidak dapat dicari
+                  },
                   { width: 50, targets: 0 },
                   // {
                   //     mRender: function ( data, type, row ) {
@@ -813,7 +818,7 @@ function save(formData){
                         if(data == null){
                           data = '';
                         }
-                      var el =`<textarea style="width:150px;" id="keterangan_2_`+row.id+`">`+data+`</textarea>`;
+                      var el =`<textarea style="width:100%;" id="keterangan_2_`+row.id+`">`+data+`</textarea>`;
                       }else{
                         var el = data;
                       }
@@ -955,6 +960,7 @@ function save(formData){
             let data = result.data;
             // location.reload()
             // action('view',$('#ini-ID').val(id),2)
+            loadpermohonan('2');
           }
         })
       }else if(mode == 'delete'){
