@@ -1606,7 +1606,7 @@ public function loadpermohonan()
 		$role 		= $this->data['role'];
 		$userid		= $this->data['userid'];
 		$code		= $request->getVar('code');
-
+		
 		$tanggal_saat_ini = date("Y-m-d");
 		$tanggal_kode = date("dmY", strtotime($tanggal_saat_ini));
 		$tahun_saat_ini = date("Y");
@@ -1640,10 +1640,10 @@ public function loadpermohonan()
 			'link-doc_nib',
 			'link-doc_penapisan_mandiri',
 		];
-
 		foreach ($el as $key => $value) {
 			$lk = $request->getVar($value);
-			if ($lk !== null) {
+			
+			if ($lk !== null && $lk !== '') {
 				$data_file = [
 					'id_parent'			=> $id,
 					'type'				=> $request->getVar('type'),
@@ -1657,7 +1657,7 @@ public function loadpermohonan()
 					'create_by'			=> $userid,
 					'bab'				=> null,
 				];
-
+				
 				$resfile = $modelfile->saveParam('param_file', $data_file);
 			}
 		}
@@ -1768,6 +1768,26 @@ public function loadpermohonan()
 		$modelfile 	  = new \App\Models\TargetModel();
 
 		$LINK = $request->getVar('link');
+
+		if(!$LINK){
+			$LINK = [];
+			$par = [
+				'doc_permohonan_slo',
+				'doc_izin_usaha',
+				'doc_persetujauan_lingkungan',
+				'doc_persetujuan_teknis',
+				'doc_hasil_pemantauan',
+				'doc_kontrol_jaminan',
+				'doc_sertifikat_registrasi',
+			];
+
+			foreach ($par as $key ) {
+				if( $request->getVar('link-'.$key)){
+					$LINK[$key] = $request->getVar('link-'.$key);
+				}
+			}
+		}
+		
 		if(!empty($LINK)){
 			foreach ($LINK as $key => $value) {
 				$data_file = [

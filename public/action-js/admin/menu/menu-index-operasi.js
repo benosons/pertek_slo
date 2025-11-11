@@ -116,7 +116,8 @@ $(document).ready(function(){
             }
           }
 
-          formData.append("file[doc_permohonan]", $('#doc_permohonan')[0].files[0]);
+          // formData.append("file[doc_permohonan]", $('#doc_permohonan')[0].files[0]);
+          formData.append("link-doc_permohonan", $('#link-doc_permohonan').val());
           // formData.append("file[doc_izin_lingkungan]", $('#doc_izin_lingkungan')[0].files[0]);
           // formData.append("file[doc_nib]", $('#doc_nib')[0].files[0]);
           formData.append("code", 'SLO');
@@ -138,31 +139,38 @@ $(document).ready(function(){
 
     switch ($('#jenis_doc').val()) {
       case 'doc_permohonan_slo':
-        formData.append("file[doc_permohonan_slo]", $('#doc_')[0].files[0]);
+        // formData.append("file[doc_permohonan_slo]", $('#doc_')[0].files[0]);
+        formData.append("link-doc_permohonan_slo", $('#doc_').val());
         
           break;
       case 'doc_izin_usaha':
-        formData.append("file[doc_izin_usaha]", $('#doc_')[0].files[0]);
+        // formData.append("file[doc_izin_usaha]", $('#doc_')[0].files[0]);
+        formData.append("link-doc_izin_usaha", $('#doc_').val());
         
           break;
       case 'doc_persetujauan_lingkungan':
-        formData.append("file[doc_persetujauan_lingkungan]", $('#doc_')[0].files[0]);
+        // formData.append("file[doc_persetujauan_lingkungan]", $('#doc_')[0].files[0]);
+        formData.append("link-doc_persetujauan_lingkungan", $('#doc_').val());
         
           break;
       case 'doc_persetujuan_teknis':
-        formData.append("file[doc_persetujuan_teknis]", $('#doc_')[0].files[0]);
+        // formData.append("file[doc_persetujuan_teknis]", $('#doc_')[0].files[0]);
+        formData.append("link-doc_persetujuan_teknis", $('#doc_').val());
         
           break;
       case 'doc_hasil_pemantauan':
-        formData.append("file[doc_hasil_pemantauan]", $('#doc_')[0].files[0]);
+        // formData.append("file[doc_hasil_pemantauan]", $('#doc_')[0].files[0]);
+        formData.append("link-doc_hasil_pemantauan", $('#doc_').val());
         
           break;
       case 'doc_kontrol_jaminan':
-        formData.append("file[doc_kontrol_jaminan]", $('#doc_')[0].files[0]);
+        // formData.append("file[doc_kontrol_jaminan]", $('#doc_')[0].files[0]);
+        formData.append("link-doc_kontrol_jaminan", $('#doc_').val());
         
           break;
       case 'doc_sertifikat_registrasi':
-        formData.append("file[doc_sertifikat_registrasi]", $('#doc_')[0].files[0]);
+        // formData.append("file[doc_sertifikat_registrasi]", $('#doc_')[0].files[0]);
+        formData.append("link-doc_sertifikat_registrasi", $('#doc_').val());
         
           break;
     }
@@ -244,6 +252,18 @@ $(document).ready(function(){
       $('#modal_notif').modal('show');
   })
 
+  var INPUT_DOC = '#doc_';
+  var SELECT_DOC = '#jenis_doc';
+  var BUTTON_DOC = '#submit_doc';
+
+  var docHandler = function() {
+        checkButtonStatus(INPUT_DOC, SELECT_DOC, BUTTON_DOC);
+  };
+
+  $(INPUT_DOC).on('keyup change paste', docHandler);
+  $(SELECT_DOC).on('change', docHandler);
+  checkButtonStatus(INPUT_DOC, SELECT_DOC, BUTTON_DOC);
+
 });
 
 function loadpermohonan(param){
@@ -262,7 +282,9 @@ function loadpermohonan(param){
 
             if($('#isRole').val() == 0){
               let optd = ''
-              $('#iskat').val(data[0].kategori)
+              
+              const kategori = data.length ? data[0].kategori : '';
+              $('#iskat').val(kategori);
               $('#dokumen-unggahan').html(data[0].kategori == '1' ? 'PERSYARATAN PERMOHONAN SURAT KELAYAKAN OPERASIONAL PEMBUANGAN DAN/ATAU PEMANFAATAN AIR LIMBAH' : 'PERSYARATAN PERMOHONAN SURAT KELAYAKAN OPERASIONAL PEMBUANGAN EMISI' )
               switch (data[0].kategori) {
                 case '1': //limbah
@@ -328,7 +350,7 @@ function loadpermohonan(param){
                 switch (jenisnya) {
                   case 'doc_permohonan':
                         $('#nama-file-permohonan').html(data[0].file[f]['filename']);
-                        $('#nama-file-permohonan').attr('onclick', "downloadatuh('"+'public/'+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
+                        $('#nama-file-permohonan').attr('onclick', `downloadatuh('${data[0].file[f]['path']}')`);
                         $('#hapus-permohonan').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
 
                         $('#view-file-permohonan').css('display', 'block');
@@ -650,7 +672,9 @@ function save(formData){
         data : formData,
         success: function(result){
           dialog.modal('hide');
-          location.reload()
+          // location.reload()
+          $('#cekunggahan').click()
+          $('#doc_').val('')
         }
       });
     };
@@ -808,17 +832,17 @@ function save(formData){
               {
                 mRender: function ( data, type, row ) {
 
-                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="public/`+row.path+'/'+row.filename+`">
+                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="${row.path}">
                             <i class="ace-icon fa fa-download bigger-120"></i>
                           </a></div>`;
 
                 if($('#role').val() == 0) {
                   if(row.status == '1'){
-                    el += `<div class="btn-group"><button class="btn btn-xs btn-info" onclick="revisi('`+row.id+`','`+row.type+`','`+row.jenis+`','`+row.path+'/'+row.filename+`','`+row.jenis+`')">
+                    el += `<div class="btn-group"><button class="btn btn-xs btn-info" onclick="revisi('`+row.id+`','`+row.type+`','`+row.jenis+`','${row.path}','`+row.jenis+`')">
                                   <i class="ace-icon fa fa-edit bigger-120"></i>
                                 </button></div>`;
 
-                    el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfile('delete','`+row.id+`','`+row.type+`', '`+row.path+'/'+row.filename+`')">
+                    el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfile('delete','`+row.id+`','`+row.type+`', '`+row.path+`')">
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                           </button></div>`;
                   }
@@ -1089,17 +1113,17 @@ function save(formData){
               {
                 mRender: function ( data, type, row ) {
 
-                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="public/`+row.path+'/'+row.filename+`">
+                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="${row.path}">
                             <i class="ace-icon fa fa-download bigger-120"></i>
                           </a></div>`;
 
                 if($('#role').val() == '1' || $('#role').val() == '2') {
                   if(row.status == '1'){
-                    el += `<div class="btn-group"><button class="btn btn-xs btn-info" onclick="revisi('`+row.id+`','`+row.type+`','`+row.jenis+`','`+row.path+'/'+row.filename+`','`+row.jenis+`')">
+                    el += `<div class="btn-group"><button class="btn btn-xs btn-info" onclick="revisi('`+row.id+`','`+row.type+`','`+row.jenis+`','`+row.path+`','`+row.jenis+`')">
                                   <i class="ace-icon fa fa-edit bigger-120"></i>
                                 </button></div>`;
 
-                    el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfile('delete','`+row.id+`','`+row.type+`', '`+row.path+'/'+row.filename+`')">
+                    el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfile('delete','`+row.id+`','`+row.type+`', '`+row.path+`')">
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                           </button></div>`;
                   }
@@ -1243,7 +1267,7 @@ function save(formData){
       $('#path_edit').val(path);
       $('#type_edit').val(type);
       
-      };
+    };
 
       $('#submit_edit').on('click', function(){
       
@@ -1251,7 +1275,7 @@ function save(formData){
         formData.append('id', $('#id_edit').val());
         formData.append('path', $('#path_edit').val());
         formData.append('type', $('#type_edit').val());
-        formData.append("file[]", $('#edit_file')[0].files[0]);
+        formData.append("link[]", $('#edit_file').val());
   
         $.ajax({
             type: 'post',
@@ -1343,7 +1367,7 @@ function save(formData){
 }
 
   function downloadatuh(path){
-    window.open(path);
+     window.open(path, '_blank');
   }
 
   function reupload(type){
@@ -1610,7 +1634,7 @@ function save(formData){
                         }
 
                           el +=      `<div class="col-sm-10">
-                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="public/${path+'/'+filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
+                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="${path}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
                                       </div>
                                     </div>`
                                             
@@ -1625,3 +1649,24 @@ function save(formData){
       }
     })
   }
+
+
+  function checkButtonStatus(inputSelector, selectSelector, buttonSelector) {
+    // Ambil elemen
+    const $input = $(inputSelector);
+    const $select = $(selectSelector);
+    const $button = $(buttonSelector);
+    const inputValue = $input.val() || ""; 
+
+    // Cek 1: Apakah input terisi (trim() menghilangkan spasi kosong)
+    const isInputFilled = inputValue.trim() !== '';
+
+    // Cek 2: Apakah select memiliki nilai valid (bukan '0', null, atau string kosong)
+    const isSelectValid = $select.val() !== '0' && $select.val() !== null && $select.val() !== '';
+
+    // Logika Utama: Aktifkan tombol HANYA jika kedua kondisi benar (true)
+    const shouldBeDisabled = !(isInputFilled && isSelectValid);
+
+    // Terapkan status disabled
+    $button.prop('disabled', shouldBeDisabled);
+}

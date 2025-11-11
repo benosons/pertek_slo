@@ -508,11 +508,13 @@
               </div>
 
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="doc_permohonan">Permohonan <code>*</code></label>
+                <label class="col-sm-3 control-label no-padding-right" for="link-doc_permohonan">Permohonan <code>*</code></label>
     
                 <div class="col-sm-6">
-                  <input type="file" name="id-input-file-6" id="doc_permohonan" accept=".pdf" />
-                  <code>File .PDF - Max 5 mb</code>
+                  <!-- <input type="file" name="id-input-file-6" id="doc_permohonan" accept=".pdf" /> -->
+                  <input type="text" class="form-control" id="link-doc_permohonan">
+                  <!-- <code>File .PDF - Max 5 mb</code> -->
+                  <code><i class="ace-icon fa fa-info-circle"></i> Link file GoogleDrive</code>
                 </div>
               </div>
     
@@ -789,7 +791,8 @@
                         </select>
                       </div>
                       <div class="col-xs-4">
-                        <input type="file" name="id-input-file-3" id="doc_" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-3" id="doc_" accept=".pdf" /> -->
+                        <input type="text" class="form-control" id="doc_" placeholder="..." />
                       </div>
                       <div class="col-xs-2">
                         <button disabled type="button" class="btn btn-xs btn-success" id="submit_doc"><i class="ace-icon fa fa-check-square-o"></i>Submit</button>
@@ -828,7 +831,8 @@
                           <input type="hidden" id="type_edit" disabled>
                         </div>
                         <div class="col-xs-7">
-                          <input type="file" name="id-input-file-3" id="edit_file" accept=".pdf" />
+                          <!-- <input type="file" name="id-input-file-3" id="edit_file" accept=".pdf" /> -->
+                          <input type="text" class="form-control" id="edit_file" placeholder="..." />
                         </div>
                         <div class="col-xs-2">
                           <button type="button" class="btn btn-xs btn-success" id="submit_edit"><i class="ace-icon fa fa-check-square-o"></i>Submit</button>
