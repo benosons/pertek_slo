@@ -349,8 +349,10 @@ function loadpermohonan(param){
 
                 switch (jenisnya) {
                   case 'doc_permohonan':
-                        $('#nama-file-permohonan').html(data[0].file[f]['filename']);
-                        $('#nama-file-permohonan').attr('onclick', `downloadatuh('${data[0].file[f]['path']}')`);
+                        $('#nama-file-permohonan').html('link Google-Drive');
+                        // $('#nama-file-permohonan').html(data[0].file[f]['filename']);
+                        $('#nama-file-permohonan').closest('button').find('i').attr('class', 'ace-icon fa fa-external-link bigger-150 middle blue');
+                        $('#nama-file-permohonan').closest('button').attr('onclick', `downloadatuh('${data[0].file[f]['path']}')`);
                         $('#hapus-permohonan').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
 
                         $('#view-file-permohonan').css('display', 'block');
@@ -660,10 +662,10 @@ function save(formData){
   };
 
   function upload(formData){
-    var dialog = bootbox.dialog({
-      message: '<p class="text-center mb-0"><i class="fa fa-spin fa-spinner"></i> Mohon Tunggu ...</p>',
-      closeButton: false
-    });
+    // var dialog = bootbox.dialog({
+    //   message: '<p class="text-center mb-0"><i class="fa fa-spin fa-spinner"></i> Mohon Tunggu ...</p>',
+    //   closeButton: false
+    // });
     $.ajax({
         type: 'post',
         processData: false,
@@ -671,7 +673,7 @@ function save(formData){
         url: 'uploadfile',
         data : formData,
         success: function(result){
-          dialog.modal('hide');
+          // dialog.modal('hide');
           // location.reload()
           $('#cekunggahan').click()
           $('#doc_').val('')
@@ -696,7 +698,9 @@ function save(formData){
 
   function action(mode, id, type, keterangan, param, kategori){
     if(mode == 'view'){
-      $('#modal_file').modal('show');
+      if (!$('#modal_file').hasClass('show')) {
+          $('#modal_file').modal('show');
+      }
       // $('#modal_file > .modal-dialog').width('70%');
 
       loadstatus(id, 2);
@@ -1392,7 +1396,7 @@ function save(formData){
     }else if(type == 'nib'){
       formData.append("file[doc_nib]", $('#doc_nib_reupload')[0].files[0]);
     }else if(type == 'permohonan'){
-      formData.append("file[doc_permohonan]", $('#doc_permohonan_reupload')[0].files[0]);
+      formData.append("link[doc_permohonan]", $('#link-doc_permohonan_reupload').val());
     }
 
     $.ajax({
@@ -1590,7 +1594,7 @@ function save(formData){
   }
 
   function loadfilepermohonan(id, type){
-        $.ajax({
+    $.ajax({
       type: 'post',
       dataType: 'json',
       url: 'loadfilepermohonan',
@@ -1649,6 +1653,9 @@ function save(formData){
         if(isok < 1){
           $('#kategori').hide()
           $('#simpanaja').hide()
+        }else{
+          $('#kategori').show()
+          $('#simpanaja').show()
         }
         
         $('#file-unggahan').html(el);
