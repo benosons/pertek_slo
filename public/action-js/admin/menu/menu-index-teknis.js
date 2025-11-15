@@ -267,6 +267,7 @@ $(document).ready(function(){
           // formData.append("bab_kajian", $('#bab_kajian').val());
           // formData.append("file[doc_standar]", $('#doc_standar')[0].files[0]);
           // formData.append("bab_standar", $('#bab_standar').val());
+          formData.append("code", 'PRT');
           
           if(berapa.length == 9){
             save(formData);
@@ -356,8 +357,8 @@ $(document).ready(function(){
     formData.append('id', $('#ini-ID-lapangan').val());
     formData.append('param', 'param_file_lapangan');
     formData.append('type', '1');
-    // formData.append("file[doc_izin_usaha]", $('#doc_lapangan')[0].files[0]);
-    formData.append("link[doc_izin_usaha]", $('#link-doc_lapangan').val());
+    formData.append("file[doc_izin_usaha]", $('#doc_lapangan')[0].files[0]);
+    // formData.append("link[doc_izin_usaha]", $('#link-doc_lapangan').val());
     formData.append("keterangan", $('#keterangan_lapangan').val());
 
     
@@ -472,7 +473,7 @@ $(document).ready(function(){
   var SELECT_LAMPIRAN = '#bab_lampiran';
   var BUTTON_LAMPIRAN = '#submit_lampiran';
 
-  var INPUT_LAPANGAN = '#link-doc_lapangan';
+  var INPUT_LAPANGAN = '#doc_lapangan';
   var SELECT_LAPANGAN = '#keterangan_lapangan';
   var BUTTON_LAPANGAN = '#submit_doc_lapangan';
 
@@ -739,6 +740,7 @@ function loadpermohonan(param){
                 }
 
                 $('#nomor_registrasi').html(data[0].noreg ? data[0].noreg : '-')
+                $('#cekundangan').closest('div').prop('hidden', !data[0].pembahasan);
 
               }
               if(data.penolakan.length){
@@ -773,6 +775,7 @@ function loadpermohonan(param){
                   aaData: result.data,
                   aoColumns: [
                       { 'mDataProp': 'id', 'width':'5%'},
+                      { 'mDataProp': 'noreg'},
                       { 'mDataProp': 'p1'},
                       { 'mDataProp': 'p2'},
                       { 'mDataProp': 'p3'},
@@ -809,7 +812,7 @@ function loadpermohonan(param){
                         }
                         return data
                       },
-                      aTargets: [4]
+                      aTargets: [5]
                     },
                     {
                       "render": function ( data, type, row ) {
@@ -826,7 +829,7 @@ function loadpermohonan(param){
                         }
                         return data
                       },
-                      aTargets: [5]
+                      aTargets: [6]
                     },
                     {
                       "render": function ( data, type, row ) {
@@ -855,7 +858,7 @@ function loadpermohonan(param){
                         }
                         return data
                       },
-                      aTargets: [8]
+                      aTargets: [9]
                     },
                     {
                         "render": function ( data, type, row ) {
@@ -895,12 +898,12 @@ function loadpermohonan(param){
                                           </button></div>`
                                   }
 
-                                  if(!row.pembahasan){
+                                  // if(!row.pembahasan){
 
-                                    el += `<div class="btn-group"><button title="Pembahasan" class="btn btn-xs btn-primary" onclick="action('bahas',`+row.id+`,'`+row.type+`','','data_permohonan')">
+                                    el += `<div class="btn-group"><button title="Pembahasan" class="btn btn-xs btn-primary" data-id="pembahasan-${row.id}" onclick="actionpembahasan('${row.id}', '${row.type}');">
                                             <i class="ace-icon fa fas fa-info-circle bigger-120"></i>
                                           </button></div>`
-                                  }
+                                  // }
                             
                             el += `<div class="btn-group"><button  title="Penolakan" class="btn btn-xs btn-danger" onclick="action('tolak',`+row.id+`,'`+row.type+`','','data_permohonan')">
                                       <i class="ace-icon fa fa-times bigger-120"></i>
@@ -912,7 +915,7 @@ function loadpermohonan(param){
 
                           return data;
                         },
-                        aTargets: [9]
+                        aTargets: [10]
                     },
                   ],
                   fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
@@ -1981,7 +1984,8 @@ function save(formData){
               id        : id
           },
           success: function(result){
-            location.reload()
+            // location.reload()
+            $(`[data-id=pembahasan-${id}]`).trigger('click')
           }
         })
       }
@@ -2145,6 +2149,11 @@ function save(formData){
               success: function(result){
                 // location.reload()
                 $('#cekunggahan').trigger('click')
+                $('#view-doc-undangan').empty();
+                $('#doc_undangan').closest('.ace-file-input').closest('div').prop('hidden', false)
+                $('#keterangan_undangan').val('');
+                $('.remove').trigger('click')
+                
               }
             })
           }
@@ -2260,15 +2269,15 @@ function save(formData){
                 fixedColumns: true,
                 aoColumnDefs:[
                   { width: 50, targets: 0 },
-                  {
-                      mRender: function ( data, type, row ) {
+                  // {
+                  //     mRender: function ( data, type, row ) {
     
-                          var el = '<a href="#">Link GoogleDrive</a>';
+                  //         var el = '<a href="#">Link GoogleDrive</a>';
     
-                          return el;
-                      },
-                      aTargets: [2]
-                  },
+                  //         return el;
+                  //     },
+                  //     aTargets: [2]
+                  // },
               {
                 mRender: function ( data, type, row ) {
 
@@ -2838,4 +2847,83 @@ function checkButtonStatus(inputSelector, selectSelector, buttonSelector) {
 
     // Terapkan status disabled
     $button.prop('disabled', shouldBeDisabled);
+}
+
+function actionpembahasan(id, type){
+      var modal_file = $('#modal_file_pembahasan')
+      $('#ini-ID-untuk-undangan').val(id);
+      $('#ini-TIPE-untuk-undangan').val(type);
+      if (!modal_file.is(':visible')) {
+            modal_file.modal('show');
+      }
+      loadfileundangan(id);
+    }
+
+$('#submit_undangan').on('click', function(){
+
+    var formData = new FormData();
+    formData.append('id', $('#ini-ID-untuk-undangan').val());
+    formData.append('param', 'param_file');
+    formData.append('type', '1');
+    formData.append('keterangan', $('#keterangan_undangan').val());
+
+    formData.append("file[doc_undangan]", $('#doc_undangan')[0].files[0]);
+    upload(formData);
+    action('bahas',`${$('#ini-ID-untuk-undangan').val()}`,`${$('#ini-TIPE-untuk-undangan').val()}`,'','data_permohonan')
+});
+
+function loadfileundangan(params) {
+  $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'loadfile',
+      data : {
+          id        : params,
+          type      : 1,
+          jenis     : 'doc_undangan',
+      },
+      success: function(result){
+        let data = result.data;
+        let code = result.code;
+        $('#keterangan_undangan').val(data.length > 0 ? data[0]['keterangan'] : '')
+        if(data.length > 0 ? data[0]['filename'] : '') {
+          $('#doc_undangan').closest('.ace-file-input').closest('div').prop('hidden', true)
+          $('#view-doc-undangan').html(`
+            <div id="view-doc-undangan">
+              <a type="button" class="btn btn-sm btn-primary btn-white btn-round" target="_blank" href="public/${data[0]['path']+'/'+data[0]['filename']}">
+                <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
+                <span class="bigger-110" id="nama-doc-undangan"> ${data[0]['filename']}</span>
+              </a>
+              <a class="btn btn-danger btn-xs btn-round" id="hapus-undangan" onclick="actionfile('delete','`+data[0]['id']+`','`+data[0]['type']+`', '`+data[0]['path']+'/'+data[0]['filename']+`')"><i class="fa fa-trash"></i></a>
+            </div>
+          `)
+        }
+        // $('#doc_undangan').val(data.length > 0 ? data[0]['filename'] : '')
+      }
+  })
+}
+
+function cekundangan() {
+  $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'loadfile',
+      data : {
+          id        : $('#idpermohonan').val(),
+          type      : 1,
+          jenis     : 'doc_undangan',
+      },
+      success: function(result){
+        let data = result.data;
+        let code = result.code;
+
+        $('<a>')
+        .attr({
+            href: `public/${data[0]['path']+'/'+data[0]['filename']}`,
+            target: '_blank',
+            download: ''
+        })[0]
+        .click();
+      }
+    })
 }

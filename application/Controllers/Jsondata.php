@@ -346,139 +346,125 @@ class Jsondata extends \CodeIgniter\Controller
 		}
 	}
 
-public function loadpermohonan()
-{
-    try {
-        $session = session();
-        $request = $this->request;
+	private function getTotalFile($type, $param, $kategori)
+	{
+		$map = [
+			1 => [ // type 1
+				1 => ['1'=>11,'2'=>10,'3'=>10,'4'=>11,'5'=>9],
+				2 => ['1'=>9,'3'=>9,'4'=>9,'5'=>8]
+			],
+			2 => [ // type 2
+				0 => 7
+			]
+		];
 
-        $param   = $request->getVar('param');
-        $id      = $request->getVar('id');
-        $type    = $request->getVar('type');
-        $role    = $this->data['role'];
-        $userid  = $this->data['userid'];
-        $filter  = $request->getVar('filter');
+		return $map[$type][$param][$kategori] ?? ($map[$type][0] ?? 0);
+	}
 
-        $model        = new \App\Models\ProgramModel();
-        $modelparam   = new \App\Models\ParamModel();
-        $modelfiles   = new \App\Models\TargetModel();
+	private function updateStatusPermohonan($modelfiles, $modelparam, $id, $userid, $complete)
+	{
+		$data = [
+			'updated_date' => $this->now,
+			'updated_by'   => $userid,
+			'status'       => $complete ? 1 : 0
+		];
 
-        $fulldata = [];
-        $st = null;
+		$modelfiles->updatestatusmaster('data_permohonan', $id, $data);
+		$modelparam->updatetahapan($id, $complete ? 5 : 4);
+	}
 
-        // Ambil data utama dan data penolakan
-        $dataprogram = $model->getpermohonan($role, $userid, $param, $filter);
-        $gettolak    = $model->getpermohonantolak($role, $userid, $param, $filter);
+	public function loadpermohonan()
+	{
+		try {
+			$session   = session();
+			$req       = $this->request;
 
-        foreach ($dataprogram as $value) {
+			$param     = $req->getVar('param');
+			$id        = $req->getVar('id');
+			$type      = $req->getVar('type');
+			$role      = $this->data['role'];
+			$userid    = $this->data['userid'];
+			$filter    = $req->getVar('filter');
 
-            // Tambahkan file terkait
-            $value->file = (object) $modelfiles->getfilenya('param_file', $value->id, $value->type, null, $value->kategori);
-            $st = 0;
+			$model       = new \App\Models\ProgramModel();
+			$modelparam  = new \App\Models\ParamModel();
+			$modelfiles  = new \App\Models\TargetModel();
 
-            // Hanya jalankan untuk role admin (100/10)
-            if (in_array($role, [10, 100]) && in_array($value->type, [1, 2])) {
+			$fulldata = [];
+			$dataprogram = $model->getpermohonan($role, $userid, $param, $filter);
+			$gettolak    = $model->getpermohonantolak($role, $userid, $param, $filter);
 
-                $data = $modelfiles->getparam('param_file', $value->id, $value->type, null, $value->kategori);
-                if (!$data) {
-                    $value->status = 0;
-                    $fulldata[] = $value;
-                    continue;
-                }
+			foreach ($dataprogram as $val) {
 
-                // Hilangkan lampiran yang tidak perlu
-                $data = array_filter($data, fn($x) => $x->jenis != 'doc_lampiran');
-				$data_baru = array_filter($data, fn($x) => $x->updated_date == null);
+				// Ambil file
+				$val->file = (object) $modelfiles->getfilenya('param_file', $val->id, $val->type, null, $val->kategori);
 
-                // Tentukan total file berdasarkan type/param/kategori
-                $total_file = 0;
-                if ($value->type == 1) {
-                    if ($value->param == 1) {
-                        $map = ['1' => 11, '2' => 10, '3' => 10, '4' => 11, '5' => 9];
-                    } elseif ($value->param == 2) {
-                        $map = ['1' => 9, '3' => 9, '4' => 9, '5' => 8];
-                    } else {
-                        $map = [];
-                    }
-                    $total_file = $map[$value->kategori] ?? 0;
-                } elseif ($value->type == 2) {
-                    $total_file = 7;
-                }
+				// Khusus role verifikator
+				if (($val->type == 1 || $val->type == 2) && ($role == 100 || $role == 10)) {
 
-				if(count($data_baru) == $total_file){
-					$modelparam->updatetahapan($value->id, 2);
-					$value->tahapan = 2;
-					$st = 0;
-				}else{
+					$files = $modelfiles->getparam('param_file', $val->id, $val->type, null, $val->kategori);
 
-					// Jika jumlah file sesuai, lanjutkan pemeriksaan status
-					if (count($data) == $total_file && $total_file > 0) {
-						$status_draft  = count(array_filter($data, fn($x) => $x->status == '0'));
-						$status_review = count(array_filter($data, fn($x) => $x->status == '1'));
+					// Hilangkan jenis doc_lampiran
+					if (count($files)) {
+						$files = array_filter($files, fn($f) => $f->jenis != 'doc_lampiran');
+					}
 
-						// Tentukan tahapan awal (revisi atau lanjut)
-						$tahapan = ($status_review > 0 && $status_review < $total_file) ? 4 : 2;
-						$modelparam->updatetahapan($value->id, $tahapan);
-						$value->tahapan = $tahapan;
+					// Tentukan jumlah file total berdasarkan kategori & parameter
+					$total_file = $this->getTotalFile($val->type, $val->param, $val->kategori);
 
-						// Semua file sudah selesai
-						if ($status_draft >= $total_file) {
-							if($value->pembahasan == 1){
-								$modelparam->updatetahapan($value->id, 3);
-								$value->tahapan = 3;
-								$st = 0;
-							}else{
-								// $modelfiles->updatestatusmaster('data_permohonan', $value->id, [
-								// 	'updated_date' => $this->now,
-								// 	'updated_by'   => $userid,
-								// 	'status'       => 1,
-								// ]);
-								$modelparam->updatetahapan($value->id, 2);
-								$value->tahapan = 2;
-								$st = 0;
-							}
+					// Hitung status
+					if ($total_file > 0 && count($files) == $total_file) {
+
+						$stt     = array_filter($files, fn($x) => $x->status == '0');
+						$stt_rev = array_filter($files, fn($x) => $x->status == '1');
+
+						// Update tahapan
+						if (count($stt_rev) != 0 && count($stt_rev) < $total_file) {
+							$modelparam->updatetahapan($val->id, 4);
+							$val->tahapan = 4;
+						} else {
+							$modelparam->updatetahapan($val->id, 2);
+							$val->tahapan = 2;
 						}
-						// Masih ada file revisi / belum lengkap
-						else {
-							$modelfiles->updatestatusmaster('data_permohonan', $value->id, [
-								'updated_date' => $this->now,
-								'updated_by'   => $userid,
-								'status'       => 0,
-							]);
-							$modelparam->updatetahapan($value->id, 4);
-							$value->tahapan = 4;
-							$st = 0;
-						}
+
+						// Update status permohonan
+						$isComplete = (count($stt) >= $total_file);
+						$this->updateStatusPermohonan(
+							$modelfiles,
+							$modelparam,
+							$val->id,
+							$userid,
+							$isComplete
+						);
+
+						$val->status  = $isComplete ? 1 : 0;
+						$val->tahapan = $isComplete ? 5 : 4;
 					} else {
-						$st = 0; // Belum lengkap jumlah file
+						$val->status = 0;
 					}
 				}
 
-                $value->status = $st;
-            }
+				$fulldata[] = $val;
+			}
 
-            $fulldata[] = $value;
-        }
+			// Tambahkan data penolakan untuk role user
+			if ($role == 0) {
+				$fulldata['penolakan'] = $gettolak;
+			}
 
-        // Tambahkan data penolakan untuk role 0
-        if ($role == 0) {
-            $fulldata['penolakan'] = $gettolak;
-        }
+			$response = $fulldata
+				? ['status' => 'sukses', 'code' => '1', 'data' => $fulldata]
+				: ['status' => 'gagal', 'code' => '0', 'data' => 'tidak ada data'];
 
-        // Format respon JSON
-        $response = [
-            'status' => $fulldata ? 'sukses' : 'gagal',
-            'code'   => $fulldata ? '1' : '0',
-            'data'   => $fulldata ?: 'tidak ada data',
-        ];
+			header('Content-Type: application/json');
+			echo json_encode($response);
+			exit;
 
-        header('Content-Type: application/json');
-        echo json_encode($response);
-        exit;
-    } catch (\Exception $e) {
-        die($e->getMessage());
-    }
-}
+		} catch (\Exception $e) {
+			die($e->getMessage());
+		}
+	}
+
 
 
 	public function loadcount()
@@ -1791,19 +1777,19 @@ public function loadpermohonan()
 		if(!empty($LINK)){
 			foreach ($LINK as $key => $value) {
 				$data_file = [
-						'id_parent'			=> $id,
-						'type'				=> $request->getVar('type'),
-						'jenis'				=> $key,
-						'filename'			=> null,
-						'ext'				=> 'link',
-						'size'				=> null,
-						'path'				=> $value,
-						'created_date'		=> $this->now,
-						'create_by'			=> $userid,
-						'bab'				=> $bab,
-						'kategori'			=> $kategori,
-						'param'				=> $kategoriparam,
-					];
+					'id_parent'			=> $id,
+					'type'				=> $request->getVar('type'),
+					'jenis'				=> $key,
+					'filename'			=> null,
+					'ext'				=> 'link',
+					'size'				=> null,
+					'path'				=> $value,
+					'created_date'		=> $this->now,
+					'create_by'			=> $userid,
+					'bab'				=> $bab,
+					'kategori'			=> $kategori,
+					'param'				=> $kategoriparam,
+				];
 					
 				$resfile = $modelfile->saveParam('param_file', $data_file);
 			}
@@ -1829,7 +1815,7 @@ public function loadpermohonan()
 			// }
 		
 		if(!empty($_FILES)){
-
+			
 			$files	 	= $request->getFiles()['file'];
 			$path		= FCPATH.'public';
 			$tipe		= 'uploads/permohonan';
@@ -1858,6 +1844,7 @@ public function loadpermohonan()
 					'bab'				=> $bab,
 					'kategori'			=> $kategori,
 					'param'				=> $kategoriparam,
+					'keterangan'		=> $request->getVar('keterangan') ?? null,
 				];
 				
 				$resfile = $modelfile->saveParam('param_file', $data_file);
