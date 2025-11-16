@@ -465,6 +465,7 @@ function loadpermohonan(param){
                 aaData: result.data,
                 aoColumns: [
                     { 'mDataProp': 'id', 'width':'1%'},
+                    { 'mDataProp': 'noreg'},
                     { 'mDataProp': 'p1'},
                     { 'mDataProp': 'p2'},
                     { 'mDataProp': 'p6'},
@@ -505,7 +506,7 @@ function loadpermohonan(param){
                       }
                       return data
                     },
-                    aTargets: [7]
+                    aTargets: [8]
                   },
                   {
                       mRender: function ( data, type, row ) {
@@ -554,7 +555,7 @@ function loadpermohonan(param){
 
                           return data;
                       },
-                      aTargets: [8]
+                      aTargets: [9]
                   },
                   {
                     "render": function ( data, type, row ) {
@@ -574,7 +575,7 @@ function loadpermohonan(param){
                       }
                       return data
                     },
-                    aTargets: [4]
+                    aTargets: [5]
                   },
                 ],
                 fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
