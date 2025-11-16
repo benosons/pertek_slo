@@ -2589,6 +2589,7 @@ function save(formData){
             var classe =  !ok ? 'class="text-info"' : ok == 1 ? 'class="text-success"' : 'class="text-danger"'
             isok += ok == 1 ? 1 : 0
             var ext = data[key]['ext']
+            
             // el += `<div class="checkbox">
             //         <label>
             //           <input name="form-field-checkbox" type="checkbox" class="ace" onclick="okdong(${id}, ${!ok ? 1 : ok==1? 2: 1})" ${checked}>
@@ -2621,9 +2622,9 @@ function save(formData){
                                       <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-times"></i></a>
                                   </div>`
                         }
-
+                        var ishref = ext == 'link' ? path : 'public/' + path+'/'+filename
                           el +=      `<div class="col-sm-10">
-                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="${ext == 'link' ? '' : 'public/'}${path+'/'+filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
+                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="${ishref}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
                                       </div>
                                     </div>`
                                               
