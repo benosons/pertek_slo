@@ -161,7 +161,7 @@
         <div class="widget-body">
           <div class="widget-main">
             {% if role == 0 %}
-            <input type="hidden" id="idpermohonan">
+            <input type="text" id="idpermohonan">
             <input type="hidden" id="initype">
             <div class="row" style="padding: 3% 0 3% 0;">
               <ul class="timeline" id="timeline">
@@ -373,6 +373,14 @@
                     </div>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+      
+                  <div class="col-sm-6">
+                    <a type="button" target="_blank" id="cekundangan" class="btn btn-xs btn-block btn-info" onclick="cekundangan()" ><i class="ace-icon fa fa-file"></i>Pembahasan Penilaian Substansi & Verifikasi Lapangan </a>
+                    <input type="hidden" id="ini-id-cekundangan">
+                  </div>
+                </div>
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for=""> </label>
@@ -398,7 +406,7 @@
       
                   <div class="col-sm-6">
                     
-                    <button type="button" id="surveykepuasan-new" class="btn btn-xs btn-block btn-success" href="https://skm.bandung.go.id/publik" target="_blank" ><i class="ace-icon fa fa-heart"></i> Survey Kepuasan</button>
+                    <button type="button" id="surveykepuasan-new" class="btn btn-xs btn-block btn-success" href="https://skm.bandung.go.id/publik" target="_blank" onclick="puas()" ><i class="ace-icon fa fa-heart"></i> Survey Kepuasan</button>
 
                   </div>
                 </div>
@@ -1021,7 +1029,7 @@
         <p>Kami Pimpinan dan Staf <b>Dinas Lingkungan Hidup Kota Bandung</b> mempunyai komitmen yang tinggi dalam menjalankan Kebijakan dan Tupoksi yang telah ditetapkan. Kami berkomitmen untuk senantiasa melakukan perbaikan yang berkesinambungan terhadap sistem dan operasional, dalam rangka memenuhi tingkat kepuasan yang diharapkan. 
         Kami Sangat menghargai pendapat atau opini yang disampaikan, apabila Bapak/Ibu berkesempatan meluangkan waktu sejenak untuk melengkapi kuesioner ini seobyektif mungkin dan senantiasa berpartisipasi untuk memberikan masukan yang bersifat membangun. </p>
 
-        <p>Pengisian kuesioner dapat dengan memilih tombol <a href="https://skm.bandung.go.id/publik" target="_blank"><b>Survey Kepuasan</b></a></p>
+        <p>Pengisian kuesioner dapat dengan memilih tombol <a href="https://skm.bandung.go.id/publik" target="_blank" onclick="$('#surveykepuasan').trigger('click');"><b>Survey Kepuasan</b></a></p>
 
       <b><p>Tata cara pengisian sebagai berikut :</p>
         <p>1. Pilih nama dinas Dinas Lingkungan Hidup</p>
@@ -1041,6 +1049,53 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<div id="modal_file_pembahasan" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-md">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">
+          <center><i class="ace-icon fa fa-file text-primary "></i>
+            Undangan Pembahasan</center>
+            <input type="hidden" id="ini-ID-lapangan">
+        </h4>
+      </div>
+      <input type="hidden" id="ini-ID-untuk-undangan">
+      <input type="hidden" id="ini-TIPE-untuk-undangan">
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-sm-3 control-label no-padding-right">File Undangan</label>
+          <div class="col-sm-6" id="view-doc-undangan"></div>
+          <div class="col-sm-6">
+            <input type="file" id="doc_undangan" name="id-input-file-6" class="form-control" accept=".pdf">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 control-label no-padding-right">Keterangan</label>
+          <div class="col-sm-6">
+            <input type="text" id="keterangan_undangan" placeholder="Keterangan" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 control-label no-padding-right"></label>
+          <div class="col-sm-6">
+            <button type="button" class="btn btn-xs btn-success btn-block" id="submit_undangan"><i class="ace-icon fa fa-check"></i>Kirim Undangan</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i class="ace-icon fa fa-close"></i>close</button>
+      </div>
+
+    </div>
+      
   </div>
 </div>
 

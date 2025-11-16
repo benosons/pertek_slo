@@ -430,6 +430,7 @@ function loadpermohonan(param){
 
 
               $('#nomor_registrasi').html(data[0].noreg ? data[0].noreg : '-')
+              $('#cekundangan').closest('div').prop('hidden', !data[0].pembahasan);
             }
 
             
@@ -535,12 +536,12 @@ function loadpermohonan(param){
                                       </button></div>`
                               }
 
-                              if(!row.pembahasan){
+                              // if(!row.pembahasan){
 
-                                el += `<div class="btn-group"><button title="Pembahasan" class="btn btn-xs btn-primary" onclick="action('bahas',`+row.id+`,'`+row.type+`','','data_permohonan')">
+                                el += `<div class="btn-group"><button title="Pembahasan" class="btn btn-xs btn-primary" data-id="pembahasan-${row.id}" onclick="actionpembahasan('${row.id}', '${row.type}');">
                                         <i class="ace-icon fa fas fa-info-circle bigger-120"></i>
                                       </button></div>`
-                              }
+                              // }
 
                               el += `<div class="btn-group"><button  title="Penolakan" class="btn btn-xs btn-danger" onclick="action('tolak',`+row.id+`,'`+row.type+`','','data_permohonan')">
                                       <i class="ace-icon fa fa-times bigger-120"></i>
@@ -845,17 +846,17 @@ function save(formData){
               {
                 mRender: function ( data, type, row ) {
 
-                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="${row.path}">
+                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="public/${row.path}/${row.filename}">
                             <i class="ace-icon fa fa-download bigger-120"></i>
                           </a></div>`;
 
                 if($('#role').val() == 0) {
                   if(row.status == '1'){
-                    el += `<div class="btn-group"><button class="btn btn-xs btn-info" onclick="revisi('`+row.id+`','`+row.type+`','`+row.jenis+`','${row.path}','`+row.jenis+`')">
+                    el += `<div class="btn-group"><button class="btn btn-xs btn-info" onclick="revisi('`+row.id+`','`+row.type+`','`+row.jenis+`','${row.path}/${row.filename}','`+row.jenis+`')">
                                   <i class="ace-icon fa fa-edit bigger-120"></i>
                                 </button></div>`;
 
-                    el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfile('delete','`+row.id+`','`+row.type+`', '`+row.path+`')">
+                    el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfile('delete','`+row.id+`','`+row.type+`', '${row.path}/${row.filename}')">
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                           </button></div>`;
                   }
@@ -1065,7 +1066,8 @@ function save(formData){
               id        : id
           },
           success: function(result){
-            location.reload()
+            // location.reload()
+            $(`[data-id=pembahasan-${id}]`).trigger('click')
           }
         })
       }
@@ -1127,17 +1129,17 @@ function save(formData){
               {
                 mRender: function ( data, type, row ) {
 
-                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="${row.path}">
+                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="public/${row.path}/${row.filename}">
                             <i class="ace-icon fa fa-download bigger-120"></i>
                           </a></div>`;
 
                 if($('#role').val() == '1' || $('#role').val() == '2') {
                   if(row.status == '1'){
-                    el += `<div class="btn-group"><button class="btn btn-xs btn-info" onclick="revisi('`+row.id+`','`+row.type+`','`+row.jenis+`','`+row.path+`','`+row.jenis+`')">
+                    el += `<div class="btn-group"><button class="btn btn-xs btn-info" onclick="revisi('`+row.id+`','`+row.type+`','`+row.jenis+`','${row.path}/${row.filename}','`+row.jenis+`')">
                                   <i class="ace-icon fa fa-edit bigger-120"></i>
                                 </button></div>`;
 
-                    el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfile('delete','`+row.id+`','`+row.type+`', '`+row.path+`')">
+                    el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfile('delete','`+row.id+`','`+row.type+`', '${row.path}/${row.filename}')">
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                           </button></div>`;
                   }
@@ -1146,7 +1148,7 @@ function save(formData){
                   // el += `<button class="btn btn-xs btn-success" onclick="action('update','`+row.id+`','`+row.type+`')">
                   //           <i class="ace-icon fa fa-check-square-o bigger-120"></i>
                   //         </button>`;
-                  el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfilelapang('delete','`+row.id+`','`+row.type+`', '`+row.path+'/'+row.filename+`')">
+                  el += `<div class="btn-group"><button class="btn btn-xs btn-danger" onclick="actionfilelapang('delete','`+row.id+`','`+row.type+`', '${row.path}/${row.filename}')">
                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                           </button></div>`;
 
@@ -1337,7 +1339,12 @@ function save(formData){
               path      : path,
           },
           success: function(result){
-            location.reload()
+            // location.reload()
+            $('#cekunggahan').trigger('click')
+                $('#view-doc-undangan').empty();
+                $('#doc_undangan').closest('.ace-file-input').closest('div').prop('hidden', false)
+                $('#keterangan_undangan').val('');
+                $('.remove').trigger('click')
           }
         })
       }
@@ -1686,4 +1693,97 @@ function save(formData){
 
     // Terapkan status disabled
     $button.prop('disabled', shouldBeDisabled);
+}
+
+function puas() {
+  $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'updatepuas',
+      data : {
+          id        : $('#idpermohonan').val(),
+      },
+      success: function(result){
+        $('#verlapanganini').parent().parent().show()
+      }
+    })
+}
+
+function cekundangan() {
+  $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'loadfile',
+      data : {
+          id        : $('#idpermohonan').val(),
+          type      : 1,
+          jenis     : 'doc_undangan',
+      },
+      success: function(result){
+        let data = result.data;
+        let code = result.code;
+
+        $('<a>')
+        .attr({
+            href: `public/${data[0]['path']+'/'+data[0]['filename']}`,
+            target: '_blank',
+            download: ''
+        })[0]
+        .click();
+      }
+    })
+}
+
+function actionpembahasan(id, type){
+  var modal_file = $('#modal_file_pembahasan')
+  $('#ini-ID-untuk-undangan').val(id);
+  $('#ini-TIPE-untuk-undangan').val(type);
+  if (!modal_file.is(':visible')) {
+        modal_file.modal('show');
+  }
+  loadfileundangan(id);
+}
+
+$('#submit_undangan').on('click', function(){
+
+    var formData = new FormData();
+    formData.append('id', $('#ini-ID-untuk-undangan').val());
+    formData.append('param', 'param_file');
+    formData.append('type', '1');
+    formData.append('keterangan', $('#keterangan_undangan').val());
+
+    formData.append("file[doc_undangan]", $('#doc_undangan')[0].files[0]);
+    upload(formData);
+    action('bahas',`${$('#ini-ID-untuk-undangan').val()}`,`${$('#ini-TIPE-untuk-undangan').val()}`,'','data_permohonan')
+});
+
+function loadfileundangan(params) {
+  $.ajax({
+      type: 'post',
+      dataType: 'json',
+      url: 'loadfile',
+      data : {
+          id        : params,
+          type      : 1,
+          jenis     : 'doc_undangan',
+      },
+      success: function(result){
+        let data = result.data;
+        let code = result.code;
+        $('#keterangan_undangan').val(data.length > 0 ? data[0]['keterangan'] : '')
+        if(data.length > 0 ? data[0]['filename'] : '') {
+          $('#doc_undangan').closest('.ace-file-input').closest('div').prop('hidden', true)
+          $('#view-doc-undangan').html(`
+            <div id="view-doc-undangan">
+              <a type="button" class="btn btn-sm btn-primary btn-white btn-round" target="_blank" href="public/${data[0]['path']+'/'+data[0]['filename']}">
+                <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
+                <span class="bigger-110" id="nama-doc-undangan"> ${data[0]['filename']}</span>
+              </a>
+              <a class="btn btn-danger btn-xs btn-round" id="hapus-undangan" onclick="actionfile('delete','`+data[0]['id']+`','`+data[0]['type']+`', '`+data[0]['path']+'/'+data[0]['filename']+`')"><i class="fa fa-trash"></i></a>
+            </div>
+          `)
+        }
+        // $('#doc_undangan').val(data.length > 0 ? data[0]['filename'] : '')
+      }
+  })
 }
