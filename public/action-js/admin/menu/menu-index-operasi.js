@@ -847,8 +847,8 @@ function save(formData){
               {
                 mRender: function ( data, type, row ) {
 
-                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="public/${row.path}/${row.filename}">
-                            <i class="ace-icon fa fa-download bigger-120"></i>
+                  var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="${row.path}">
+                            <i class="ace-icon fa fa-external-link bigger-120"></i>
                           </a></div>`;
 
                 if($('#role').val() == 0) {
