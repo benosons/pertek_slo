@@ -446,9 +446,9 @@ class Jsondata extends \CodeIgniter\Controller
 
 				$fulldata[] = $val;
 			}
-
 			// Tambahkan data penolakan untuk role user
 			if ($role == 0) {
+				$fulldata[] = count($fulldata) ? $fulldata : [];
 				$fulldata['penolakan'] = $gettolak;
 			}
 
@@ -1616,8 +1616,8 @@ class Jsondata extends \CodeIgniter\Controller
 		$data['type'] 			= $request->getVar('type');
 		$data['tahapan'] 		= $request->getVar('tahapan');
 		$data['noreg'] 			= $kode_registrasi_penuh;
-		
 		$res = $model->saveParam($param, $data);
+		
 		$id  = $model->insertID();
 
 		$el = [

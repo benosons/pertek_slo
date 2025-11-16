@@ -282,7 +282,8 @@ function loadpermohonan(param){
 
             if($('#isRole').val() == 0){
               let optd = ''
-              
+              console.log(data[0].hasOwnProperty('id'));
+              if(data[0].hasOwnProperty('id')){
               const kategori = data.length ? data[0].kategori : '';
               $('#iskat').val(kategori);
               $('#dokumen-unggahan').html(data[0].kategori == '1' ? 'PERSYARATAN PERMOHONAN SURAT KELAYAKAN OPERASIONAL PEMBUANGAN DAN/ATAU PEMANFAATAN AIR LIMBAH' : 'PERSYARATAN PERMOHONAN SURAT KELAYAKAN OPERASIONAL PEMBUANGAN EMISI' )
@@ -427,6 +428,11 @@ function loadpermohonan(param){
                 $('#harap').hide();
               }
 
+
+              $('#nomor_registrasi').html(data[0].noreg ? data[0].noreg : '-')
+            }
+
+            
               if(data.penolakan.length){
                 if(data){
                   window.datas = data
@@ -443,8 +449,6 @@ function loadpermohonan(param){
                   `)
                 }
               }
-
-              $('#nomor_registrasi').html(data[0].noreg ? data[0].noreg : '-')
 
             }else{
               var dt = $('#all-permohonan').DataTable({
