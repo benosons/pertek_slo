@@ -230,7 +230,7 @@ $(document).ready(function(){
           formData.append('type', '1');
           formData.append('tahapan', '1');
           let berapa = [];
-          for (let index = 1; index <= 9; index++) {
+          for (let index = 1; index <= 10; index++) {
             if($('#input_'+index).val()){
               formData.append('input_'+index, $('#input_'+index).val());
               $('#input_'+index).parent().parent().removeClass('has-error');
@@ -269,7 +269,7 @@ $(document).ready(function(){
           // formData.append("bab_standar", $('#bab_standar').val());
           formData.append("code", 'PRT');
           
-          if(berapa.length == 9){
+          if(berapa.length == 10){
             save(formData);
           }
         }
@@ -375,7 +375,7 @@ $(document).ready(function(){
       }
     }
     
-    if(vl.length == 9){
+    if(vl.length == 10){
       $('#mohon_save').prop('disabled', false);
     }else{
       $('#mohon_save').prop('disabled', true);
@@ -522,9 +522,11 @@ function loadpermohonan(param){
           if(code != '0'){
             if($('#isRole').val() == 0){
               if(data[0].hasOwnProperty('id')){
+                console.log(data[0].tahapan);
+                
                 if(Object.keys(data).length > 1){
                   let tah = ''
-                  for (let i = 0; i < 6; i++) {
+                  for (let i = 0; i <= 5; i++) {
                     
                     $('#tahap-'+i).addClass('complete')
                     if(data[0].tahapan == i){
@@ -609,7 +611,7 @@ function loadpermohonan(param){
                               $('#view-file-permohonan').css('display', 'block');
                               $('#form-permohonan-reupload').css('display', 'none');
                               $('#hapus-permohonan').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
-                              $('#catatan-permohonan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
+                              !data[0].file[f]['keterangan'] ?? $('#catatan-permohonan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
 
                             }else{                          
                               $('#nama-file-permohonan').html(data[0].file[f]['filename']);
@@ -643,7 +645,7 @@ function loadpermohonan(param){
                               $('#view-file-izin-lingkungan').css('display', 'block');
                               $('#form-izin-lingkungan-reupload').css('display', 'none');
                               $('#hapus-izin-lingkungan').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
-                              $('#catatan-izin-lingkungan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
+                              !data[0].file[f]['keterangan'] ?? $('#catatan-izin-lingkungan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
 
                             }else{
                               $('#nama-file-izin-lingkungan').html(data[0].file[f]['filename']);
@@ -678,7 +680,7 @@ function loadpermohonan(param){
                               $('#view-file-nib').css('display', 'block');
                               $('#form-nib-reupload').css('display', 'none');
                               $('#hapus-nib').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
-                              $('#catatan-nib').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
+                              !data[0].file[f]['keterangan'] ?? $('#catatan-nib').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
 
                             }else{
                               $('#nama-file-nib').html(data[0].file[f]['filename']);
@@ -713,7 +715,7 @@ function loadpermohonan(param){
                               $('#view-file-penapisan-mandiri').css('display', 'block');
                               $('#form-penapisan-mandiri-reupload').css('display', 'none');
                               $('#hapus-penapisan-mandiri').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
-                              $('#catatan-penapisan-mandiri').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
+                              !data[0].file[f]['keterangan'] ?? $('#catatan-penapisan-mandiri').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
                             }else{
                               $('#nama-file-penapisan-mandiri').html(data[0].file[f]['filename']);
                               $('#nama-file-penapisan_mandiri').attr('onclick', "downloadatuh('"+'public/'+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
@@ -729,6 +731,7 @@ function loadpermohonan(param){
                             }else{
                               $('#hapus-penapisan-mandiri').show();
                               $('#catatan-penapisan-mandiri').prop('hidden', false);
+                              
                               if(oknya == 2){
                                 var ell = ` <li>
                                               <i class="">File Hasil Penapisan Mandiri</i>
@@ -852,10 +855,10 @@ function loadpermohonan(param){
                             return '<span class="label label-sm label-danger arrowed-in">Ditolak</span>'
                           }
 
-                          if(data == 2 && row.pembahasan == 1){
-                            data = 3
-                          }
-
+                          // if(data == 2 && row.pembahasan == 1){
+                          //   data = 3
+                          // }
+                          
                           let label = [
                             '-',
                             '<span class="label label-sm label-primary arrowed-in">Pengajuan</span>',
@@ -912,12 +915,12 @@ function loadpermohonan(param){
                                           </button></div>`
                                   }
 
-                                  // if(!row.pembahasan){
+                                  if(row.pembahasan){
 
                                     el += `<div class="btn-group"><button title="Pembahasan" class="btn btn-xs btn-primary" data-id="pembahasan-${row.id}" onclick="actionpembahasan('${row.id}', '${row.type}');">
                                             <i class="ace-icon fa fas fa-info-circle bigger-120"></i>
                                           </button></div>`
-                                  // }
+                                  }
                             
                             el += `<div class="btn-group"><button  title="Penolakan" class="btn btn-xs btn-danger" onclick="action('tolak',`+row.id+`,'`+row.type+`','','data_permohonan')">
                                       <i class="ace-icon fa fa-times bigger-120"></i>
@@ -1400,6 +1403,7 @@ function save(formData){
                             if($('#role').val() == '10' || $('#role').val() == '100'){
                               let rev = '';
                               let done = '';
+                              let bahas = '';
                               if(data == '1'){
                                   rev = 'selected';
                               }
@@ -1407,17 +1411,24 @@ function save(formData){
                               if(data == '0'){
                                   done = 'selected';
                               }
+
+                              if(data == '2'){
+                                  bahas = 'selected';
+                              }
                               
                             var el =`<select class="form-control" id="status_1_`+row.id+`" >
                                       <option value=""> - </option>
                                       <option `+rev+` value="1"> Revisi </option>
                                       <option `+done+` value="0"> Selesai </option>
+                                      <option `+bahas+` value="2"> Pembahasan </option>
                                     </select>`;
                             }else{
                               if(data == '1'){
                                 var el = '<span class="label label-danger arrowed">Revisi</span>';
                               }else if(data == '0'){
                                 var el = '<span class="label label-primary arrowed">Selesai</span>';
+                              }else if(data == '2'){
+                                var el = '<span class="label label-info arrowed">Pembahasan</span>';
                               }else{
                                 var el = '-'
                               }
@@ -2667,6 +2678,7 @@ function save(formData){
             kategori   : $('#kategori').val(),
             param      : $('#jenis').val(),
             ver        : 2,
+            code       : 'PRT',
         },
         success: function(result){
           loadpermohonan('1');

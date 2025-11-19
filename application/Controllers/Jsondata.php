@@ -361,7 +361,7 @@ class Jsondata extends \CodeIgniter\Controller
 		return $map[$type][$param][$kategori] ?? ($map[$type][0] ?? 0);
 	}
 
-	private function updateStatusPermohonan($modelfiles, $modelparam, $id, $userid, $complete)
+	private function updateStatusPermohonan($modelfiles, $modelparam, $id, $userid, $complete, $tahapan)
 	{
 		$data = [
 			'updated_date' => $this->now,
@@ -370,7 +370,7 @@ class Jsondata extends \CodeIgniter\Controller
 		];
 
 		$modelfiles->updatestatusmaster('data_permohonan', $id, $data);
-		$modelparam->updatetahapan($id, $complete ? 5 : 4);
+		$modelparam->updatetahapan($id, $complete ? 5 : $tahapan);
 	}
 
 	public function loadpermohonan()
@@ -393,14 +393,15 @@ class Jsondata extends \CodeIgniter\Controller
 			$fulldata = [];
 			$dataprogram = $model->getpermohonan($role, $userid, $param, $filter);
 			$gettolak    = $model->getpermohonantolak($role, $userid, $param, $filter);
-
 			foreach ($dataprogram as $val) {
+				if($val->id == '429'){
+					// die('stop');
 
 				// Ambil file
 				$val->file = (object) $modelfiles->getfilenya('param_file', $val->id, $val->type, null, $val->kategori);
-
+				
 				// Khusus role verifikator
-				if (($val->type == 1 || $val->type == 2) && ($role == 100 || $role == 10)) {
+				if (($val->type == 1 || $val->type == 2) && ($role == 100 || $role == 10 )) {
 
 					$files = $modelfiles->getparam('param_file', $val->id, $val->type, null, $val->kategori);
 
@@ -411,22 +412,33 @@ class Jsondata extends \CodeIgniter\Controller
 
 					// Tentukan jumlah file total berdasarkan kategori & parameter
 					$total_file = $this->getTotalFile($val->type, $val->param, $val->kategori);
-
+					
 					// Hitung status
 					if ($total_file > 0 && count($files) == $total_file) {
 
-						$stt     = array_filter($files, fn($x) => $x->status == '0');
-						$stt_rev = array_filter($files, fn($x) => $x->status == '1');
-
+						$stt_netral = array_filter($files, fn($x) => $x->status == '');
+						$stt     	= array_filter($files, fn($x) => $x->status == '0');
+						$stt_rev 	= array_filter($files, fn($x) => $x->status == '1');
+						$stt_bahas 	= array_filter($files, fn($x) => $x->status == '2');
+						
 						// Update tahapan
-						if (count($stt_rev) != 0 && count($stt_rev) < $total_file) {
+						if(count($stt_netral) != 0 && count($stt_netral) == $total_file){
+							$modelparam->updatetahapan($val->id, 1);
+							$val->tahapan = 1;
+						} else if (count($stt_rev) == 0 && count($stt_bahas) == $total_file) {
+							$modelparam->updatetahapan($val->id, 3);
+							$val->tahapan = 3;
+							$modelparam->bahaspermohonan($val->id);
+							$val->pembahasan = 1;
+
+						} else if (count($stt_rev) != 0 && count($stt_rev) < $total_file) {
 							$modelparam->updatetahapan($val->id, 4);
 							$val->tahapan = 4;
 						} else {
 							$modelparam->updatetahapan($val->id, 2);
 							$val->tahapan = 2;
 						}
-
+						
 						// Update status permohonan
 						$isComplete = (count($stt) >= $total_file);
 						$this->updateStatusPermohonan(
@@ -434,17 +446,19 @@ class Jsondata extends \CodeIgniter\Controller
 							$modelparam,
 							$val->id,
 							$userid,
-							$isComplete
+							$isComplete,
+							$val->tahapan
 						);
-
+						
 						$val->status  = $isComplete ? 1 : 0;
-						$val->tahapan = $isComplete ? 5 : 4;
+						$val->tahapan = $isComplete ? 5 : $val->tahapan;
 					} else {
 						$val->status = 0;
 					}
 				}
 
 				$fulldata[] = $val;
+			}
 			}
 			// Tambahkan data penolakan untuk role user
 			if ($role == 0) {
@@ -455,7 +469,7 @@ class Jsondata extends \CodeIgniter\Controller
 			$response = $fulldata
 				? ['status' => 'sukses', 'code' => '1', 'data' => $fulldata]
 				: ['status' => 'gagal', 'code' => '0', 'data' => 'tidak ada data'];
-
+			
 			header('Content-Type: application/json');
 			echo json_encode($response);
 			exit;
@@ -1606,7 +1620,7 @@ class Jsondata extends \CodeIgniter\Controller
 
 		$data = [];
 
-		for ($i=1; $i <= 9 ; $i++) { 
+		for ($i=1; $i <= 10 ; $i++) { 
 			$data['p'.$i] = $request->getVar('input_'.$i);
 		}
 		
@@ -1615,7 +1629,7 @@ class Jsondata extends \CodeIgniter\Controller
 		$data['updated_date'] 	= $this->now;
 		$data['type'] 			= $request->getVar('type');
 		$data['tahapan'] 		= $request->getVar('tahapan');
-		$data['noreg'] 			= $kode_registrasi_penuh;
+		// $data['noreg'] 			= $kode_registrasi_penuh;
 		$res = $model->saveParam($param, $data);
 		
 		$id  = $model->insertID();
@@ -1714,14 +1728,33 @@ class Jsondata extends \CodeIgniter\Controller
 		$kategori 	  = $request->getVar('kategori');
 		$role 		= $this->data['role'];
 		$userid		= $this->data['userid'];
-
+		$code		= $request->getVar('code');
 		$model 	  = new \App\Models\TargetModel();
+		$tanggal_saat_ini = date("Y-m-d");
+		$tanggal_kode = date("dmY", strtotime($tanggal_saat_ini));
+		$kateg = '0';
+		$jns = '0';
+		
+		if($kategori <= 4){
+			$kateg = 'AL';
+		}else if($kategori == '5'){
+			$kateg = 'E';
+		}
+
+		if($param == '1'){
+			$jns = 'KT';
+		}else if($param == '2'){
+			$jns = 'ST';
+		}
+
+		$kode_registrasi_penuh = $tanggal_kode . "-". $code ."-" . $kateg . "-" . $jns;
 
 		$data = [
 						'updated_date' 		=> $this->now,
 						'updated_by' 		=> $userid,
 						'param' 			=> $param,
 						'kategori' 			=> $kategori,
+						'noreg' 			=> $kode_registrasi_penuh
         ];
 
 		$res = $model->updateparam($id, $data);
