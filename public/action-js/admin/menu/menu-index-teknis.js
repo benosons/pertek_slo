@@ -609,6 +609,7 @@ function loadpermohonan(param){
                               $('#view-file-permohonan').css('display', 'block');
                               $('#form-permohonan-reupload').css('display', 'none');
                               $('#hapus-permohonan').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
+                              $('#catatan-permohonan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
 
                             }else{                          
                               $('#nama-file-permohonan').html(data[0].file[f]['filename']);
@@ -621,8 +622,10 @@ function loadpermohonan(param){
 
                             if(oknya == 1){
                               $('#hapus-permohonan').css('display', 'none');
+                              $('#catatan-permohonan').prop('hidden', true);
                             }else{
                               $('#hapus-permohonan').show();
+                              $('#catatan-permohonan').prop('hidden', false);
                               if(oknya == 2){
                                 var ell = ` <li>
                                               <i class="">File Permohonan</i>
@@ -640,6 +643,7 @@ function loadpermohonan(param){
                               $('#view-file-izin-lingkungan').css('display', 'block');
                               $('#form-izin-lingkungan-reupload').css('display', 'none');
                               $('#hapus-izin-lingkungan').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
+                              $('#catatan-izin-lingkungan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
 
                             }else{
                               $('#nama-file-izin-lingkungan').html(data[0].file[f]['filename']);
@@ -652,8 +656,10 @@ function loadpermohonan(param){
 
                             if(oknya == 1){
                               $('#hapus-izin-lingkungan').css('display', 'none');
+                              $('#catatan-izin-lingkungan').prop('hidden', true);
                             }else{
                               $('#hapus-izin-lingkungan').show();
+                              $('#catatan-izin-lingkungan').prop('hidden', false);
                               if(oknya == 2){
                                 var ell = ` <li>
                                               <i class="">File Izin Lingkungan</i>
@@ -672,7 +678,7 @@ function loadpermohonan(param){
                               $('#view-file-nib').css('display', 'block');
                               $('#form-nib-reupload').css('display', 'none');
                               $('#hapus-nib').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
-
+                              $('#catatan-nib').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
 
                             }else{
                               $('#nama-file-nib').html(data[0].file[f]['filename']);
@@ -685,8 +691,10 @@ function loadpermohonan(param){
 
                             if(oknya == 1){
                               $('#hapus-nib').css('display', 'none');
+                              $('#catatan-nib').prop('hidden', true);
                             }else{
                               $('#hapus-nib').show();
+                              $('#catatan-nib').prop('hidden', false);
                               if(oknya == 2){
                                 var ell = ` <li>
                                               <i class="">File NIB</i>
@@ -705,6 +713,7 @@ function loadpermohonan(param){
                               $('#view-file-penapisan-mandiri').css('display', 'block');
                               $('#form-penapisan-mandiri-reupload').css('display', 'none');
                               $('#hapus-penapisan-mandiri').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
+                              $('#catatan-penapisan-mandiri').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
                             }else{
                               $('#nama-file-penapisan-mandiri').html(data[0].file[f]['filename']);
                               $('#nama-file-penapisan_mandiri').attr('onclick', "downloadatuh('"+'public/'+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
@@ -716,8 +725,10 @@ function loadpermohonan(param){
 
                             if(oknya == 1){
                               $('#hapus-penapisan-mandiri').css('display', 'none');
+                              $('#catatan-penapisan-mandiri').prop('hidden', true);
                             }else{
                               $('#hapus-penapisan-mandiri').show();
+                              $('#catatan-penapisan-mandiri').prop('hidden', false);
                               if(oknya == 2){
                                 var ell = ` <li>
                                               <i class="">File Hasil Penapisan Mandiri</i>
@@ -2466,29 +2477,29 @@ function save(formData){
       formData.append('param', 'data_file');
       formData.append('id', id);
       formData.append('ok', ok);
+      if(ok == 2){
+        Swal.fire({
+          title: 'Alasan', // Title of the prompt
+          input: 'text', // Specifies that the input type is text
+          inputPlaceholder: 'masukkan alasan...', // Placeholder text for the input field
+          showCancelButton: true, // Displays a cancel button
+          inputValidator: (value) => { // Optional: A function to validate the input
+            if (!value) {
+              return 'Anda perlu menulis sesuatu!'; // Error message if input is empty
+            }
+          }
+        }).then((result) => {
+          
+          if (result.value) {
+            formData.append('keterangan', result.value);
+            itsok(formData);
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
 
-      $.ajax({
-        type: 'post',
-        processData: false,
-        contentType: false,
-        url: 'okdong',
-        data : formData,
-        success: function(result){
-          Swal.fire({
-            type: 'success',
-            title: 'Berhasil Verifikasi File !',
-            showConfirmButton: true,
-            // showCancelButton: true,
-            confirmButtonText: `Ok`,
-          }).then((result) => {
-            // $(document).ready(function(){
-            //   location.reload()
-            // });
-            // popupvalidasi()
-            $(`[data-view-validasi-id="usr_${$('#view_validasi_id').val()}"]`).trigger('click')
-          })
-        }
-      });
+          }
+        })
+      }else{
+        itsok(formData);
+      }
 
     }
 
@@ -2930,4 +2941,29 @@ function cekundangan() {
         .click();
       }
     })
+}
+
+function itsok(isformData) {
+        $.ajax({
+        type: 'post',
+        processData: false,
+        contentType: false,
+        url: 'okdong',
+        data : isformData,
+        success: function(result){
+          Swal.fire({
+            type: 'success',
+            title: 'Berhasil Verifikasi File !',
+            showConfirmButton: true,
+            // showCancelButton: true,
+            confirmButtonText: `Ok`,
+          }).then((result) => {
+            // $(document).ready(function(){
+            //   location.reload()
+            // });
+            // popupvalidasi()
+            $(`[data-view-validasi-id="usr_${$('#view_validasi_id').val()}"]`).trigger('click')
+          })
+        }
+      });
 }

@@ -3577,6 +3577,7 @@ class Jsondata extends \CodeIgniter\Controller
 		$request  = $this->request;
 		$id 	  = $request->getVar('id');
 		$ok 	  = $request->getVar('ok');
+		$keterangan 	  = $request->getVar('keterangan');
 		$role 		= $this->data['role'];
 		$userid		= $this->data['userid'];
 		
@@ -3587,6 +3588,10 @@ class Jsondata extends \CodeIgniter\Controller
 						'update_by' 	=> $userid,
 						'ok' 			=> $ok,
         ];
+
+		if($keterangan){
+			$data['keterangan'] = $keterangan;
+		}
 
 		$res = $modelfile->updateok('param_file',$id, $data);
 
