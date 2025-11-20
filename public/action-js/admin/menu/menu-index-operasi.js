@@ -106,7 +106,7 @@ $(document).ready(function(){
           formData.append('type', '2');
           formData.append('tahapan', '1');
           let berapa = [];
-          for (let index = 1; index <= 9; index++) {
+          for (let index = 1; index <= 10; index++) {
             if($('#input_'+index).val()){
               formData.append('input_'+index, $('#input_'+index).val());
               $('#input_'+index).parent().parent().removeClass('has-error');
@@ -122,7 +122,7 @@ $(document).ready(function(){
           // formData.append("file[doc_nib]", $('#doc_nib')[0].files[0]);
           formData.append("code", 'SLO');
 
-          if(berapa.length == 8){
+          if(berapa.length == 9){
             save(formData);
           }
         }
@@ -218,7 +218,7 @@ $(document).ready(function(){
       }
     }
     
-    if(vl.length == 8){
+    if(vl.length == 9){
       $('#mohon_save').prop('disabled', false);
     }else{
       $('#mohon_save').prop('disabled', true);
@@ -355,16 +355,21 @@ function loadpermohonan(param){
                         $('#nama-file-permohonan').closest('button').find('i').attr('class', 'ace-icon fa fa-external-link bigger-150 middle blue');
                         $('#nama-file-permohonan').closest('button').attr('onclick', `downloadatuh('${data[0].file[f]['path']}')`);
                         $('#hapus-permohonan').attr('onclick', "actionfile('delete','"+data[0].file[f]['id']+"','"+data[0].type+"','"+data[0].file[f]['path']+'/'+data[0].file[f]['filename']+"')");
-
+                        console.log();
+                        
                         $('#view-file-permohonan').css('display', 'block');
                         $('#form-permohonan-reupload').css('display', 'none');
+                        data[0].file[f]['keterangan'] ? $('#catatan-permohonan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']) : '';
+
 
                         if(oknya == 1){
                           $('#hapus-permohonan').css('display', 'none');
                           $('#ini-verifikasi').hide()
+                          $('#catatan-permohonan').prop('hidden', true);
                         }else{
                           $('#hapus-permohonan').show();
                           $('#cekunggahan').hide();
+                          $('#catatan-permohonan').prop('hidden', false);
                           if(oknya == 2){
                             var ell = ` <li>
                                           <i class="">File Permohonan</i>
@@ -486,9 +491,9 @@ function loadpermohonan(param){
                           return '<span class="label label-sm label-danger arrowed-in">Ditolak</span>'
                         }
 
-                        if(data == 2 && row.pembahasan == 1){
-                          data = 3
-                        }
+                        // if(data == 2 && row.pembahasan == 1){
+                        //   data = 3
+                        // }
 
                         let label = [
                           '-',
@@ -496,7 +501,7 @@ function loadpermohonan(param){
                           '<span class="label label-sm label-warning arrowed-in">Pemeriksaan Dokumen</span>',
                           '<span class="label label-sm label-info arrowed-in">Pembahasan Penilaian Substansi & Verifikasi Lapangan</span>',
                           '<span class="label label-sm label-secondary arrowed-in">Perbaikan Dokumen</span>',
-                          '<span class="label label-sm label-success arrowed-in">Rekomendasi Pertek</span>'
+                          '<span class="label label-sm label-success arrowed-in">Rekomendasi SLO</span>'
 
                         ]
                         if(!data){
@@ -568,7 +573,7 @@ function loadpermohonan(param){
                         let kategori = [
                           '',
                           'Air Limbah',
-                          'Udara',
+                          'Emisi',
                         ]
 
                         return kategori[row.kategori]
@@ -794,6 +799,7 @@ function save(formData){
                         if($('#role').val() == '10' || $('#role').val() == '100'){
                           let rev = '';
                           let done = '';
+                          let bahas = '';
                           if(data == '1'){
                               rev = 'selected';
                           }
@@ -801,17 +807,24 @@ function save(formData){
                           if(data == '0'){
                               done = 'selected';
                           }
+
+                          if(data == '2'){
+                              bahas = 'selected';
+                          }
                           
                         var el =`<select class="form-control" id="status_2_`+row.id+`" >
                                   <option value=""> - </option>
                                   <option `+rev+` value="1"> <i>Revisi</i> </option>
                                   <option `+done+` value="0"> Selesai </option>
+                                  <option `+bahas+` value="2"> Pembahasan </option>
                                 </select>`;
                         }else{
                           if(data == '1'){
                             var el = '<span class="label label-danger arrowed">Revisi</span>';
                           }else if(data == '0'){
                             var el = '<span class="label label-primary arrowed">Selesai</span>';
+                          }else if(data == '2'){
+                            var el = '<span class="label label-info arrowed">Pembahasan</span>';
                           }else{
                             var el = '-'
                           }
@@ -1440,25 +1453,29 @@ function save(formData){
     formData.append('param', 'data_file');
     formData.append('id', id);
     formData.append('ok', ok);
-
-    $.ajax({
-      type: 'post',
-      processData: false,
-      contentType: false,
-      url: 'okdong',
-      data : formData,
-      success: function(result){
+          if(ok == 2){
         Swal.fire({
-          type: 'success',
-          title: 'Berhasil Verifikasi File !',
-          showConfirmButton: true,
-          // showCancelButton: true,
-          confirmButtonText: `Ok`,
+          title: 'Alasan', // Title of the prompt
+          input: 'text', // Specifies that the input type is text
+          inputPlaceholder: 'masukkan alasan...', // Placeholder text for the input field
+          showCancelButton: true, // Displays a cancel button
+          inputValidator: (value) => { // Optional: A function to validate the input
+            if (!value) {
+              return 'Anda perlu menulis sesuatu!'; // Error message if input is empty
+            }
+          }
         }).then((result) => {
-          loadfilepermohonan(id_parent, type)
+          
+          if (result.value) {
+            formData.append('keterangan', result.value);
+            itsok(formData, id_parent, type);
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+          }
         })
+      }else{
+        itsok(formData, id_parent, type);
       }
-    });
 
   }
 
@@ -1523,6 +1540,7 @@ function save(formData){
           kategori   : $('#kategori').val(),
           param      : null,
           ver        : 2,
+          code       : 'SLO',
       },
       success: function(result){
         location.reload()
@@ -1787,4 +1805,25 @@ function loadfileundangan(params) {
         // $('#doc_undangan').val(data.length > 0 ? data[0]['filename'] : '')
       }
   })
+}
+
+function itsok(params, id_parent, type) {
+      $.ajax({
+      type: 'post',
+      processData: false,
+      contentType: false,
+      url: 'okdong',
+      data : params,
+      success: function(result){
+        Swal.fire({
+          type: 'success',
+          title: 'Berhasil Verifikasi File !',
+          showConfirmButton: true,
+          // showCancelButton: true,
+          confirmButtonText: `Ok`,
+        }).then((result) => {
+          loadfilepermohonan(id_parent, type)
+        })
+      }
+    });
 }

@@ -394,8 +394,6 @@ class Jsondata extends \CodeIgniter\Controller
 			$dataprogram = $model->getpermohonan($role, $userid, $param, $filter);
 			$gettolak    = $model->getpermohonantolak($role, $userid, $param, $filter);
 			foreach ($dataprogram as $val) {
-				if($val->id == '429'){
-					// die('stop');
 
 				// Ambil file
 				$val->file = (object) $modelfiles->getfilenya('param_file', $val->id, $val->type, null, $val->kategori);
@@ -458,7 +456,6 @@ class Jsondata extends \CodeIgniter\Controller
 				}
 
 				$fulldata[] = $val;
-			}
 			}
 			// Tambahkan data penolakan untuk role user
 			if ($role == 0) {
@@ -1735,26 +1732,38 @@ class Jsondata extends \CodeIgniter\Controller
 		$kateg = '0';
 		$jns = '0';
 		
-		if($kategori <= 4){
-			$kateg = 'AL';
-		}else if($kategori == '5'){
-			$kateg = 'E';
+		if($code == 'PRT'){
+			if($kategori <= 4){
+				$kateg = 'AL';
+			}else if($kategori == '5'){
+				$kateg = 'E';
+			}
+
+			if($param == '1'){
+				$jns = 'KT';
+			}else if($param == '2'){
+				$jns = 'ST';
+			}
+			$kode_registrasi_penuh = $tanggal_kode . "-". $code ."-" . $kateg . "-" . $jns;
+
 		}
 
-		if($param == '1'){
-			$jns = 'KT';
-		}else if($param == '2'){
-			$jns = 'ST';
-		}
+		if($code == 'SLO'){
+			if($kategori == '1'){
+				$kateg = 'AL';
+			}else if($kategori == '2'){
+				$kateg = 'E';
+			}
 
-		$kode_registrasi_penuh = $tanggal_kode . "-". $code ."-" . $kateg . "-" . $jns;
+			$kode_registrasi_penuh = $tanggal_kode . "-". $code ."-" . $kateg;
+		}
 
 		$data = [
-						'updated_date' 		=> $this->now,
-						'updated_by' 		=> $userid,
-						'param' 			=> $param,
-						'kategori' 			=> $kategori,
-						'noreg' 			=> $kode_registrasi_penuh
+			'updated_date' 		=> $this->now,
+			'updated_by' 		=> $userid,
+			'param' 			=> $param,
+			'kategori' 			=> $kategori,
+			'noreg' 			=> $kode_registrasi_penuh
         ];
 
 		$res = $model->updateparam($id, $data);
