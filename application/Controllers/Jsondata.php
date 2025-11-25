@@ -2,6 +2,7 @@
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use App\Controller\BaseController;
+use App\Libraries\Tcpdf_lib;
 
 class Jsondata extends \CodeIgniter\Controller
 {
@@ -3848,4 +3849,178 @@ class Jsondata extends \CodeIgniter\Controller
 
 	}
 
+	public function generateTandaTerima()
+	{
+		try {
+			$request = $this->request;
+			$id = $request->getVar('id');
+			$userid = $this->data['userid'];
+			$role = $this->data['role'];
+
+			// Log for debugging
+			log_message('info', 'generateTandaTerima called with ID: ' . $id);
+
+			if (!$this->logged) {
+				$response = [
+					'status' => 'gagal',
+					'code' => '0',
+					'data' => 'Silahkan login terlebih dahulu'
+				];
+				header('Content-Type: application/json');
+				echo json_encode($response);
+				exit;
+			}
+
+			if (!$id) {
+				throw new \Exception("ID permohonan tidak ditemukan");
+			}
+
+			// Load Helpers
+			helper('url');
+			helper('form');
+
+			// Fetch Data using query builder
+			$db = \Config\Database::connect();
+			$builder = $db->table('data_permohonan');
+			$dataDB = $builder->getWhere(['id' => $id])->getRowArray();
+
+			log_message('info', 'Data fetched: ' . json_encode($dataDB));
+
+			if (!$dataDB) {
+				throw new \Exception("Data permohonan dengan ID {$id} tidak ditemukan");
+			}
+			
+			// Map data
+			$data = [
+				'no_registrasi' => $dataDB['noreg'] ?? 'REG-' . date('Ymd') . '-' . $id,
+				'tanggal' => date('d F Y'),
+				'nama_pemohon' => $dataDB['p1'] ?? '-',
+				'penanggung_jawab' => $dataDB['p4'] ?? '-',
+				'jenis_permohonan' => $dataDB['p10'] ?? 'Permohonan Persetujuan Teknis',
+				'status' => 'Diterima'
+			];
+
+			// Initialize TCPDF
+			new Tcpdf_lib();
+			$pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+			// Set document information
+			$pdf->SetCreator(PDF_CREATOR);
+			$pdf->SetAuthor('Sistem Pertek SLO');
+			$pdf->SetTitle('Tanda Terima Permohonan');
+			$pdf->SetSubject('Tanda Terima');
+
+			// Remove default header/footer
+			$pdf->setPrintHeader(false);
+			$pdf->setPrintFooter(false);
+
+			// Set margins
+			$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+
+			// Add a page
+			$pdf->AddPage();
+
+			// Set font
+			$pdf->SetFont('helvetica', '', 12);
+
+			// HTML Content
+			$html = '
+			<h2 style="text-align:center;">TANDA TERIMA DOKUMEN</h2>
+			<hr>
+			<br><br>
+			<table border="0" cellpadding="5">
+				<tr>
+					<td width="150"><strong>No. Registrasi</strong></td>
+					<td width="20">:</td>
+					<td>' . htmlspecialchars($data['no_registrasi']) . '</td>
+				</tr>
+				<tr>
+					<td><strong>Tanggal</strong></td>
+					<td>:</td>
+					<td>' . htmlspecialchars($data['tanggal']) . '</td>
+				</tr>
+				<tr>
+					<td><strong>Nama Pemohon</strong></td>
+					<td>:</td>
+					<td>' . htmlspecialchars($data['nama_pemohon']) . '</td>
+				</tr>
+				<tr>
+					<td><strong>Penanggung Jawab</strong></td>
+					<td>:</td>
+					<td>' . htmlspecialchars($data['penanggung_jawab']) . '</td>
+				</tr>
+				<tr>
+					<td><strong>Jenis Permohonan</strong></td>
+					<td>:</td>
+					<td>' . htmlspecialchars($data['jenis_permohonan']) . '</td>
+				</tr>
+				<tr>
+					<td><strong>Status</strong></td>
+					<td>:</td>
+					<td>' . htmlspecialchars($data['status']) . '</td>
+				</tr>
+			</table>
+			<br><br>
+			<p>Dokumen telah diterima dan akan diproses sesuai dengan prosedur yang berlaku.</p>
+			<br><br><br>
+			<table border="0">
+				<tr>
+					<td width="60%"></td>
+					<td width="40%" align="center">
+						Petugas,<br><br><br><br>
+						( ........................... )
+					</td>
+				</tr>
+			</table>
+			';
+
+			$pdf->writeHTML($html, true, false, true, false, '');
+
+			// Define file path
+			$fileName = 'Tanda_Terima_' . $id . '_' . date('Ymd') . '.pdf';
+			$uploadDir = FCPATH . 'public/uploads/cetak/' .$id.'/';
+			
+			// Create directory if not exists
+			if (!is_dir($uploadDir)) {
+				mkdir($uploadDir, 0777, true);
+			}
+			
+			$filePath = $uploadDir . $fileName;
+
+			// Save PDF to file
+			$pdf->Output($filePath, 'F');
+
+			log_message('info', 'PDF saved to: ' . $filePath);
+
+			// Return response
+			$response = [
+				'status' => 'sukses',
+				'code' => '1',
+				'data' => [
+					'url' => 'public/uploads/cetak/'.$id.'/'.$fileName,
+					'filename' => $fileName,
+					'message' => 'PDF berhasil dibuat'
+				]
+			];
+
+			header('Content-Type: application/json');
+			echo json_encode($response);
+			exit;
+
+		} catch (\Exception $e) {
+			log_message('error', 'generateTandaTerima error: ' . $e->getMessage());
+			log_message('error', 'Stack trace: ' . $e->getTraceAsString());
+			
+			$response = [
+				'status' => 'gagal',
+				'code' => '0',
+				'data' => 'Error: ' . $e->getMessage()
+			];
+			header('Content-Type: application/json');
+			echo json_encode($response);
+			exit;
+		}
+	}
+
 }
+
