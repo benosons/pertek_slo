@@ -3904,7 +3904,18 @@ class Jsondata extends \CodeIgniter\Controller
 
 			// Initialize TCPDF
 			new Tcpdf_lib();
-			$pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+			$pdf = new class(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false) extends \TCPDF {
+				public function Footer()
+				{
+					$this->SetY(-20);
+					$this->Ln(2);
+
+					$this->SetFont('helvetica', '', 8);
+
+					$this->Cell(0, 0, 'Website : http://dlh.bandung.go.id', 0, 1, 'C');
+					$this->Cell(0, 0, 'Email : dlhkota@bandung.go.id', 0, 0, 'C');
+				}
+			};
 
 			// Set document information
 			$pdf->SetCreator(PDF_CREATOR);
@@ -3914,8 +3925,8 @@ class Jsondata extends \CodeIgniter\Controller
 
 			
 			// Remove default header/footer
-			$pdf->setPrintHeader(false);
-			$pdf->setPrintFooter(false);
+			$pdf->setPrintHeader(true);
+			$pdf->setPrintFooter(true);
 
 			// Set margins
 			$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
