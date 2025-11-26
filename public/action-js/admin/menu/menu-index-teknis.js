@@ -2992,7 +2992,7 @@ function generateTandaTerima(id, type) {
     dataType: 'json',
     data: {
       id: $('#idpermohonan').val(),
-      type: type,
+      type: 'PERSETUJUAN TEKNIS PEMENUHAN BAKU MUTU LINGKUNGAN HIDUP',
     },
     success: function (response) {
       dialog.modal('hide');

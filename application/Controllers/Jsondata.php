@@ -3856,6 +3856,7 @@ class Jsondata extends \CodeIgniter\Controller
 			$id = $request->getVar('id');
 			$userid = $this->data['userid'];
 			$role = $this->data['role'];
+			$type = $request->getVar('type');
 
 			// Log for debugging
 			log_message('info', 'generateTandaTerima called with ID: ' . $id);
@@ -3893,11 +3894,12 @@ class Jsondata extends \CodeIgniter\Controller
 			// Map data
 			$data = [
 				'no_registrasi' => $dataDB['noreg'] ?? 'REG-' . date('Ymd') . '-' . $id,
-				'tanggal' => date('d F Y'),
-				'nama_pemohon' => $dataDB['p1'] ?? '-',
-				'penanggung_jawab' => $dataDB['p4'] ?? '-',
-				'jenis_permohonan' => $dataDB['p10'] ?? 'Permohonan Persetujuan Teknis',
-				'status' => 'Diterima'
+				'tanggal' => date('d F Y', strtotime($dataDB['created_date'])),
+				'nama_pemohon' => $dataDB['p4'] ?? '-',
+				'nama_perusahaan' => $dataDB['p1'] ?? '-',
+				'alamat_usaha' => $dataDB['p6'] ?? '-',
+				'jenis_kegiatan' => $dataDB['p2'] ?? '-',
+				'jenis_permohonan' => $dataDB['p10'] ?? '-',
 			];
 
 			// Initialize TCPDF
@@ -3910,6 +3912,7 @@ class Jsondata extends \CodeIgniter\Controller
 			$pdf->SetTitle('Tanda Terima Permohonan');
 			$pdf->SetSubject('Tanda Terima');
 
+			
 			// Remove default header/footer
 			$pdf->setPrintHeader(false);
 			$pdf->setPrintFooter(false);
@@ -3920,58 +3923,75 @@ class Jsondata extends \CodeIgniter\Controller
 			// Add a page
 			$pdf->AddPage();
 
+			$kopSuratPath = FCPATH . 'public/kop_surat.png';
+			if (file_exists($kopSuratPath)) {
+				$pdf->Image($kopSuratPath, 15, 10, 180, 0, 'PNG', '', '', true, 300, '', false, false, 0, false, false, false);
+				$pdf->Ln(20);
+			}
+
 			// Set font
-			$pdf->SetFont('helvetica', '', 12);
+			$pdf->SetFont('helvetica', '', 11);
 
 			// HTML Content
+				
 			$html = '
-			<h2 style="text-align:center;">TANDA TERIMA DOKUMEN</h2>
-			<hr>
+			<table border="0" cellpadding="1">
+				<tr style="text-align:center;">
+					<td style="margin-bottom:0px;padding-bottom:0px;font-weight:bold;font-size:11px;">TANDA TERIMA PENGAJUAN </td>
+				</tr>
+				<tr style="text-align:center;">
+					<td style="margin-bottom:0px;padding-bottom:0px;font-weight:bold;font-size:11px;">' . $type . '</td>
+				</tr>
+			</table>
 			<br><br>
-			<table border="0" cellpadding="5">
+			<table border="0" cellpadding="0">
 				<tr>
-					<td width="150"><strong>No. Registrasi</strong></td>
+					<td width="80">Nomor</td>
 					<td width="20">:</td>
-					<td>' . htmlspecialchars($data['no_registrasi']) . '</td>
+					<td><strong>' . htmlspecialchars($data['no_registrasi']) . '</strong></td>
+				</tr>
+			</table>
+			<br><br>
+			<table border="0" cellpadding="1">
+				<tr>
+					<td colspan="2">Dengan ini dinyatakan bahwa,</td>
 				</tr>
 				<tr>
-					<td><strong>Tanggal</strong></td>
-					<td>:</td>
-					<td>' . htmlspecialchars($data['tanggal']) . '</td>
-				</tr>
-				<tr>
-					<td><strong>Nama Pemohon</strong></td>
-					<td>:</td>
+					<td width="150"><strong>Nama Pemohon</strong></td>
+					<td width="20">:</td>
 					<td>' . htmlspecialchars($data['nama_pemohon']) . '</td>
 				</tr>
 				<tr>
-					<td><strong>Penanggung Jawab</strong></td>
-					<td>:</td>
-					<td>' . htmlspecialchars($data['penanggung_jawab']) . '</td>
+					<td width="150"><strong>Nama Perusahaan/Usaha</strong></td>
+					<td width="20">:</td>
+					<td>' . htmlspecialchars($data['nama_perusahaan']) . '</td>
 				</tr>
 				<tr>
-					<td><strong>Jenis Permohonan</strong></td>
-					<td>:</td>
-					<td>' . htmlspecialchars($data['jenis_permohonan']) . '</td>
+					<td width="150"><strong>Alamat Usaha</strong></td>
+					<td width="20">:</td>
+					<td>' . htmlspecialchars($data['alamat_usaha']) . '</td>
 				</tr>
 				<tr>
-					<td><strong>Status</strong></td>
-					<td>:</td>
-					<td>' . htmlspecialchars($data['status']) . '</td>
+					<td width="150"><strong>Jenis Kegiatan/Usaha</strong></td>
+					<td width="20">:</td>
+					<td>' . htmlspecialchars($data['jenis_kegiatan']) . '</td>
+				</tr>
+				<tr>
+					<td width="150"><strong>Jenis Permohonan</strong></td>
+					<td width="20">:</td>
+					<td><strong>' . htmlspecialchars($data['jenis_permohonan']) . '</strong></td>
 				</tr>
 			</table>
 			<br><br>
-			<p>Dokumen telah diterima dan akan diproses sesuai dengan prosedur yang berlaku.</p>
-			<br><br><br>
-			<table border="0">
+			<table border="0" cellpadding="0">
 				<tr>
-					<td width="60%"></td>
-					<td width="40%" align="center">
-						Petugas,<br><br><br><br>
-						( ........................... )
-					</td>
+					<td width="80">Pada tanggal</td>
+					<td width="20">:</td>
+					<td><strong>' . htmlspecialchars($data['tanggal']) . '</strong></td>
 				</tr>
 			</table>
+			<p>Permohonan telah diterima dan akan diproses sesuai ketentuan peraturan perundang-undangan yang berlaku.</p>
+			<br><br><br>
 			';
 
 			$pdf->writeHTML($html, true, false, true, false, '');

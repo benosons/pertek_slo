@@ -1,0 +1,118 @@
+INSTRUCTIONS FOR MANUAL EDIT:
+================================
+
+In the file: d:\PROJECT\pertek_slo\application\Controllers\Jsondata.php
+In the function: generateTandaTerima() starting around line 3852
+
+CHANGES NEEDED:
+===============
+
+1. ADD LETTERHEAD (after line 3921 - after $pdf->AddPage();):
+   
+   // Add letterhead (kop surat)
+   $kopSuratPath = FCPATH . 'public/kop_surat.png';
+   if (file_exists($kopSuratPath)) {
+       $pdf->Image($kopSuratPath, 15, 10, 180, 0, 'PNG', '', '', true, 300, '', false, false, 0, false, false, false);
+       $pdf->Ln(20);
+   }
+
+2. CHANGE FONT (line 3924):
+   FROM: $pdf->SetFont('helvetica', '', 12);
+   TO:   $pdf->SetFont('arial', '', 11);
+
+3. UPDATE DATA MAPPING (lines 3893-3901):
+   FROM:
+   $data = [
+       'no_registrasi' => $dataDB['noreg'] ?? 'REG-' . date('Ymd') . '-' . $id,
+       'tanggal' => date('d F Y'),
+       'nama_pemohon' => $dataDB['p1'] ?? '-',
+       'penanggung_jawab' => $dataDB['p4'] ?? '-',
+       'jenis_permohonan' => $dataDB['p10'] ?? 'Permohonan Persetujuan Teknis',
+       'status' => 'Diterima'
+   ];
+   
+   TO:
+   $data = [
+       'no_registrasi' => $dataDB['noreg'] ?? 'REG-' . date('Ymd') . '-' . $id,
+       'tanggal' => date('d F Y'),
+       'nama_pemohon' => $dataDB['p1'] ?? '-',
+       'nama_perusahaan' => $dataDB['p2'] ?? '-',
+       'alamat_usaha' => $dataDB['p3'] ?? '-',
+       'jenis_kegiatan' => $dataDB['p11'] ?? '-',
+       'jenis_permohonan' => $dataDB['p10'] ?? 'Permohonan Persetujuan Teknis'
+   ];
+
+4. REPLACE HTML CONTENT (lines 3926-3984):
+   Replace the entire $html variable assignment with the new format below:
+
+$html = '
+<style>
+    .dotted-line {
+        border-bottom: 1px dotted #000;
+        display: inline-block;
+        min-width: 300px;
+    }
+</style>
+<h3 style="text-align:center; font-weight:bold; margin-bottom:5px;">TANDA TERIMA PENGAJUAN</h3>
+<h3 style="text-align:center; font-weight:bold; margin-top:0;">PERSETUJUAN TEKNIS PEMENUHAN BAKU MUTU LINGKUNGAN HIDUP</h3>
+<br>
+<table border="0" cellpadding="4" style="width:100%;">
+    <tr>
+        <td width="100">Nomor</td>
+        <td width="10">:</td>
+        <td><span class="dotted-line">' . htmlspecialchars($data['no_registrasi']) . '</span></td>
+    </tr>
+</table>
+<br>
+<p style="margin-bottom:5px;"><strong>Dengan ini dinyatakan bahwa:</strong></p>
+<table border="0" cellpadding="4" style="width:100%;">
+    <tr>
+        <td width="180"><strong>Nama Pemohon</strong></td>
+        <td width="10">:</td>
+        <td><span class="dotted-line">' . htmlspecialchars($data['nama_pemohon']) . '</span></td>
+    </tr>
+    <tr>
+        <td><strong>Nama Perusahaan/Usaha</strong></td>
+        <td>:</td>
+        <td><span class="dotted-line">' . htmlspecialchars($data['nama_perusahaan']) . '</span></td>
+    </tr>
+    <tr>
+        <td><strong>Alamat Usaha</strong></td>
+        <td>:</td>
+        <td><span class="dotted-line">' . htmlspecialchars($data['alamat_usaha']) . '</span></td>
+    </tr>
+    <tr>
+        <td><strong>Jenis Kegiatan/Usaha</strong></td>
+        <td>:</td>
+        <td><span class="dotted-line">' . htmlspecialchars($data['jenis_kegiatan']) . '</span></td>
+    </tr>
+    <tr>
+        <td><strong>Jenis Permohonan</strong></td>
+        <td>:</td>
+        <td><span class="dotted-line">' . htmlspecialchars($data['jenis_permohonan']) . '</span></td>
+    </tr>
+</table>
+<br>
+<p>Pada tanggal: <strong><span class="dotted-line">' . htmlspecialchars($data['tanggal']) . '</span></strong></p>
+<br>
+<p>Permohonan telah diterima dan akan diproses sesuai ketentuan peraturan perundang-undangan yang berlaku.</p>
+<br><br><br>
+<table border="0" style="width:100%;">
+    <tr>
+        <td width="60%"></td>
+        <td width="40%" align="center">
+            Petugas,<br><br><br><br>
+            ( ........................... )
+        </td>
+    </tr>
+</table>
+';
+
+================================
+SUMMARY OF CHANGES:
+- Added letterhead image at top of PDF
+- Changed font from Helvetica to Arial (11pt)
+- Added new fields: nama_perusahaan, alamat_usaha, jenis_kegiatan
+- Updated HTML format to match the image with dotted lines
+- Removed "status" and "penanggung_jawab" fields
+================================
