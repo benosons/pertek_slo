@@ -3893,7 +3893,7 @@ class Jsondata extends \CodeIgniter\Controller
 			
 			// Map data
 			$data = [
-				'no_registrasi' => $dataDB['noreg'] ?? 'REG-' . date('Ymd') . '-' . $id,
+				'no_registrasi' => $dataDB['noreg'] ?? '-',
 				'tanggal' => date('d F Y', strtotime($dataDB['created_date'])),
 				'nama_pemohon' => $dataDB['p4'] ?? '-',
 				'nama_perusahaan' => $dataDB['p1'] ?? '-',
