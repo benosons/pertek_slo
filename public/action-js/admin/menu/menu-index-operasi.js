@@ -1353,12 +1353,12 @@ function actionfile(mode, id, type, path) {
             path: path,
           },
           success: function (result) {
-            // location.reload()
-            $('#cekunggahan').trigger('click')
-            $('#view-doc-undangan').empty();
-            $('#doc_undangan').closest('.ace-file-input').closest('div').prop('hidden', false)
-            $('#keterangan_undangan').val('');
-            $('.remove').trigger('click')
+            location.reload()
+            // $('#cekunggahan').trigger('click')
+            // $('#view-doc-undangan').empty();
+            // $('#doc_undangan').closest('.ace-file-input').closest('div').prop('hidden', false)
+            // $('#keterangan_undangan').val('');
+            // $('.remove').trigger('click')
           }
         })
       }

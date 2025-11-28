@@ -611,7 +611,7 @@ function loadpermohonan(param) {
                       $('#view-file-permohonan').css('display', 'block');
                       $('#form-permohonan-reupload').css('display', 'none');
                       $('#hapus-permohonan').attr('onclick', "actionfile('delete','" + data[0].file[f]['id'] + "','" + data[0].type + "','" + data[0].file[f]['path'] + '/' + data[0].file[f]['filename'] + "')");
-                      !data[0].file[f]['keterangan'] ?? $('#catatan-permohonan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
+                      data[0].file[f]['keterangan'] ? $('#catatan-permohonan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']) : $('#catatan-permohonan').prop('hidden', true);
 
                     } else {
                       $('#nama-file-permohonan').html(data[0].file[f]['filename']);
@@ -645,7 +645,7 @@ function loadpermohonan(param) {
                       $('#view-file-izin-lingkungan').css('display', 'block');
                       $('#form-izin-lingkungan-reupload').css('display', 'none');
                       $('#hapus-izin-lingkungan').attr('onclick', "actionfile('delete','" + data[0].file[f]['id'] + "','" + data[0].type + "','" + data[0].file[f]['path'] + '/' + data[0].file[f]['filename'] + "')");
-                      !data[0].file[f]['keterangan'] ?? $('#catatan-izin-lingkungan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
+                      data[0].file[f]['keterangan'] ? $('#catatan-izin-lingkungan').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']) : $('#catatan-izin-lingkungan').prop('hidden', true);
 
                     } else {
                       $('#nama-file-izin-lingkungan').html(data[0].file[f]['filename']);
@@ -680,7 +680,7 @@ function loadpermohonan(param) {
                       $('#view-file-nib').css('display', 'block');
                       $('#form-nib-reupload').css('display', 'none');
                       $('#hapus-nib').attr('onclick', "actionfile('delete','" + data[0].file[f]['id'] + "','" + data[0].type + "','" + data[0].file[f]['path'] + '/' + data[0].file[f]['filename'] + "')");
-                      !data[0].file[f]['keterangan'] ?? $('#catatan-nib').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
+                      data[0].file[f]['keterangan'] ? $('#catatan-nib').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']) : $('#catatan-nib').prop('hidden', true);
 
                     } else {
                       $('#nama-file-nib').html(data[0].file[f]['filename']);
@@ -715,7 +715,7 @@ function loadpermohonan(param) {
                       $('#view-file-penapisan-mandiri').css('display', 'block');
                       $('#form-penapisan-mandiri-reupload').css('display', 'none');
                       $('#hapus-penapisan-mandiri').attr('onclick', "actionfile('delete','" + data[0].file[f]['id'] + "','" + data[0].type + "','" + data[0].file[f]['path'] + '/' + data[0].file[f]['filename'] + "')");
-                      !data[0].file[f]['keterangan'] ?? $('#catatan-penapisan-mandiri').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']);
+                      data[0].file[f]['keterangan'] ? $('#catatan-penapisan-mandiri').html('<i class="ace-icon fa fa-info-circle"></i> ' + data[0].file[f]['keterangan']) : $('#catatan-penapisan-mandiri').prop('hidden', true);
                     } else {
                       $('#nama-file-penapisan-mandiri').html(data[0].file[f]['filename']);
                       $('#nama-file-penapisan_mandiri').attr('onclick', "downloadatuh('" + 'public/' + data[0].file[f]['path'] + '/' + data[0].file[f]['filename'] + "')");
@@ -2172,12 +2172,12 @@ function actionfile(mode, id, type, path) {
             path: path,
           },
           success: function (result) {
-            // location.reload()
-            $('#cekunggahan').trigger('click')
-            $('#view-doc-undangan').empty();
-            $('#doc_undangan').closest('.ace-file-input').closest('div').prop('hidden', false)
-            $('#keterangan_undangan').val('');
-            $('.remove').trigger('click')
+            location.reload()
+            // $('#cekunggahan').trigger('click')
+            // $('#view-doc-undangan').empty();
+            // $('#doc_undangan').closest('.ace-file-input').closest('div').prop('hidden', false)
+            // $('#keterangan_undangan').val('');
+            // $('.remove').trigger('click')
 
           }
         })
