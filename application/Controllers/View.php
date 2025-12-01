@@ -201,6 +201,7 @@ class View extends \CodeIgniter\Controller
 	{
 		if ($this->logged) {
 			helper('form');
+			helper('url');
 			$this->data['script'] = $this->data['baseURL'] . '/action-js/admin/menu/menu-index-teknis.js';
 			return \Twig::instance()->display('admin/menu/menu-index-teknis.html', $this->data);
 		} else {

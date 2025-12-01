@@ -35,6 +35,24 @@
 		<script src="../assets/js/html5shiv.js"></script>
 		<script src="../assets/js/respond.js"></script>
 		<![endif]-->
+
+		<style>
+			.login-box .toolbar {
+				background: #0dcaf0;
+				border-top: 2px solid #0dcaf0;
+			}
+
+			.btn-success:hover, .btn-success:active, .open .btn-success.dropdown-toggle {
+				background-color: #0dcaf0 !important;
+				border-color: #0dcaf0;
+			}
+
+			.signup-box .toolbar {
+				background: #0dcaf0;
+				border-top: 2px solid #0dcaf0;
+				padding: 9px 18px;
+			}
+		</style>
 	</head>
 
   <body class="login-layout">
@@ -66,16 +84,16 @@
   							<div class="space-12"></div>
 
   							<div class="position-relative">
-  								<div id="login-box" class="login-box visible widget-box no-border bg-success" style="background-color:#87b87f;">
+  								<div id="login-box" class="login-box visible widget-box no-border bg-success" style="background-color:#0dcaf0;">
   									<div class="widget-body">
-										<div class="bg-success">
+										<div class="bg-info">
 											<div class="center" style="padding: 10px 10px 10px 10px">
 												<img src="{{baseURL}}/assets/front/logo.png" alt="logo-DLHK-Bandung.png" width="70%">
 											</div>
 										</div>
   										<div class="widget-main">
   											<h4 class="header blue lighter bigger center">
-  												<i class="ace-icon fa fa-leaf green"></i>
+  												<i class="ace-icon fa fa-leaf blue"></i>
   												Login
   											</h4>
 
@@ -113,7 +131,7 @@
   															<span class="lbl"> Remember Me</span>
   														</label>
 
-  														<button id="btnlogin" type="submit" class="width-35 pull-right btn btn-sm btn-success">
+  														<button id="btnlogin" type="submit" class="width-35 pull-right btn btn-sm btn-info">
   															<i class="ace-icon fa fa-key"></i>
   															<span class="bigger-110">Login</span>
   														</button>
@@ -157,11 +175,11 @@
   									</div><!-- /.widget-body -->
   								</div><!-- /.login-box -->
 
-  								<div id="signup-box" class="signup-box widget-box no-border" style="background-color:#87b87f;">
+  								<div id="signup-box" class="signup-box widget-box no-border" style="background-color:#0dcaf0;">
   									<div class="widget-body">
   										<div class="widget-main">
-  											<h4 class="header green lighter bigger">
-  												<center><i class="ace-icon fa fa-users green "></i>
+  											<h4 class="header blue lighter bigger">
+  												<center><i class="ace-icon fa fa-users blue "></i>
   												Registrasi</center>
   											</h4>
 
@@ -235,7 +253,7 @@
   															<span class="bigger-110">Reset</span>
   														</button>
 
-  														<button disabled type="submit" id="isregis" class="width-65 pull-right btn btn-sm btn-success">
+  														<button disabled type="submit" id="isregis" class="width-65 pull-right btn btn-sm btn-info">
   															<span class="bigger-110">Register</span>
 
   															<i class="ace-icon fa fa-arrow-right icon-on-right"></i>

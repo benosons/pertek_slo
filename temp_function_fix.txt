@@ -1,0 +1,69 @@
+// Map data - add new fields
+$data = [
+	'no_registrasi' => $dataDB['noreg'] ?? 'REG-' . date('Ymd') . '-' . $id,
+	'tanggal' => date('d F Y'),
+	'nama_pemohon' => $dataDB['p1'] ?? '-',
+	'nama_perusahaan' => $dataDB['p2'] ?? '-',
+	'alamat_usaha' => $dataDB['p3'] ?? '-',
+	'jenis_kegiatan' => $dataDB['p11'] ?? '-',
+	'penanggung_jawab' => $dataDB['p4'] ?? '-',
+	'jenis_permohonan' => $dataDB['p10'] ?? 'Permohonan Persetujuan Teknis',
+	'status' => 'Diterima'
+];
+
+// HTML Content - new format
+$html = '
+<h4 style="text-align:center;">TANDA TERIMA PENGAJUAN</h4>
+<h4 style="text-align:center;">PERSETUJUAN TEKNIS PEMENUHAN BAKU MUTU LINGKUNGAN HIDUP</h4>
+<br>
+<table border="0" cellpadding="3" style="width:100%;">
+	<tr>
+		<td width="200"><strong>Nomor</strong></td>
+		<td width="20">:</td>
+		<td>' . htmlspecialchars($data['no_registrasi']) . '</td>
+	</tr>
+</table>
+<br>
+<p><strong>Dengan ini dinyatakan bahwa:</strong></p>
+<table border="0" cellpadding="3" style="width:100%;">
+	<tr>
+		<td width="200">Nama Pemohon</td>
+		<td width="20">:</td>
+		<td>' . htmlspecialchars($data['nama_pemohon']) . '</td>
+	</tr>
+	<tr>
+		<td>Nama Perusahaan/Usaha</td>
+		<td>:</td>
+		<td>' . htmlspecialchars($data['nama_perusahaan']) . '</td>
+	</tr>
+	<tr>
+		<td>Alamat Usaha</td>
+		<td>:</td>
+		<td>' . htmlspecialchars($data['alamat_usaha']) . '</td>
+	</tr>
+	<tr>
+		<td>Jenis Kegiatan/Usaha</td>
+		<td>:</td>
+		<td>' . htmlspecialchars($data['jenis_kegiatan']) . '</td>
+	</tr>
+	<tr>
+		<td>Jenis Permohonan</td>
+		<td>:</td>
+		<td>' . htmlspecialchars($data['jenis_permohonan']) . '</td>
+	</tr>
+</table>
+<br>
+<p><strong>Pada tanggal: ' . htmlspecialchars($data['tanggal']) . '</strong></p>
+<br>
+<p>Permohonan telah diterima dan akan diproses sesuai ketentuan peraturan perundang-undangan yang berlaku.</p>
+<br><br><br>
+<table border="0">
+	<tr>
+		<td width="60%"></td>
+		<td width="40%" align="center">
+			Petugas,<br><br><br><br>
+			( ........................... )
+		</td>
+	</tr>
+</table>
+';

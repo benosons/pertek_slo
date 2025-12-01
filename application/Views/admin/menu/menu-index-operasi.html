@@ -6,8 +6,9 @@
     background-color: #fff;
   }
 
-  #data-file-doc.dataTable.nowrap th, #data-file-doc.dataTable.nowrap td {
-    white-space: normal!important;
+  #data-file-doc.dataTable.nowrap th,
+  #data-file-doc.dataTable.nowrap td {
+    white-space: normal !important;
   }
 
   .btn-white.btn-default {
@@ -15,7 +16,7 @@
     border-color: #d7d7d7 !important;
   }
 
-  
+
   .timeline {
     list-style-type: none;
     display: flex;
@@ -102,17 +103,17 @@
 </style>
 <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
   <script type="text/javascript">
-    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+    try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
   </script>
   <input type="hidden" id="isRole" value="{{role}}">
   <input type="hidden" id="iskat">
   <ul class="breadcrumb">
-		<li>
-			<i class="ace-icon fa fa-home home-icon"></i>
-			<a href="#">Home</a>
-		</li>
-		<li class="active">Program</li>
-	</ul><!-- /.breadcrumb -->
+    <li>
+      <i class="ace-icon fa fa-home home-icon"></i>
+      <a href="#">Home</a>
+    </li>
+    <li class="active">Program</li>
+  </ul><!-- /.breadcrumb -->
 
   <!-- #section:basics/content.searchbox -->
   <div class="nav-search" id="nav-search">
@@ -137,27 +138,27 @@
         Tahapan
       </small>
       <small id="tahapan-label">
-        
+
       </small>
       <small id="tolakan-label">
-        
+
       </small>
     </h1>
   </div><!-- /.page-header -->
 
   <div class="row">
-    <div class="col-xs-12 widget-container-col" >
+    <div class="col-xs-12 widget-container-col">
       <div class="widget-box widget-color-orange">
         <div class="widget-header">
-					<div class="widget-toolbar no-border">
+          <div class="widget-toolbar no-border">
             {% if role == 0 %}
-						<!-- <button id="initambah" class="btn btn-xs btn-inverse bigger" data-toggle="modal" data-target="#modal_program">
+            <!-- <button id="initambah" class="btn btn-xs btn-inverse bigger" data-toggle="modal" data-target="#modal_program">
 							<i class="ace-icon fa fa-plus"></i>
 							Tambah Permohonan
 						</button> -->
             {% endif %}
-					</div>
-				</div>
+          </div>
+        </div>
         <div class="widget-body">
           <div class="widget-main">
             {% if role == 0 %}
@@ -191,33 +192,36 @@
                 </li>
                 <li class="li" id="tahap-5">
                   <div class="status">
-                    <h4> Rekomendasi Pertek </h4>
+                    <h4> Rekomendasi SLO </h4>
                   </div>
                 </li>
-               </ul>  
+              </ul>
             </div>
             <div class="row">
               <form class="form-horizontal" role="form" id="ini-form-view" hidden>
                 <!-- #section:elements.form -->
                 <div class="form-group">
-                  <label class="col-sm-3 control-label no-padding-right" for="kode_program"> Nama Badan Usaha/ Kegiatan </label>
-      
+                  <label class="col-sm-3 control-label no-padding-right" for="kode_program"> Nama Badan Usaha/ Kegiatan
+                  </label>
+
                   <div class="col-sm-6">
                     <input type="text" id="view_1" placeholder="" class="form-control">
                   </div>
                 </div>
-      
+
                 <div class="form-group">
-                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Bidang Usaha/ Kegiatan </label>
-      
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Bidang Usaha/ Kegiatan
+                  </label>
+
                   <div class="col-sm-6">
                     <input type="text" id="view_2" placeholder="" class="form-control">
                   </div>
                 </div>
-      
+
                 <div class="form-group hide">
-                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor Induk Berusaha </label>
-      
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor Induk Berusaha
+                  </label>
+
                   <div class="col-sm-6">
                     <input type="text" id="view_3" placeholder="" class="form-control">
                   </div>
@@ -225,7 +229,7 @@
 
                 <div class="form-group hide">
                   <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-      
+
                   <div class="col-sm-6">
                     <grp id="view-file-nib" style="display:none;">
                       <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
@@ -235,12 +239,13 @@
                       <a class="btn btn-danger btn-xs btn-round" id="hapus-nib"><i class="fa fa-trash"></i></a>
                     </grp>
 
-                    <div class="form-group" id="form-nib-reupload" style="display:block;">        
+                    <div class="form-group" id="form-nib-reupload" style="display:block;">
                       <div class="col-sm-11">
                         <input type="file" name="id-input-file-5" id="doc_nib_reupload" accept=".pdf" />
                       </div>
                       <div class="col-sm-1">
-                        <button class="btn btn-success btn-xs btn-round" id="upload-nib" onclick="reupload('nib')" type="button"><i class="fa fa-check-square-o"></i></button>
+                        <button class="btn btn-success btn-xs btn-round" id="upload-nib" onclick="reupload('nib')"
+                          type="button"><i class="fa fa-check-square-o"></i></button>
                       </div>
                     </div>
 
@@ -249,7 +254,7 @@
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor KBLI </label>
-      
+
                   <div class="col-sm-6">
                     <input type="text" id="view_9" placeholder="" class="form-control">
                   </div>
@@ -257,63 +262,68 @@
 
                 <div class="form-group hide">
                   <label class="col-sm-3 control-label no-padding-right" for=""> Izin Lingkungan </label>
-      
+
                   <div class="col-sm-6">
                     <grp id="view-file-izin-lingkungan" style="display:none;">
-                    <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
-                      <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
-                      <span class="bigger-110" id="nama-file-izin-lingkungan">View more activities</span>
-                    </button>
-                    <button class="btn btn-danger btn-xs btn-round" id="hapus-izin-lingkungan" type="button"><i class="fa fa-trash"></i></button>
+                      <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
+                        <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
+                        <span class="bigger-110" id="nama-file-izin-lingkungan">View more activities</span>
+                      </button>
+                      <button class="btn btn-danger btn-xs btn-round" id="hapus-izin-lingkungan" type="button"><i
+                          class="fa fa-trash"></i></button>
                     </grp>
 
-                    <div class="form-group" id="form-izin-lingkungan-reupload" style="display:block;">        
+                    <div class="form-group" id="form-izin-lingkungan-reupload" style="display:block;">
                       <div class="col-sm-11">
                         <input type="file" name="id-input-file-5" id="doc_izin_lingkungan_reupload" accept=".pdf" />
                       </div>
                       <div class="col-sm-1">
-                        <button class="btn btn-success btn-xs btn-round" id="upload-izin-lingkungan" onclick="reupload('izin-lingkungan')" type="button"><i class="fa fa-check-square-o"></i></button>
+                        <button class="btn btn-success btn-xs btn-round" id="upload-izin-lingkungan"
+                          onclick="reupload('izin-lingkungan')" type="button"><i
+                            class="fa fa-check-square-o"></i></button>
                       </div>
                     </div>
 
                   </div>
                 </div>
-      
+
                 <div class="form-group">
-                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nama Penanggung Jawab Usaha/ Kegiatan </label>
-      
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nama Penanggung Jawab
+                    Usaha/ Kegiatan </label>
+
                   <div class="col-sm-6">
                     <input type="text" id="view_4" placeholder="" class="form-control">
                   </div>
                 </div>
-      
+
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Jabatan </label>
-      
+
                   <div class="col-sm-6">
                     <input type="text" id="view_5" placeholder="" class="form-control">
                   </div>
                 </div>
-      
+
                 <div class="form-group">
-                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Alamat Kantor dan Lokasi Usaha/ Kegiatan </label>
-      
+                  <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Alamat Kantor dan Lokasi
+                    Usaha/ Kegiatan </label>
+
                   <div class="col-sm-6">
                     <input type="text" id="view_6" placeholder="" class="form-control">
                   </div>
                 </div>
-      
+
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for="nama_program"> No. Telepon </label>
-      
+
                   <div class="col-sm-6">
                     <input type="text" id="view_7" placeholder="" class="form-control">
                   </div>
                 </div>
-      
+
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Email </label>
-      
+
                   <div class="col-sm-6">
                     <input type="text" id="view_8" placeholder="" class="form-control">
                   </div>
@@ -321,84 +331,123 @@
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for=""> Permohonan </label>
-      
+
                   <div class="col-sm-6">
                     <grp id="view-file-permohonan" style="display:none;">
-                    <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
-                      <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
-                      <span class="bigger-110" id="nama-file-permohonan">View more activities</span>
-                    </button>
-                    <button class="btn btn-danger btn-xs btn-round" id="hapus-permohonan" type="button"><i class="fa fa-trash"></i></button>
+                      <button type="button" class="btn btn-sm btn-primary btn-white btn-round">
+                        <i class="ace-icon fa fa-file bigger-150 middle orange2"></i>
+                        <span class="bigger-110" id="nama-file-permohonan">View more activities</span>
+                      </button>
+                      <button class="btn btn-danger btn-xs btn-round" id="hapus-permohonan" type="button"><i
+                          class="fa fa-trash"></i></button>
+                      <code id="catatan-permohonan"></code>
                     </grp>
 
-                    <div class="form-group" id="form-permohonan-reupload" style="display:block;">        
+                    <div class="form-group" id="form-permohonan-reupload" style="display:block;">
                       <div class="col-sm-11">
-                        <input type="file" name="id-input-file-5" id="doc_permohonan_reupload" accept=".pdf" />
+                        <!-- <input type="file" name="id-input-file-5" id="doc_permohonan_reupload" accept=".pdf" /> -->
+                        <input type="text" class="form-control" id="link-doc_permohonan_reupload" placeholder="..." />
                       </div>
                       <div class="col-sm-1">
-                        <button class="btn btn-success btn-xs btn-round" id="upload-permohonan" onclick="reupload('permohonan')" type="button"><i class="fa fa-check-square-o"></i></button>
+                        <button class="btn btn-success btn-xs btn-round" id="upload-permohonan"
+                          onclick="reupload('permohonan')" type="button"><i class="fa fa-check-square-o"></i></button>
                       </div>
                     </div>
 
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for="nomor_registrasi"> <b>Nomor
+                      Registrasi</b></label>
+
+                  <div class="col-sm-6" style="font-size: large;">
+                    <i class="ace-icon fa fa-code green"></i> <b id="nomor_registrasi"></b>
                   </div>
                 </div>
 
                 <div class="form-group" id="ini-verifikasi">
                   <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-      
+
                   <div class="col-sm-6">
                     <div class="alert alert-block alert-success">
                       <button type="button" class="close" data-dismiss="alert">
                         <i class="ace-icon fa fa-times"></i>
                       </button>
-    
-                      
-    
+
+
+
                       <p><i class="ace-icon fa fa-warning green"></i> Permohonan Belum di Verifikasi oleh Admin.</p>
                       <p id="harap">Harap Melakukan Upload Ulang file :</p>
                       <ol id="harus-upload">
-                  
-                        
+
+
                       </ol>
-                      
+
                     </div>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-      
+
                   <div class="col-sm-6">
-                    <button type="button" id="cekunggahan" class="btn btn-xs btn-block btn-primary" ><i class="ace-icon fa fa-check"></i>Persyaratan Permohonan Surat Kelayakan Operasional</button>
+                    <button type="button" id="cetaktandaterima" onclick="generateTandaTerima()"
+                      class="btn btn-xs btn-block btn-purple"><i class="ace-icon fa fa-print"></i> Cetak Tanda
+                      Terima</button>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-      
+
                   <div class="col-sm-6">
-                    
-                    <button type="button" id="verlapanganini" class="btn btn-xs btn-block btn-warning" ><i class="ace-icon fa fa-check-square-o"></i>Dokumen BA & Pertek</button>
-
-                  </div>
-                </div>
-
-                
-                <div class="form-group">
-                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-      
-                  <div class="col-sm-6">
-                    
-                    <a type="button" id="surveykepuasan" class="btn btn-xs btn-block btn-success" href="https://skm.bandung.go.id" target="_blank" ><i class="ace-icon fa fa-heart"></i> Survey Kepuasan</a>
-
+                    <a type="button" target="_blank" id="cekundangan" class="btn btn-xs btn-block btn-info"
+                      onclick="cekundangan()"><i class="ace-icon fa fa-file"></i>Pembahasan Penilaian Substansi &
+                      Verifikasi Lapangan </a>
+                    <input type="hidden" id="ini-id-cekundangan">
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label no-padding-right" for=""> </label>
-      
+
                   <div class="col-sm-6">
-                    <button type="button" id="deletedataini" class="btn btn-xs btn-block btn-danger" ><i class="ace-icon fa fa-trash"></i>Hapus Permohonan</button>
+                    <button type="button" id="cekunggahan" class="btn btn-xs btn-block btn-primary"><i
+                        class="ace-icon fa fa-check"></i>Persyaratan Permohonan Surat Kelayakan Operasional</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+
+                  <div class="col-sm-6">
+
+                    <button type="button" id="verlapanganini" class="btn btn-xs btn-block btn-warning"><i
+                        class="ace-icon fa fa-check-square-o"></i>Dokumen BA & SLO</button>
+
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+
+                  <div class="col-sm-6">
+
+                    <button type="button" id="surveykepuasan-new" class="btn btn-xs btn-block btn-success"
+                      href="https://skm.bandung.go.id/publik" target="_blank" onclick="puas()"><i
+                        class="ace-icon fa fa-heart"></i> Survey Kepuasan</button>
+
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" for=""> </label>
+
+                  <div class="col-sm-6">
+                    <button type="button" id="deletedataini" class="btn btn-xs btn-block btn-danger"><i
+                        class="ace-icon fa fa-trash"></i>Hapus Permohonan</button>
                   </div>
                 </div>
 
@@ -406,28 +455,31 @@
 
               </form>
             </div>
-            
+
             <form class="form-horizontal" role="form" id="ini-form-add">
               <!-- #section:elements.form -->
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="kode_program"> Nama Badan Usaha/ Kegiatan <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="kode_program"> Nama Badan Usaha/ Kegiatan
+                  <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_1" placeholder="" class="form-control">
                 </div>
               </div>
-    
+
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Bidang Usaha/ Kegiatan <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Bidang Usaha/ Kegiatan
+                  <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_2" placeholder="" class="form-control">
                 </div>
               </div>
-    
+
               <div class="form-group hide">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor Induk Berusaha <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor Induk Berusaha
+                  <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_3_Remove" placeholder="" class="form-control">
                 </div>
@@ -435,7 +487,7 @@
 
               <div class="form-group hide">
                 <label class="col-sm-3 control-label no-padding-right" for="doc_nib"></label>
-    
+
                 <div class="col-sm-6">
                   <input type="file" name="id-input-file-6" id="doc_nib_remove" accept=".pdf" />
                   <code>File .PDF - Max 5 mb</code>
@@ -443,71 +495,94 @@
               </div>
 
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor KBLI <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor KBLI
+                  <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_9" placeholder="" class="form-control">
                 </div>
               </div>
 
               <div class="form-group hide">
-                <label class="col-sm-3 control-label no-padding-right" for="doc_izin_lingkungan_remove">Izin Lingkungan <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="doc_izin_lingkungan_remove">Izin Lingkungan
+                  <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="file" name="id-input-file-6" id="doc_izin_lingkungan_remove" accept=".pdf" />
                   <code>File .PDF - Max 5 mb</code>
                 </div>
               </div>
-    
+
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nama Penanggung Jawab Usaha/ Kegiatan <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nama Penanggung Jawab Usaha/
+                  Kegiatan <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_4" placeholder="" class="form-control">
                 </div>
               </div>
-    
+
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Jabatan <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Jabatan
+                  <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_5" placeholder="" class="form-control">
                 </div>
               </div>
-    
+
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Alamat Kantor dan Lokasi Usaha/ Kegiatan <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Alamat Kantor dan Lokasi
+                  Usaha/ Kegiatan <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_6" placeholder="" class="form-control">
                 </div>
               </div>
-    
+
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> No. Telepon <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> No. Telepon
+                  <code>*</code></label>
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_7" placeholder="" class="form-control">
                 </div>
               </div>
-    
+
               <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Email <code>*</code></label>
-    
+
                 <div class="col-sm-6">
                   <input type="text" name="form-input" id="input_8" placeholder="" class="form-control">
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="doc_permohonan">Permohonan <code>*</code></label>
-    
+                <label class="col-sm-3 control-label no-padding-right" for="link-doc_permohonan">Permohonan
+                  <code>*</code></label>
+
                 <div class="col-sm-6">
-                  <input type="file" name="id-input-file-6" id="doc_permohonan" accept=".pdf" />
-                  <code>File .PDF - Max 5 mb</code>
+                  <!-- <input type="file" name="id-input-file-6" id="doc_permohonan" accept=".pdf" /> -->
+                  <input type="text" class="form-control" id="link-doc_permohonan">
+                  <!-- <code>File .PDF - Max 5 mb</code> -->
+                  <code><i class="ace-icon fa fa-info-circle"></i> Link file GoogleDrive</code>
                 </div>
               </div>
-    
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> jenis permohonan </label>
+
+                <div class="col-sm-6">
+                  <select class="form-control" name="form-input" id="input_10">
+                    <option value="">--Pilih--</option>
+                    <option value="Surat Kelayakan Operasi Instalasi Pengolahan Air Limbah">Surat Kelayakan Operasi
+                      Instalasi Pengolahan Air Limbah</option>
+                    <option value="Surat Kelayakan Operasi Alat Pengendali Emisi">Surat Kelayakan Operasi Alat
+                      Pengendali Emisi</option>
+                  </select>
+                </div>
+              </div>
+
               <!-- <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Perizinan Berusaha </label>
     
@@ -564,12 +639,13 @@
 
               <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right" for="nama_program"></label>
-    
+
                 <div class="col-sm-6">
-                  <button type="button" id="mohon_save" class="btn btn-xs btn-success btn-block" ><i class="ace-icon fa fa-check"></i>submit</button>
+                  <button type="button" id="mohon_save" class="btn btn-xs btn-success btn-block"><i
+                      class="ace-icon fa fa-check"></i>submit</button>
                 </div>
               </div>
-    
+
             </form>
 
             {% else %}
@@ -578,26 +654,27 @@
               <select class="col-sm-4" id="categoryFilter" class="form-control">
                 <option value="">- Tampilkan semua -</option>
                 <option value="1">1. Air Limbah</option>
-                <option value="2">2. Udara</option>
+                <option value="2">2. Emisi</option>
               </select>
             </div>
-            <br/>
+            <br />
             <div class="table-responsive">
-            <table id="all-permohonan" class="table table-striped table-bordered nowrap table-responsive">
+              <table id="all-permohonan" class="table table-striped table-bordered nowrap table-responsive">
                 <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Badan Usaha/Kegiatan</th>
-                        <th>Bidang Usaha/Kegiatan</th>
-                        <th>NIB</th>
-                        <th>Kategori</th>
-                        <th>No.Telp</th>
-                        <th>Email</th>
-                        <th>Tahapan</th>
-                        <th>Action</th>
-                    </tr>
+                  <tr>
+                    <th>No</th>
+                    <th>No Registrasi</th>
+                    <th>Badan Usaha/Kegiatan</th>
+                    <th>Bidang Usaha/Kegiatan</th>
+                    <th>NIB</th>
+                    <th>Kategori</th>
+                    <th>No.Telp</th>
+                    <th>Email</th>
+                    <th>Tahapan</th>
+                    <th>Action</th>
+                  </tr>
                 </thead>
-            </table>
+              </table>
             </div>
             {% endif %}
           </div>
@@ -607,83 +684,86 @@
   </div>
 
   <!-- Modal -->
-<div id="modal_program" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-lg">
+  <div id="modal_program" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-success">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Permohonan Surat Kelayakan Operasi (SLO)</h4>
-      </div>
-      <div class="modal-body">
-        <form class="form-horizontal" role="form">
-					<!-- #section:elements.form -->
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="kode_program"> Nama Badan Usaha/ Kegiatan </label>
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-success">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Permohonan Surat Kelayakan Operasi (SLO)</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form">
+            <!-- #section:elements.form -->
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="kode_program"> Nama Badan Usaha/ Kegiatan
+              </label>
 
-						<div class="col-sm-9">
-							<input type="text" id="input_1" placeholder="" class="form-control">
-						</div>
-					</div>
+              <div class="col-sm-9">
+                <input type="text" id="input_1" placeholder="" class="form-control">
+              </div>
+            </div>
 
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="nama_program"> Bidang Usaha/ Kegiatan </label>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Bidang Usaha/ Kegiatan </label>
 
-						<div class="col-sm-9">
-							<input type="text" id="input_2" placeholder="" class="form-control">
-						</div>
-					</div>
+              <div class="col-sm-9">
+                <input type="text" id="input_2" placeholder="" class="form-control">
+              </div>
+            </div>
 
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor Induk Berusaha </label>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nomor Induk Berusaha </label>
 
-						<div class="col-sm-9">
-							<input type="text" id="input_3" placeholder="" class="form-control">
-						</div>
-					</div>
+              <div class="col-sm-9">
+                <input type="text" id="input_3" placeholder="" class="form-control">
+              </div>
+            </div>
 
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nama Penanggung Jawab Usaha/ Kegiatan </label>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Nama Penanggung Jawab Usaha/
+                Kegiatan </label>
 
-						<div class="col-sm-9">
-							<input type="text" id="input_4" placeholder="" class="form-control">
-						</div>
-					</div>
+              <div class="col-sm-9">
+                <input type="text" id="input_4" placeholder="" class="form-control">
+              </div>
+            </div>
 
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="nama_program"> Jabatan </label>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Jabatan </label>
 
-						<div class="col-sm-9">
-							<input type="text" id="input_5" placeholder="" class="form-control">
-						</div>
-					</div>
+              <div class="col-sm-9">
+                <input type="text" id="input_5" placeholder="" class="form-control">
+              </div>
+            </div>
 
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="nama_program"> Alamat Kantor dan Lokasi Usaha/ Kegiatan </label>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Alamat Kantor dan Lokasi Usaha/
+                Kegiatan </label>
 
-						<div class="col-sm-9">
-							<input type="text" id="input_6" placeholder="" class="form-control">
-						</div>
-					</div>
+              <div class="col-sm-9">
+                <input type="text" id="input_6" placeholder="" class="form-control">
+              </div>
+            </div>
 
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="nama_program"> No. Telepon </label>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="nama_program"> No. Telepon </label>
 
-						<div class="col-sm-9">
-							<input type="text" id="input_7" placeholder="" class="form-control">
-						</div>
-					</div>
+              <div class="col-sm-9">
+                <input type="text" id="input_7" placeholder="" class="form-control">
+              </div>
+            </div>
 
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="nama_program"> Email </label>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Email </label>
 
-						<div class="col-sm-9">
-							<input type="text" id="input_8" placeholder="" class="form-control">
-						</div>
-					</div>
+              <div class="col-sm-9">
+                <input type="text" id="input_8" placeholder="" class="form-control">
+              </div>
+            </div>
 
-          <!-- <div class="form-group">
+            <!-- <div class="form-group">
             <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Perizinan Berusaha </label>
 
             <div class="col-xs-9">
@@ -737,262 +817,403 @@
             </div>
           </div> -->
 
-				</form>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i
+              class="ace-icon fa fa-close"></i>close</button>
+          <button type="button" id="mohon_save" class="btn btn-xs btn-success"><i
+              class="ace-icon fa fa-check"></i>submit</button>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i class="ace-icon fa fa-close"></i>close</button>
-        <button type="button" id="mohon_save" class="btn btn-xs btn-success" ><i class="ace-icon fa fa-check"></i>submit</button>
-      </div>
+
     </div>
-
   </div>
-</div>
 
-<div id="modal_file" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-lg">
+  <div id="modal_file" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-info">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">
-          <center id="dokumen-unggahan">Dokumen Unggahan </center>
-          <input type="hidden" id="ini-ID">
-        </h4>
-      </div>
-      <div class="modal-body">
-            {% if role == 0 %}
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">
+            <center id="dokumen-unggahan">Dokumen Unggahan </center>
+            <input type="hidden" id="ini-ID">
+          </h4>
+        </div>
+        <div class="modal-body">
+          {% if role == 0 %}
 
-              <ul class="nav nav-tabs" id="myTab">
-                <li class="active">
-                  <a data-toggle="tab" href="#kajian" aria-expanded="true">Permohonan SLO</a>
-                </li>
+          <ul class="nav nav-tabs" id="myTab">
+            <li class="active">
+              <a data-toggle="tab" href="#kajian" aria-expanded="true">Permohonan SLO</a>
+            </li>
 
-              </ul>
-              <div class="tab-content">
-                <div id="kajian" class="tab-pane active">
-                  
-                    <div class="form-group row">
-                      <label class="col-sm-1 control-label no-padding-right" for="nama_program"> Dokumen </label>
-          
-                      <div class="col-xs-5">
-                        <select class="chosen-select form-control" id="jenis_doc"  data-placeholder="Pilih Dokumen ...">
-                          
-                        </select>
-                      </div>
-                      <div class="col-xs-4">
-                        <input type="file" name="id-input-file-3" id="doc_" accept=".pdf" />
-                      </div>
-                      <div class="col-xs-2">
-                        <button disabled type="button" class="btn btn-xs btn-success" id="submit_doc"><i class="ace-icon fa fa-check-square-o"></i>Submit</button>
-                      </div>
+          </ul>
+          <div class="tab-content">
+            <div id="kajian" class="tab-pane active">
+
+              <div class="form-group row">
+                <label class="col-sm-1 control-label no-padding-right" for="nama_program"> Dokumen </label>
+
+                <div class="col-xs-5">
+                  <select class="chosen-select form-control" id="jenis_doc" data-placeholder="Pilih Dokumen ...">
+
+                  </select>
+                </div>
+                <div class="col-xs-4">
+                  <!-- <input type="file" name="id-input-file-3" id="doc_" accept=".pdf" /> -->
+                  <input type="text" class="form-control" id="doc_" placeholder="..." />
+                </div>
+                <div class="col-xs-2">
+                  <button disabled type="button" class="btn btn-xs btn-success" id="submit_doc"><i
+                      class="ace-icon fa fa-check-square-o"></i>Submit</button>
+                </div>
+              </div>
+
+              {% endif %}
+              <div class="table-responsive" id="file-docnya">
+                <table id="data-file-doc" class="table table-striped table-bordered nowrap">
+                  <thead>
+                    <tr>
+                      <th width="5%">No</th>
+                      <!-- <th>BAB</th> -->
+                      <th width="20%">Dokumen</th>
+                      <th>Nama File</th>
+                      <th>Status</th>
+                      <th>Tanggal Input</th>
+                      <th>Tanggal Update</th>
+                      <th>Keterangan</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+
+              {% if role == 0 %}
+              <div class="widget-box">
+                <div class="widget-body">
+                  <div class="form-group row" id="edit_group" hidden style="padding: 20px 1px 0px 10px;">
+                    <label class="col-sm-3 control-label no-padding-right" for=""> <b>Revisi Dokumen</b> </label>
+
+                    <div class="">
+                      <input type="hidden" id="jenis_edit" placeholder="" class="form-control" disabled>
+                      <input type="hidden" id="id_edit" disabled>
+                      <input type="hidden" id="path_edit" disabled>
+                      <input type="hidden" id="type_edit" disabled>
                     </div>
-                  
-                    {% endif %}
-                    <div class="table-responsive" id="file-docnya">
-                    <table id="data-file-doc" class="table table-striped table-bordered nowrap">
-                      <thead>
-                          <tr>
-                              <th>No</th>
-                              <!-- <th>BAB</th> -->
-                              <th>Dokumen</th>
-                              <th>Nama File</th>
-                              <th>Status</th>
-                              <th>Tanggal Input</th>
-                              <th>Tanggal Update</th>
-                              <th>Keterangan</th>
-                              <th>Action</th>
-                          </tr>
-                      </thead>
-                    </table>
+                    <div class="col-xs-7">
+                      <!-- <input type="file" name="id-input-file-3" id="edit_file" accept=".pdf" /> -->
+                      <input type="text" class="form-control" id="edit_file" placeholder="..." />
                     </div>
-
-                  {% if role == 0 %}
-                  <div class="widget-box">
-                    <div class="widget-body">
-                      <div class="form-group row" id="edit_group" hidden style="padding: 20px 1px 0px 10px;">
-                        <label class="col-sm-3 control-label no-padding-right" for=""> <b>Revisi Dokumen</b> </label>
-            
-                        <div class="">
-                          <input type="hidden" id="jenis_edit" placeholder="" class="form-control" disabled>
-                          <input type="hidden" id="id_edit" disabled>
-                          <input type="hidden" id="path_edit" disabled>
-                          <input type="hidden" id="type_edit" disabled>
-                        </div>
-                        <div class="col-xs-7">
-                          <input type="file" name="id-input-file-3" id="edit_file" accept=".pdf" />
-                        </div>
-                        <div class="col-xs-2">
-                          <button type="button" class="btn btn-xs btn-success" id="submit_edit"><i class="ace-icon fa fa-check-square-o"></i>Submit</button>
-                        </div>
-                      </div>
+                    <div class="col-xs-2">
+                      <button type="button" class="btn btn-xs btn-success" id="submit_edit"><i
+                          class="ace-icon fa fa-check-square-o"></i>Submit</button>
                     </div>
                   </div>
                 </div>
-                
               </div>
-              {% endif %}
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i class="ace-icon fa fa-close"></i>close</button>
-      </div>
-      
-    </div>
-
-  </div>
-</div>
-
-<div id="modal_file_lapangan" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-lg">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-success">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">
-          <center><i class="ace-icon fa fa-file green "></i>
-            Dokumen BA & Pertek</center>
-            <input type="hidden" id="ini-ID-lapangan">
-        </h4>
-      </div>
-      <div class="modal-body">
-                {% if role == 0 %}
-
-                      <table id="data-file-doc-lapangan" class="table table-striped table-bordered nowrap table-responsive">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Keterangan dan Catatan</th>
-                                <th>Nama File</th>
-                                <th>Tanggal Input</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                      </table>
-
-                  
-                    {% else %}
-                    
-                    <div class="widget-main" id="ini-doc-ver-lapangan">
-                      <div class="widget-body">
-                        <div class="form-group row">
-                          <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Dokumen BA & Pertek </label>
-                          
-                          <div class="col-xs-4">
-                            <input type="file" name="id-input-file-5" id="doc_lapangan" accept=".pdf" />
-                          </div>
-
-                          <div class="col-xs-3">
-                            <input type="text" id="keterangan_lapangan" placeholder="Keterangan dan Catatan" class="col-xs-12">
-                          </div>
-                          
-                          <div class="col-xs-2">
-                            <button disabled type="button" class="btn btn-xs btn-success" id="submit_doc_lapangan"><i class="ace-icon fa fa-check-square-o"></i>Submit</button>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-
-                  <table id="data-file-doc-lapangan" class="table table-striped table-bordered nowrap table-responsive">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Keterangan dan Catatan</th>
-                            <th>Nama File</th>
-                            <th>Tanggal Input</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                  </table>
-
-                  {% endif %}
-
-
-  
-
-      </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i class="ace-icon fa fa-close"></i>close</button>
-      </div>
-
-    </div>
-      
-  </div>
-</div>
-
-<div id="modal_validasi" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-md">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      
-      <div class="modal-body">
-        <input id="idv2" hidden />
-        <form class="form-horizontal" role="form">
-
-          <div class="widget-box">
-            <div class="widget-header">
-              <label class="control-label">File Unggahan</label>
             </div>
+
+          </div>
+          {% endif %}
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i
+              class="ace-icon fa fa-close"></i>close</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div id="modal_file_lapangan" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-success">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">
+            <center><i class="ace-icon fa fa-file green "></i>
+              Dokumen BA & SLO</center>
+            <input type="hidden" id="ini-ID-lapangan">
+          </h4>
+        </div>
+        <div class="modal-body">
+          {% if role == 0 %}
+
+          <table id="data-file-doc-lapangan" class="table table-striped table-bordered nowrap table-responsive">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Keterangan dan Catatan</th>
+                <th>Nama File</th>
+                <th>Tanggal Input</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+
+
+          {% else %}
+
+          <div class="widget-main" id="ini-doc-ver-lapangan">
             <div class="widget-body">
-              <div class="widget-main">
-                <div class="control-group" id="file-unggahan">
+              <div class="form-group row">
+                <label class="col-sm-3 control-label no-padding-right" for="nama_program"> Dokumen BA & SLO </label>
+
+                <div class="col-xs-4">
+                  <input type="file" name="id-input-file-5" id="doc_lapangan" accept=".pdf" />
+                </div>
+
+                <div class="col-xs-3">
+                  <input type="text" id="keterangan_lapangan" placeholder="Keterangan dan Catatan" class="col-xs-12">
+                </div>
+
+                <div class="col-xs-2">
+                  <button disabled type="button" class="btn btn-xs btn-success" id="submit_doc_lapangan"><i
+                      class="ace-icon fa fa-check-square-o"></i>Submit</button>
                 </div>
               </div>
             </div>
 
-            
-            <div class="widget-body">
-              <div class="widget-main padding-4">
-                <select class="form-control" id="kategori">
-                  <option value="0">-Pilih Kategori-</option>
-                  <option value="1">1. Air Limbah</option>
-                  <option value="2">2. Udara</option>
-                </select>
+          </div>
+
+          <table id="data-file-doc-lapangan" class="table table-striped table-bordered nowrap table-responsive">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Keterangan dan Catatan</th>
+                <th>Nama File</th>
+                <th>Tanggal Input</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+
+          {% endif %}
+
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i
+              class="ace-icon fa fa-close"></i>close</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div id="modal_validasi" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+
+        <div class="modal-body">
+          <input id="idv2" hidden />
+          <form class="form-horizontal" role="form">
+
+            <div class="widget-box">
+              <div class="widget-header">
+                <label class="control-label">File Unggahan</label>
               </div>
+              <div class="widget-body">
+                <div class="widget-main">
+                  <div class="control-group" id="file-unggahan">
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="widget-body">
+                <div class="widget-main padding-4">
+                  <select class="form-control" id="kategori">
+                    <option value="0">-Pilih Kategori-</option>
+                    <option value="1">1. Air Limbah</option>
+                    <option value="2">2. Emisi</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i
+              class="ace-icon fa fa-close"></i>close</button>
+          <button type="button" id="simpanaja" class="btn btn-xs btn-success" onclick="validasiV2()"><i
+              class="ace-icon fa fa-check"></i>verifikasi</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="modal_penolakan" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-success">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Permohonan yang ditolak</h4>
+        </div>
+        <div class="modal-body">
+          <table id="data-penolakan" class="table table-striped table-bordered nowrap table-responsive">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>NIB</th>
+                <th>Kategori</th>
+                <th>Jenis</th>
+                <th>Alasan</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="modal_notif" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+          <h5><b>Assalamu'alaikum Wr.Wb.</b></h5>
+
+          <p>Bapak/Ibu Masyarakat Kota Bandung,</p>
+          <p>Kami Pimpinan dan Staf <b>Dinas Lingkungan Hidup Kota Bandung</b> mempunyai komitmen yang tinggi dalam
+            menjalankan Kebijakan dan Tupoksi yang telah ditetapkan. Kami berkomitmen untuk senantiasa melakukan
+            perbaikan yang berkesinambungan terhadap sistem dan operasional, dalam rangka memenuhi tingkat kepuasan yang
+            diharapkan.
+            Kami Sangat menghargai pendapat atau opini yang disampaikan, apabila Bapak/Ibu berkesempatan meluangkan
+            waktu sejenak untuk melengkapi kuesioner ini seobyektif mungkin dan senantiasa berpartisipasi untuk
+            memberikan masukan yang bersifat membangun. </p>
+
+          <p>Pengisian kuesioner dapat dengan memilih tombol <a href="https://skm.bandung.go.id/publik" target="_blank"
+              onclick="$('#surveykepuasan').trigger('click');"><b>Survey Kepuasan</b></a></p>
+
+          <b>
+            <p>Tata cara pengisian sebagai berikut :</p>
+            <p>1. Pilih nama dinas Dinas Lingkungan Hidup</p>
+            <p>2. Ketik jenis layanan yang akan dinilai. </p>
+            <p>- Layanan Verifikasi Teknis Ijin Pembuangan Air Limbah</p>
+            <p>3. Isi data diri</p>
+            <p>4. Klik Mulai Survey</p>
+          </b>
+
+          <p>Perkenankan kami menyampaikan terima kasih terhadap segala bentuk kerjasama yang telah dilakukan dan kami
+            berjanji untuk selalu melakukan perubahan ke arah yang lebih baik.
+            Terima Kasih.</p>
+
+          <p>Salam kami,</p>
+          <h5><b>DLH Kota Bandung</b></h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i
+              class="ace-icon fa fa-close"></i>close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="modal_file_pembahasan" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">
+            <center><i class="ace-icon fa fa-file text-primary "></i>
+              Undangan Pembahasan</center>
+            <input type="hidden" id="ini-ID-lapangan">
+          </h4>
+        </div>
+        <input type="hidden" id="ini-ID-untuk-undangan">
+        <input type="hidden" id="ini-TIPE-untuk-undangan">
+        <div class="modal-body">
+          <div class="form-group row">
+            <label class="col-sm-3 control-label no-padding-right">File Undangan</label>
+            <div class="col-sm-6" id="view-doc-undangan"></div>
+            <div class="col-sm-6">
+              <input type="file" id="doc_undangan" name="id-input-file-6" class="form-control" accept=".pdf">
             </div>
           </div>
 
-				</form>
+          <div class="form-group row">
+            <label class="col-sm-3 control-label no-padding-right">Keterangan</label>
+            <div class="col-sm-6">
+              <input type="text" id="keterangan_undangan" placeholder="Keterangan" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 control-label no-padding-right"></label>
+            <div class="col-sm-6">
+              <button type="button" class="btn btn-xs btn-success btn-block" id="submit_undangan"><i
+                  class="ace-icon fa fa-check"></i>Kirim Undangan</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i
+              class="ace-icon fa fa-close"></i>close</button>
+        </div>
+
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal"><i class="ace-icon fa fa-close"></i>close</button>
-        <button type="button" id="simpanaja" class="btn btn-xs btn-success" onclick="validasiV2()" ><i class="ace-icon fa fa-check"></i>verifikasi</button>
+
+    </div>
+  </div>
+
+  <!-- MODAL TANDA TERIMA PDF -->
+  <div id="modal_tanda_terima" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalTandaTerimaLabel">
+            <i class="fa fa-file-pdf-o"></i> Tanda Terima Permohonan
+          </h5>
+        </div>
+
+        <div class="modal-body p-0" style="height: 85vh;">
+          <iframe id="pdf_viewer_tanda_terima" src="" style="width:100%; height:100%; border:none;" frameborder="0">
+          </iframe>
+        </div>
+
+        <div class="modal-footer">
+          <button id="btn_download_tanda_terima" class="btn btn-success btn-xs">
+            <i class="fa fa-download"></i> Download
+          </button>
+
+          <button id="btn_print_tanda_terima" class="btn btn-primary btn-xs">
+            <i class="fa fa-print"></i> Print
+          </button>
+
+          <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">
+            Tutup
+          </button>
+        </div>
+
       </div>
     </div>
-
   </div>
-</div>
-
-<div id="modal_penolakan" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-success">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Permohonan yang ditolak</h4>
-      </div>
-      <div class="modal-body">
-        <table id="data-penolakan" class="table table-striped table-bordered nowrap table-responsive">
-          <thead>
-              <tr>
-                  <th>No</th>
-                  <th>NIB</th>
-                  <th>Kategori</th>
-                  <th>Jenis</th>
-                  <th>Alasan</th>
-                  <th>Tanggal</th>
-              </tr>
-          </thead>
-      </table>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 </div>
 

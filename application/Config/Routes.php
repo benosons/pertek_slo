@@ -135,6 +135,7 @@ $routes->post('updatetahapan', 'Jsondata::updatetahapan');
 $routes->post('tolakpermohonan', 'Jsondata::tolakpermohonan');
 $routes->post('updatepembahasan', 'Jsondata::updatepembahasan');
 $routes->post('updatepuas', 'Jsondata::updatepuas');
+$routes->post('generateTandaTerima', 'Jsondata::generateTandaTerima');
 
 
 
