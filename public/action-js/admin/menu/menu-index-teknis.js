@@ -1694,16 +1694,23 @@ function action(mode, id, type, keterangan, param, kode, kategori) {
                         done = 'selected';
                       }
 
+                      if (data == '2') {
+                        bahas = 'selected';
+                      }
+
                       var el = `<select class="form-control" id="status_2_` + row.id + `" >
                                   <option value=""> - </option>
                                   <option `+ rev + ` value="1"> Revisi </option>
                                   <option `+ done + ` value="0"> Selesai </option>
+                                  <option `+ bahas + ` value="2"> Bahas </option>
                                 </select>`;
                     } else {
                       if (data == '1') {
                         var el = '<span class="label label-danger arrowed">Revisi</span>';
                       } else if (data == '0') {
                         var el = '<span class="label label-primary arrowed">Selesai</span>';
+                      } else if (data == '2') {
+                        var el = '<span class="label label-info arrowed">Pembahasan</span>';
                       } else {
                         var el = '-'
                       }
