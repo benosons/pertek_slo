@@ -173,6 +173,16 @@ $(document).ready(function () {
     }
   })
 
+  $('#bab_standar').on('change', function () {
+    var inputFileVal = $('#link-doc_standar').val();
+    var selectVal = $(this).val();
+    if (inputFileVal !== '' && selectVal !== '0' && selectVal !== null) {
+      $('#submit_standar').prop('disabled', false);
+    } else {
+      $('#submit_standar').prop('disabled', true);
+    }
+  })
+
   $('#bab_lampiran').on('change', function () {
     var inputFileVal = $('#link-doc_lampiran').val();
     var selectVal = $(this).val();
@@ -184,16 +194,26 @@ $(document).ready(function () {
   })
 
   $('#bab_lampiran-2').on('change', function () {
-    if ($('[name="id-input-file-lampira-2n"]').val() == '' && $(this).val() == 0) {
-      $('#submit_lampiran-2').prop('disabled', true);
-    } else if ($('[name="id-input-file-lampiran-2"]').val() == '' && $(this).val()) {
-      $('#submit_lampiran-2').prop('disabled', true);
-    } else if ($('[name="id-input-file-lampiran-2"]').val() && $(this).val() == 0) {
-      $('#submit_lampiran-2').prop('disabled', true);
-    } else {
+    var inputFileVal = $('#link-doc_lampiran-2').val();
+    var selectVal = $(this).val();
+    if (inputFileVal !== '' && selectVal !== '0' && selectVal !== null) {
       $('#submit_lampiran-2').prop('disabled', false);
+    } else {
+      $('#submit_lampiran-2').prop('disabled', true);
     }
   })
+
+  // $('#bab_lampiran-2').on('change', function () {
+  //   if ($('[name="id-input-file-lampira-2n"]').val() == '' && $(this).val() == 0) {
+  //     $('#submit_lampiran-2').prop('disabled', true);
+  //   } else if ($('[name="id-input-file-lampiran-2"]').val() == '' && $(this).val()) {
+  //     $('#submit_lampiran-2').prop('disabled', true);
+  //   } else if ($('[name="id-input-file-lampiran-2"]').val() && $(this).val() == 0) {
+  //     $('#submit_lampiran-2').prop('disabled', true);
+  //   } else {
+  //     $('#submit_lampiran-2').prop('disabled', false);
+  //   }
+  // })
 
   $('#modal_program').on('shown.bs.modal', function () {
 
@@ -317,11 +337,12 @@ $(document).ready(function () {
     formData.append('type', '1');
     formData.append('kategori', $('#inikategori').val());
 
-    formData.append("file[doc_lampiran]", $('#doc_lampiran-2')[0].files[0]);
+    // formData.append("file[doc_lampiran]", $('#doc_lampiran-2')[0].files[0]);
+    formData.append("link[doc_lampiran]", $('#link-doc_lampiran-2').val());
     formData.append("bab", $('#bab_lampiran-2').val());
     formData.append("kategoriparam", '2');
 
-    upload(formData);
+    upload(formData, '#link-doc_lampiran-2');
   });
 
   $('#submit_standar').on('click', function () {
@@ -332,10 +353,11 @@ $(document).ready(function () {
     formData.append('type', '1');
     formData.append('kategori', $('#inikategori').val());
 
-    formData.append("file[doc_standar]", $('#doc_standar')[0].files[0]);
+    // formData.append("file[doc_standar]", $('#doc_standar')[0].files[0]);
+    formData.append("link[doc_standar]", $('#link-doc_standar').val());
     formData.append("bab", $('#bab_standar').val());
-
-    upload(formData);
+    updatetahapan($('#ini-ID').val(), 2)
+    upload(formData, '#link-doc_standar');
   });
 
 
@@ -465,13 +487,17 @@ $(document).ready(function () {
   var SELECT_KAJIAN = '#bab_kajian';
   var BUTTON_KAJIAN = '#submit_kajian';
 
-  var INPUT_LAMPIRAN = '#link-doc_lampiran';
-  var SELECT_LAMPIRAN = '#bab_lampiran';
-  var BUTTON_LAMPIRAN = '#submit_lampiran';
+  var INPUT_STANDAR = '#link-doc_standar';
+  var SELECT_STANDAR = '#bab_standar';
+  var BUTTON_STANDAR = '#submit_standar';
 
   var INPUT_LAMPIRAN = '#link-doc_lampiran';
   var SELECT_LAMPIRAN = '#bab_lampiran';
   var BUTTON_LAMPIRAN = '#submit_lampiran';
+
+  var INPUT_LAMPIRAN2 = '#link-doc_lampiran-2';
+  var SELECT_LAMPIRAN2 = '#bab_lampiran-2';
+  var BUTTON_LAMPIRAN2 = '#submit_lampiran-2';
 
   var INPUT_LAPANGAN = '#doc_lapangan';
   var SELECT_LAPANGAN = '#keterangan_lapangan';
@@ -481,8 +507,16 @@ $(document).ready(function () {
     checkButtonStatus(INPUT_KAJIAN, SELECT_KAJIAN, BUTTON_KAJIAN);
   };
 
+  var standarHandler = function () {
+    checkButtonStatus(INPUT_STANDAR, SELECT_STANDAR, BUTTON_STANDAR);
+  };
+
   var lampiranHandler = function () {
     checkButtonStatus(INPUT_LAMPIRAN, SELECT_LAMPIRAN, BUTTON_LAMPIRAN);
+  };
+
+  var lampiranHandler2 = function () {
+    checkButtonStatus(INPUT_LAMPIRAN2, SELECT_LAMPIRAN2, BUTTON_LAMPIRAN2);
   };
 
   var lapanganHandler = function () {
@@ -492,14 +526,22 @@ $(document).ready(function () {
   $(INPUT_KAJIAN).on('keyup change paste', kajianHandler);
   $(SELECT_KAJIAN).on('change', kajianHandler);
 
+  $(INPUT_STANDAR).on('keyup change paste', standarHandler);
+  $(SELECT_STANDAR).on('change', standarHandler);
+
   $(INPUT_LAMPIRAN).on('keyup change paste', lampiranHandler);
   $(SELECT_LAMPIRAN).on('change', lampiranHandler);
+
+  $(INPUT_LAMPIRAN2).on('keyup change paste', lampiranHandler2);
+  $(SELECT_LAMPIRAN2).on('change', lampiranHandler2);
 
   $(INPUT_LAPANGAN).on('keyup change paste', lapanganHandler);
   $(SELECT_LAPANGAN).on('keyup change paste', lapanganHandler);
 
   checkButtonStatus(INPUT_KAJIAN, SELECT_KAJIAN, BUTTON_KAJIAN);
+  checkButtonStatus(INPUT_STANDAR, SELECT_STANDAR, BUTTON_STANDAR);
   checkButtonStatus(INPUT_LAMPIRAN, SELECT_LAMPIRAN, BUTTON_LAMPIRAN);
+  checkButtonStatus(INPUT_LAMPIRAN2, SELECT_LAMPIRAN2, BUTTON_LAMPIRAN2);
   checkButtonStatus(INPUT_LAPANGAN, SELECT_LAPANGAN, BUTTON_LAPANGAN);
 
 });
@@ -1632,7 +1674,7 @@ function action(mode, id, type, keterangan, param, kode, kategori) {
               aoColumns: [
                 { 'mDataProp': 'id', 'width': '10%' },
                 { 'mDataProp': 'bab' },
-                { 'mDataProp': 'filename' },
+                { 'mDataProp': 'path' },
                 // { 'mDataProp': 'size'},
                 { 'mDataProp': 'status' },
                 { 'mDataProp': 'created_date' },
@@ -1682,10 +1724,27 @@ function action(mode, id, type, keterangan, param, kode, kategori) {
                 },
                 {
                   mRender: function (data, type, row) {
+                    if (type == 'display') {
+                      if (row.ext == 'link') {
+                        return '<a href="#">Link GoogleDrive</a>'
+                      } else {
+                        return data
+                      }
+
+                    }
+
+                    return data
+
+                  },
+                  aTargets: [2]
+                },
+                {
+                  mRender: function (data, type, row) {
 
                     if ($('#role').val() == '10' || $('#role').val() == '100') {
                       let rev = '';
                       let done = '';
+                      let bahas = '';
                       if (data == '1') {
                         rev = 'selected';
                       }
@@ -1702,7 +1761,7 @@ function action(mode, id, type, keterangan, param, kode, kategori) {
                                   <option value=""> - </option>
                                   <option `+ rev + ` value="1"> Revisi </option>
                                   <option `+ done + ` value="0"> Selesai </option>
-                                  <option `+ bahas + ` value="2"> Bahas </option>
+                                  <option `+ bahas + ` value="2"> Pembahasan </option>
                                 </select>`;
                     } else {
                       if (data == '1') {
@@ -1766,8 +1825,8 @@ function action(mode, id, type, keterangan, param, kode, kategori) {
                 {
                   mRender: function (data, type, row) {
 
-                    var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="public/` + row.path + '/' + row.filename + `">
-                                      <i class="ace-icon fa fa-download bigger-120"></i>
+                    var el = `<div class="btn-group"><a class="btn btn-xs btn-warning" target="_blank" href="${row.ext == 'link' ? row.path : `public/${row.path}/${row.filename}`}">
+                                      <i class="ace-icon fa ${row.ext == 'link' ? 'fa-external-link' : 'fa-download '} bigger-120"></i>
                                     </a></div>`;
 
                     if ($('#role').val() == 0) {
