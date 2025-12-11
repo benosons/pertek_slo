@@ -2653,84 +2653,8 @@ function popupvalidasi(id, type, param, kategori) {
     $('#jenis').attr('disabled', true)
     $('#simpanaja').hide()
   }
-  // loadfilepermohonan(id, type)
-  $.ajax({
-    type: 'post',
-    dataType: 'json',
-    url: 'loadfilepermohonan',
-    data: {
-      id: id,
-      type: type
-    },
-    success: function (result) {
-      var code = result.code
-      var data = result.data
-      var isok = 0
-      var el = '';
-      for (const key in data) {
-        var id = data[key]['id']
-        var path = data[key]['path']
-        var filename = data[key]['filename']
-        var jenis = data[key]['jenis']
-        var ok = data[key]['ok']
-        var checked = ok == 1 ? 'checked' : ''
-        var classe = !ok ? 'class="text-info"' : ok == 1 ? 'class="text-success"' : 'class="text-danger"'
-        isok += ok == 1 ? 1 : 0
-        var ext = data[key]['ext']
+  loadfilepermohonan(id, type, param, kategori)
 
-        // el += `<div class="checkbox">
-        //         <label>
-        //           <input name="form-field-checkbox" type="checkbox" class="ace" onclick="okdong(${id}, ${!ok ? 1 : ok==1? 2: 1})" ${checked}>
-        //           <span class="lbl"> <a ${classe} target="_blank" type="button" href="public/${path+'/'+filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
-        //         </label>
-        //       </div>`
-
-        el += `
-                      <div class="row">`
-        if (ok == 2) {
-          el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>`
-          el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
-          classe = 'class="text-danger"'
-        } else if (ok == 1) {
-          el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>`
-          el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
-        } else {
-          el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>
-                                  <div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
-        }
-        var ishref = ext == 'link' ? path : 'public/' + path + '/' + filename
-        el += `<div class="col-sm-10">
-                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="${ishref}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
-                                      </div>
-                                    </div>`
-
-      }
-
-      if (isok < 4) {
-        $('#kategori').hide()
-        $('#jenis').hide()
-        $('#simpanaja').hide()
-      } else if (isok >= 4) {
-        $('#kategori').show()
-        $('#jenis').show()
-        $('#simpanaja').show()
-      }
-
-      $('#file-unggahan').html(el);
-    }
-  })
 }
 
 function validasiV2(id, param) {
@@ -2846,8 +2770,7 @@ $('#categoryFilter').on('change', function () {
   loadpermohonan('1');
 })
 
-function loadfilepermohonan(id, type) {
-
+function loadfilepermohonan(id, type, param, kategori) {
   $.ajax({
     type: 'post',
     dataType: 'json',
@@ -2863,7 +2786,6 @@ function loadfilepermohonan(id, type) {
       var el = '';
       for (const key in data) {
         var id = data[key]['id']
-        var id_parent = data[key]['id_parent']
         var path = data[key]['path']
         var filename = data[key]['filename']
         var jenis = data[key]['jenis']
@@ -2871,6 +2793,8 @@ function loadfilepermohonan(id, type) {
         var checked = ok == 1 ? 'checked' : ''
         var classe = !ok ? 'class="text-info"' : ok == 1 ? 'class="text-success"' : 'class="text-danger"'
         isok += ok == 1 ? 1 : 0
+        var ext = data[key]['ext']
+
         // el += `<div class="checkbox">
         //         <label>
         //           <input name="form-field-checkbox" type="checkbox" class="ace" onclick="okdong(${id}, ${!ok ? 1 : ok==1? 2: 1})" ${checked}>
@@ -2879,36 +2803,35 @@ function loadfilepermohonan(id, type) {
         //       </div>`
 
         el += `
-                      <div class="row">`
+                        <div class="row">`
         if (ok == 2) {
           el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${id_parent}, ${type})"> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>`
+                                        <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-check"></i></a>
+                                    </div>`
           el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
+                                        <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-times"></i></a>
+                                    </div>`
           classe = 'class="text-danger"'
         } else if (ok == 1) {
           el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>`
+                                        <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-check"></i></a>
+                                    </div>`
           el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${id_parent}, ${type})"> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
+                                        <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-times"></i></a>
+                                    </div>`
         } else {
           el += `<div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${id_parent}, ${type})"> <i class="ace-icon fa fa-check"></i></a>
-                                  </div>
-                                  <div class="col-sm-1">
-                                      <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${id_parent}, ${type})"> <i class="ace-icon fa fa-times"></i></a>
-                                  </div>`
+                                        <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-check"></i></a>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${type}, ${param}, ${kategori})"> <i class="ace-icon fa fa-times"></i></a>
+                                    </div>`
         }
-
         var ishref = ext == 'link' ? path : 'public/' + path + '/' + filename
         el += `<div class="col-sm-10">
-                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="${ishref}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
-                                      </div>
-                                    </div>`
+                                          <span class="lbl"> <a ${classe} target="_blank" type="button" href="${ishref}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
+                                        </div>
+                                      </div>`
 
       }
 
@@ -2916,11 +2839,89 @@ function loadfilepermohonan(id, type) {
         $('#kategori').hide()
         $('#jenis').hide()
         $('#simpanaja').hide()
+      } else if (isok >= 4) {
+        $('#kategori').show()
+        $('#jenis').show()
+        $('#simpanaja').show()
       }
 
       $('#file-unggahan').html(el);
     }
   })
+
+  // $.ajax({
+  //   type: 'post',
+  //   dataType: 'json',
+  //   url: 'loadfilepermohonan',
+  //   data: {
+  //     id: id,
+  //     type: type
+  //   },
+  //   success: function (result) {
+  //     var code = result.code
+  //     var data = result.data
+  //     var isok = 0
+  //     var el = '';
+  //     for (const key in data) {
+  //       var id = data[key]['id']
+  //       var id_parent = data[key]['id_parent']
+  //       var path = data[key]['path']
+  //       var filename = data[key]['filename']
+  //       var jenis = data[key]['jenis']
+  //       var ok = data[key]['ok']
+  //       var checked = ok == 1 ? 'checked' : ''
+  //       var classe = !ok ? 'class="text-info"' : ok == 1 ? 'class="text-success"' : 'class="text-danger"'
+  //       isok += ok == 1 ? 1 : 0
+  //       // el += `<div class="checkbox">
+  //       //         <label>
+  //       //           <input name="form-field-checkbox" type="checkbox" class="ace" onclick="okdong(${id}, ${!ok ? 1 : ok==1? 2: 1})" ${checked}>
+  //       //           <span class="lbl"> <a ${classe} target="_blank" type="button" href="public/${path+'/'+filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
+  //       //         </label>
+  //       //       </div>`
+
+  //       el += `
+  //                     <div class="row">`
+  //       if (ok == 2) {
+  //         el += `<div class="col-sm-1">
+  //                                     <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${id_parent}, ${type})"> <i class="ace-icon fa fa-check"></i></a>
+  //                                 </div>`
+  //         el += `<div class="col-sm-1">
+  //                                     <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-times"></i></a>
+  //                                 </div>`
+  //         classe = 'class="text-danger"'
+  //       } else if (ok == 1) {
+  //         el += `<div class="col-sm-1">
+  //                                     <a type="button" class="btn btn-white btn-xs btn-default" disabled> <i class="ace-icon fa fa-check"></i></a>
+  //                                 </div>`
+  //         el += `<div class="col-sm-1">
+  //                                     <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${id_parent}, ${type})"> <i class="ace-icon fa fa-times"></i></a>
+  //                                 </div>`
+  //       } else {
+  //         el += `<div class="col-sm-1">
+  //                                     <a type="button" class="btn btn-white btn-xs btn-success" onclick="okdong(${id}, 1, ${id_parent}, ${type})"> <i class="ace-icon fa fa-check"></i></a>
+  //                                 </div>
+  //                                 <div class="col-sm-1">
+  //                                     <a type="button" class="btn btn-white btn-xs btn-danger" onclick="okdong(${id}, 2, ${id_parent}, ${type})"> <i class="ace-icon fa fa-times"></i></a>
+  //                                 </div>`
+  //       }
+
+  //       var ishref = ext == 'link' ? path : 'public/' + path + '/' + filename
+  //       el += `<div class="col-sm-10">
+  //                                        <span class="lbl"> <a ${classe} target="_blank" type="button" href="${ishref}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
+  //                                     </div>
+  //                                   </div>`
+
+  //     }
+
+  //     if (isok < 4) {
+  //       $('#kategori').hide()
+  //       $('#jenis').hide()
+  //       $('#simpanaja').hide()
+  //     }
+
+  //     $('#file-unggahan').html(el);
+  //   }
+  // })
 }
 
 function checkButtonStatus(inputSelector, selectSelector, buttonSelector) {
