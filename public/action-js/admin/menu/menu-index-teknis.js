@@ -2905,7 +2905,7 @@ function loadfilepermohonan(id, type) {
         }
 
         el += `<div class="col-sm-10">
-                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="public/${path + '/' + filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
+                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="${path + '/' + filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
                                       </div>
                                     </div>`
 
