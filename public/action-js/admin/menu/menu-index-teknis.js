@@ -2515,7 +2515,7 @@ function reupload(type) {
 
   if (type == 'izin-lingkungan') {
     // formData.append("file[doc_izin_lingkungan]", $('#doc_izin_lingkungan_reupload')[0].files[0]);
-    formData.append("file[doc_izin_lingkungan]", $('#link-doc_izin_lingkungan_reupload').val());
+    formData.append("link[doc_izin_lingkungan]", $('#link-doc_izin_lingkungan_reupload').val());
   } else if (type == 'nib') {
     // formData.append("file[doc_nib]", $('#doc_nib_reupload')[0].files[0]);
     formData.append("link[doc_nib]", $('#link-doc_nib_reupload').val());
