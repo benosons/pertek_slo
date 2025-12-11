@@ -2904,8 +2904,9 @@ function loadfilepermohonan(id, type) {
                                   </div>`
         }
 
+        var ishref = ext == 'link' ? path : 'public/' + path + '/' + filename
         el += `<div class="col-sm-10">
-                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="public/${path + '/' + filename}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
+                                         <span class="lbl"> <a ${classe} target="_blank" type="button" href="${ishref}"> <i class="ace-icon fa fa-file"></i> ${data[key]['jenis']} </a> </span>
                                       </div>
                                     </div>`
 
